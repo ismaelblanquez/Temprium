@@ -1,0 +1,19 @@
+{
+  "name": "prueba",
+  "version": "1.0.0",
+  "description": "\"# Temprium\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ismaelblanquez/Temprium.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ismaelblanquez/Temprium/issues"
+  },
+  "homepage": "https://github.com/ismaelblanquez/Temprium#readme"
+}
