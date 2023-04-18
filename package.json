@@ -1,19 +1,21 @@
 {
-  "name": "prueba",
+  "name": "temprium",
   "version": "1.0.0",
-  "description": "\"# Temprium\"",
-  "main": "index.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ismaelblanquez/Temprium.git"
+  "dependencies": {
+    "expo": "~48.0.11",
+    "expo-status-bar": "~1.4.4",
+    "react": "18.2.0",
+    "react-native": "0.71.6"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ismaelblanquez/Temprium/issues"
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
   },
-  "homepage": "https://github.com/ismaelblanquez/Temprium#readme"
+  "private": true
 }
