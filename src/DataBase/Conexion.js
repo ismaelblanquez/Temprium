@@ -1,4 +1,4 @@
-import { SQLiteDatabase } from "react-native-sqlite-storage";
+import { SQLite } from "react-native-sqlite-storage";
 
 const databaseName = 'Temprium.db';
 const databaseVersion = '1.0';
@@ -12,11 +12,17 @@ const db = SQLite.openDatabase(
   databaseSize,
 ); 
 
-function add(){
+const closeDatabase = (db) => {
+  if(db){
+    db.close();
+  }
+};
+
+function addUsuario(db,usuario,contrasena){
     db.transaction((tx) =>{
         tx.executeSql(
-            'INSERT INTO todos (title) VALUES (?)',
-      [title],
+            'INSERT INTO USUARIO (title) VALUES (?,?)',
+      [usuario,contrasena],
       (tx, results) => {
         console.log('Todo added successfully');
       },
@@ -27,11 +33,28 @@ function add(){
     })
 }
 
-function getTodos(callback) {
+function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
+  db.transaction((tx) =>{
+      tx.executeSql(
+          'INSERT INTO HORAS (title) VALUES (?,?,?,?,?,?,?)',
+    [usuario,tipoHoras,horas,minutos,categoria,dia,clase],
+    (tx, results) => {
+      console.log('Todo added successfully');
+    },
+    (tx, error) => {
+      console.log(`Error adding todo: ${error}`);
+    },
+      )
+  })
+}
+
+
+
+function getAllHoras(db,usuario,callback) {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM todos',
-        [],
+        'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+        [usuario],
         (tx, results) => {
           const todos = [];
           for (let i = 0; i < results.rows.length; i++) {
@@ -45,10 +68,31 @@ function getTodos(callback) {
       );
     });
   }
+
+function selectHorasPorTipoUsuario(db,tipoHoras,usuario){
+    db.transaction((tx)=> {
+      tx.executeSql(
+       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND USUARIOS.email =?',
+       [tipoHoras, usuario],
+       (tx, results) => {
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++) {
+          todos.push(results.rows.item(i));
+        }
+        solucion(todos);
+       },
+       (err) => {
+        error(err);
+       }
+      );
+    });
+};
   
 
   export default {
-    initDatabase,
-    addTodo,
-    getTodos,
+    closeDatabase,
+    addHoras,
+    addUsuario,
+    getAllHoras,
+    selectHorasPorTipoUsuario
   };
