@@ -21,7 +21,7 @@ const closeDatabase = (db) => {
 function addUsuario(db,usuario,contrasena){
     db.transaction((tx) =>{
         tx.executeSql(
-            'INSERT INTO USUARIO (title) VALUES (?,?)',
+            'INSERT INTO USUARIO (email,contrasena) VALUES (?,?)',
       [usuario,contrasena],
       (tx, results) => {
         console.log('Todo added successfully');
@@ -36,7 +36,7 @@ function addUsuario(db,usuario,contrasena){
 function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
   db.transaction((tx) =>{
       tx.executeSql(
-          'INSERT INTO HORAS (title) VALUES (?,?,?,?,?,?,?)',
+          'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
     [usuario,tipoHoras,horas,minutos,categoria,dia,clase],
     (tx, results) => {
       console.log('Todo added successfully');
@@ -87,12 +87,102 @@ function selectHorasPorTipoUsuario(db,tipoHoras,usuario){
       );
     });
 };
+
+function getIdUsuario(db,usuario,callback){
+  db.transaction((tx)=> {
+    tx.executeSql(
+      'SELECT Id_usu FROM USUARIOS WHERE email=?',
+      [usuario],
+      (tx,results) => {
+        const id = results.rows.item(0).Id_usu;
+        callback(id);
+      },
+      (error)=> {
+       console.log('Error al obtener el id del usuario: ',error.message);  
+      }
+    );
+  });
+};
+
+function getUsuemail(db,usuario,callback){
+  db.transaction((tx)=> {
+    tx.executeSql(
+      'SELECT email FROM USUARIOS WHERE email=?',
+      [usuario],
+      (tx,results) => {
+        const id = results.rows.item(0).email;
+        callback(id);
+      },
+      (error)=> {
+       console.log('Error al obtener el email del usuario: ',error.message);  
+      }
+    );
+  });
+};
   
 
+function updateUsu(db,nuevoemail,nuevacontrasena,email){
+  db.transaction((tx)=>{
+    tx.executeSql(
+      'UPDATE USUARIOS SET emai=?, contrasena=? WHERE email=?',
+      [nuevoemail,nuevacontrasena,email],
+      (tx,results)=>{
+        console.log('Usuario modificado correctamente');
+      },
+      (error)=>{
+        console.log('Error al actualizar el usuario: ',error.message);
+      }
+    );
+  });
+}
+
+function updateHoras(db,Tipohoras,horas,minutos,categoria,dia,clase,email){
+  getIdUsuario(db,email, (id_usuario)=>{
+    db.transaction((tx)=>{
+      tx.executeSql(
+        'UPDATE Horas SET TipoHoras = ?, Horas = ?, minutos = ?, Categoria = ?, Dia = ?, Clase = ? WHERE Usuario = ?',
+        [Tipohoras,horas,minutos,categoria,dia,clase,id_usuario],
+        (tx,results)=>{
+          console.log('Horas modificado correctamente');
+        },
+        (error)=>{
+          console.log('Error al actualizar las horas: ',error.message);
+        }
+      );
+  });
+});
+};
+
+function deleteHoras(db,email){
+ getIdUsuario(db,email, (id_usuario) => {
+  db.transaction((tx)=> {
+    tx.executeSql(
+      'DELETE * FROM HORAS WHERE Usuario = ?',
+      [id_usuario],
+      (tx,results)=>{
+        console.log('Horas borradas correctamente');
+      },
+      (error)=>{
+        console.log('Error al borrar las horas: ',error.message);
+      }
+    )
+  });
+ });
+};
+
+
+
+
   export default {
+    db,
     closeDatabase,
     addHoras,
     addUsuario,
     getAllHoras,
-    selectHorasPorTipoUsuario
+    selectHorasPorTipoUsuario,
+    getIdUsuario,
+    getUsuemail,
+    updateUsu,
+    updateHoras,
+    deleteHoras
   };
