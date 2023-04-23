@@ -1,15 +1,15 @@
-import { SQLite } from "react-native-sqlite-storage";
+import { SQLite,openDatabase } from "react-native-sqlite-storage";
 
-const databaseName = 'Temprium.db';
-const databaseVersion = '1.0';
-const databaseDisplayName = 'My Database';
-const databaseSize = 200000;
+const name = 'Temprium.db';
+const Version = '1.0';
+const DisplayName = 'My Database';
+const Size = 200000;
 
-const db = SQLite.openDatabase(
-  databaseName,
-  databaseVersion,
-  databaseDisplayName,
-  databaseSize,
+const db = openDatabase({
+  name,
+  Version,
+  DisplayName,
+  Size}
 ); 
 
 const closeDatabase = (db) => {
@@ -18,11 +18,11 @@ const closeDatabase = (db) => {
   }
 };
 
-function addUsuario(db,usuario,contrasena){
+function addUsuario(db,email,contrasena){
     db.transaction((tx) =>{
         tx.executeSql(
-            'INSERT INTO USUARIO (email,contrasena) VALUES (?,?)',
-      [usuario,contrasena],
+            'INSERT INTO USUARIOS (email,contrasena) VALUES (?,?)',
+      [email,contrasena],
       (tx, results) => {
         console.log('Todo added successfully');
       },
@@ -69,11 +69,11 @@ function getAllHoras(db,usuario,callback) {
     });
   }
 
-function selectHorasPorTipoUsuario(db,tipoHoras,usuario){
+function selectHoras(db,tipoHoras,usuario,horas,minutos,categoria,dia,clase){
     db.transaction((tx)=> {
       tx.executeSql(
-       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND USUARIOS.email =?',
-       [tipoHoras, usuario],
+       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND HORAS.Horas=? AND HORAS.minutos=? AND HORAS.Categoria=? AND HORAS.Dia=? AND HORAS.Clase=?  AND USUARIOS.email =?',
+       [tipoHoras,horas,minutos,categoria,dia,clase, usuario],
        (tx, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
@@ -179,7 +179,7 @@ function deleteHoras(db,email){
     addHoras,
     addUsuario,
     getAllHoras,
-    selectHorasPorTipoUsuario,
+    selectHoras,
     getIdUsuario,
     getUsuemail,
     updateUsu,
