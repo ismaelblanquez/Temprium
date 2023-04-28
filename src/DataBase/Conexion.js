@@ -1,39 +1,41 @@
-import { SQLite,openDatabase } from "react-native-sqlite-storage";
+import { openDatabase,enablePromise} from "react-native-sqlite-storage";
+//var SQLite = require("react-native-sqlite-storage")
+import * as SQLite from "expo-sqlite";
 
-const name = 'Temprium.db';
-const Version = '1.0';
-const DisplayName = 'My Database';
-const Size = 200000;
+enablePromise(true);
 
-const db = openDatabase({
-  name,
-  Version,
-  DisplayName,
-  Size}
-); 
 
-const closeDatabase = (db) => {
-  if(db){
-    db.close();
-  }
-};
 
-function addUsuario(db,email,contrasena){
-    db.transaction((tx) =>{
-        tx.executeSql(
-            'INSERT INTO USUARIOS (email,contrasena) VALUES (?,?)',
-      [email,contrasena],
-      (tx, results) => {
-        console.log('Todo added successfully');
-      },
-      (tx, error) => {
-        console.log(`Error adding todo: ${error}`);
-      },
-        )
-    })
+export  const db =  SQLite.openDatabase(
+  {
+    name: 'Temprium.db',
+    location: 'default'
+  },
+  ()=> { },
+   error => {console.log(error)}
+    );
+
+export async function addUsuario(db,email,contrasena){
+  return new Promise((resolve,reject) => {
+    db.transaction((tx)=>{
+      console.log()
+     tx.executeSql(    
+      'INSERT INTO Usuarios(email,contrasena) VALUES (?,?)',
+     [email,contrasena],
+(tx, results) => {
+ console.log('Datos insertados correctamente');
+ resolve(results)
+},
+(tx, error) => {
+ console.log(`Error adding todo: ${error}`);
+ reject(error)
+},)
+    }
+    );
+db.close() })   
 }
 
-function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
+export function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
   db.transaction((tx) =>{
       tx.executeSql(
           'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
@@ -50,7 +52,7 @@ function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
 
 
 
-function getAllHoras(db,usuario,callback) {
+export function getAllHoras(db,usuario,callback) {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
@@ -69,7 +71,7 @@ function getAllHoras(db,usuario,callback) {
     });
   }
 
-function selectHoras(db,tipoHoras,usuario,horas,minutos,categoria,dia,clase){
+export function selectHoras(db,tipoHoras,usuario,horas,minutos,categoria,dia,clase){
     db.transaction((tx)=> {
       tx.executeSql(
        'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND HORAS.Horas=? AND HORAS.minutos=? AND HORAS.Categoria=? AND HORAS.Dia=? AND HORAS.Clase=?  AND USUARIOS.email =?',
@@ -88,7 +90,7 @@ function selectHoras(db,tipoHoras,usuario,horas,minutos,categoria,dia,clase){
     });
 };
 
-function getIdUsuario(db,usuario,callback){
+export function getIdUsuario(db,usuario,callback){
   db.transaction((tx)=> {
     tx.executeSql(
       'SELECT Id_usu FROM USUARIOS WHERE email=?',
@@ -104,7 +106,7 @@ function getIdUsuario(db,usuario,callback){
   });
 };
 
-function getUsuemail(db,usuario,callback){
+export function getUsuemail(db,usuario,callback){
   db.transaction((tx)=> {
     tx.executeSql(
       'SELECT email FROM USUARIOS WHERE email=?',
@@ -121,7 +123,7 @@ function getUsuemail(db,usuario,callback){
 };
   
 
-function updateUsu(db,nuevoemail,nuevacontrasena,email){
+export function updateUsu(db,nuevoemail,nuevacontrasena,email){
   db.transaction((tx)=>{
     tx.executeSql(
       'UPDATE USUARIOS SET emai=?, contrasena=? WHERE email=?',
@@ -136,7 +138,7 @@ function updateUsu(db,nuevoemail,nuevacontrasena,email){
   });
 }
 
-function updateHoras(db,Tipohoras,horas,minutos,categoria,dia,clase,email){
+export function updateHoras(db,Tipohoras,horas,minutos,categoria,dia,clase,email){
   getIdUsuario(db,email, (id_usuario)=>{
     db.transaction((tx)=>{
       tx.executeSql(
@@ -153,7 +155,7 @@ function updateHoras(db,Tipohoras,horas,minutos,categoria,dia,clase,email){
 });
 };
 
-function deleteHoras(db,email){
+export function deleteHoras(db,email){
  getIdUsuario(db,email, (id_usuario) => {
   db.transaction((tx)=> {
     tx.executeSql(
@@ -171,18 +173,3 @@ function deleteHoras(db,email){
 };
 
 
-
-
-  export default {
-    db,
-    closeDatabase,
-    addHoras,
-    addUsuario,
-    getAllHoras,
-    selectHoras,
-    getIdUsuario,
-    getUsuemail,
-    updateUsu,
-    updateHoras,
-    deleteHoras
-  };
