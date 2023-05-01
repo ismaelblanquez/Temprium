@@ -1,37 +1,38 @@
-import { openDatabase, enablePromise } from "react-native-sqlite-storage";
+import { openDatabase,enablePromise} from "react-native-sqlite-storage";
+//var SQLite = require("react-native-sqlite-storage")
+import * as SQLite from "expo-sqlite";
 
 enablePromise(true);
-const name = 'Temprium.db';
-const Version = '1.0';
-const DisplayName = 'My Database';
-const Size = 200000;
 
- export const db = openDatabase({
-  name,
-  Version,
-  DisplayName,
-  Size}
-); 
 
-export const closeDatabase = (db) => {
-  if(db){
-    db.close();
-  }
-};
+
+export  const db =  SQLite.openDatabase(
+  {
+    name: 'Temprium.db',
+    location: 'default'
+  },
+  ()=> { },
+   error => {console.log(error)}
+    );
 
 export async function addUsuario(db,email,contrasena){
-    db.transaction((tx) =>{
-        tx.executeSql(
-            'INSERT INTO Usuarios (email,contrasena) VALUES (?,?)',
-            [email,contrasena],
-      (tx, results) => {
-        console.log('Datos insertados correctamente');
-      },
-      (tx, error) => {
-        console.log(`Error adding todo: ${error}`);
-      },
-        )
-    })
+  return new Promise((resolve,reject) => {
+    db.transaction((tx)=>{
+      console.log()
+     tx.executeSql(    
+      'INSERT INTO Usuarios(email,contrasena) VALUES (?,?)',
+     [email,contrasena],
+(tx, results) => {
+ console.log('Datos insertados correctamente');
+ resolve(results)
+},
+(tx, error) => {
+ console.log(`Error adding todo: ${error}`);
+ reject(error)
+},)
+    }
+    );
+db.close() })   
 }
 
 export function addHoras(db,usuario,tipoHoras,horas,minutos,categoria,dia,clase){
