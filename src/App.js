@@ -7,7 +7,9 @@ import Login from './screens/Login';
 import Home from './screens/Home';
 import RegisterHours from './screens/RegisterHours';
 import Register from './screens/Register';
-
+import BottomBar from './components/BottomBar';
+import RenderItem from './components/RenderItem';
+import 'setimmediate';
 
 // Definir los componentes Login y Home
 // const Login = ({ navigation }) => {
@@ -40,6 +42,7 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="RegisterHours" component={RegisterHours} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Group name = "BottomBar" component = {BottomBar} />
       </Stack.Navigator>
     </NavigationContainer>
   );

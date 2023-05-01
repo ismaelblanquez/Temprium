@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { db, addUsuario } from '../DataBase/Conexion';
+import 'setimmediate';
 
-const Register = () => {
+
+const Register = ({navigation}) => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [repPassword, setRepPassword] = useState('');
@@ -16,6 +19,14 @@ const handleLogin = () => {
 console.log('Email:', email);
 console.log('Password:', password);
 console.log('Repetir password:', repPassword);
+if(email != '' && password != ''){
+  addUsuario(email, password)
+  .then(() => console.log('Usuario registrado'))
+  .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
+} else {
+  console.log("Error, uno de los campos contiene datos vacíos");
+}
+// navigation.navigate("Home");
 };
 
 const handleGuest = () => {
