@@ -35,7 +35,7 @@ console.log('Registrarse');
 
 return (
 <View style={styles.container}>
-<Image style={styles.cabecera} source={require('./assets/Cabecera.png')} />
+<Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
 <TextInput
 style={styles.title}
 value= 'REGISTRO'

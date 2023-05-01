@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const Login = () => {
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+
+const Login = ({navigation}) => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 
@@ -14,11 +17,13 @@ const handleLogin = () => {
 // Aquí puedes agregar la lógica para iniciar sesión
 console.log('Email:', email);
 console.log('Password:', password);
+navigation.navigate('Home');
 };
 
 const handleGuest = () => {
 // Aquí puedes agregar la lógica para iniciar sesión como invitado
 console.log('Iniciar sesión como invitado');
+navigation.navigate('Home');
 };
 
 const handleForgotPassword = () => {
@@ -29,11 +34,12 @@ console.log('Recuperar contraseña');
 const handleRegister = () => {
 // Aquí puedes agregar la lógica para registrar una nueva cuenta
 console.log('Registrarse');
+navigation.navigate('Register');
 };
 
 return (
 <View style={styles.container}>
-<Image style={styles.cabecera} source={require('./assets/Cabecera.png')} />
+<Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
 <TextInput
 style={styles.title}
 value= 'INICIO DE SESIÓN'
