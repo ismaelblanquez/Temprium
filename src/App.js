@@ -16,6 +16,7 @@ import Privacy from './screens/Privacy';
 import Security from './screens/Security';
 import Theme from './screens/Theme';
 import ProfileConfig from './screens/ProfileConfig';
+import AuthContext from './services/AuthContext';
 import 'setimmediate';
 
 // Definir los componentes Login y Home
@@ -42,6 +43,7 @@ import 'setimmediate';
 // Crear el StackNavigator y definir las rutas
 const Stack = createStackNavigator();
 const App = () => {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">

@@ -1,26 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import * as SQLite from 'expo-sqlite';
 
-// Componente de la botonera para navegar entre pantallas
-// const Botonera = ({ onPressHome, onPressPantalla2, onPressPantalla3 }) => {
-// return (
-// <View style={styles.botoneraContainer}>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressHome}>
-// <Text style={styles.botoneraButtonText}>Home</Text>
-// </TouchableOpacity>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla2}>
-// <Text style={styles.botoneraButtonText}>Pantalla 2</Text>
-// </TouchableOpacity>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla3}>
-// <Text style={styles.botoneraButtonText}>Pantalla 3</Text>
-// </TouchableOpacity>
-// </View>
-// );
-// };
-
+const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
+<<<<<<< Updated upstream
 const Home = ({navigation}) => {
+=======
+const Home = ({ navigation }) => {
+    // const [data, setData] = useState([]);
+>>>>>>> Stashed changes
     const data = [
         { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
         { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
@@ -29,6 +19,19 @@ const Home = ({navigation}) => {
         { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: '+0,2 H' },
     ];
 
+    useEffect(() => {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM HORAS;',
+            [],
+            (tx, { rows }) => {
+              setData(rows._array);
+              console.log(rows);
+              console.log(tx);
+            }
+          );
+        });
+      }, []);
 
     const renderItem = ({ item }) => {
         return (

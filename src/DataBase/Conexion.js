@@ -1,8 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase(
-  {name: 'Temprium.db', location: 'default'},
-  () => {},
+  { name: 'Temprium.db', location: 'default' },
+  () => { },
   error => {
     console.log(error);
   },
@@ -37,12 +37,14 @@ export function addUsuario(email, contrasena) {
 }
 
 export function addHoras(usuario, tipoHoras, horas, minutos, categoria, dia, clase) {
+  
   db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
       [usuario, tipoHoras, horas, minutos, categoria, dia, clase],
       (_, results) => {
         console.log('Horas añadidas correctamente');
+        console.log('results:' + JSON.stringify(results))
       },
       (_, error) => {
         console.log(`Error adding todo: ${error}`);
@@ -51,11 +53,11 @@ export function addHoras(usuario, tipoHoras, horas, minutos, categoria, dia, cla
   });
 }
 
-export function getAllHoras(usuario, callback) {
+export function getAllHoras(email) {
   db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
-      [usuario],
+      [email],
       (_, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
@@ -141,7 +143,7 @@ export function verificarUsuario(email, contrasena) {
         [email, contrasena],
         (_, results) => {
           const numRows = results.rows.length;
-          if(numRows > 0){
+          if (numRows > 0) {
             resolve(numRows > 0);
             console.log("rows " + numRows);
 
