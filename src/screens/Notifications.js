@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
+import { PushNotificationIOS } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
-function Notifications() {
+
+
+function Notifications({navigation}) {
 const [notificacion1, setNotificacion1] = useState(false);
 const [notificacion2, setNotificacion2] = useState(false);
 const [notificacion3, setNotificacion3] = useState(false);

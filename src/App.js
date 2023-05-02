@@ -8,7 +8,14 @@ import Home from './screens/Home';
 import RegisterHours from './screens/RegisterHours';
 import Register from './screens/Register';
 import BottomBar from './components/BottomBar';
-import RenderItem from './components/RenderItem';
+import FilterHours from './screens/FilterHours';
+import Config from './screens/Config';
+// import Notifications from './screens/Notifications';
+import Language from './screens/Language';
+import Privacy from './screens/Privacy';
+import Security from './screens/Security';
+import Theme from './screens/Theme';
+import ProfileConfig from './screens/ProfileConfig';
 import 'setimmediate';
 
 // Definir los componentes Login y Home
@@ -41,8 +48,21 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="RegisterHours" component={RegisterHours} />
+        <Stack.Screen name="FilterHours" component={FilterHours} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Group name = "BottomBar" component = {BottomBar} />
+        <Stack.Screen name="Config" component={Config} />
+        {/* <Stack.Screen name="Notifications" component={Notifications} /> */}
+        <Stack.Screen name="Language" component={Language} />
+        <Stack.Screen name="Security" component={Security} />
+        <Stack.Screen name="Theme" component={Theme} />
+        <Stack.Screen name="Privacy" component={Privacy} />
+        <Stack.Screen name="ProfileConfig" component={ProfileConfig} />
+        <Stack.Screen
+        name="BottomBar"
+        component={BottomBar}
+        options={{ headerShown: false }}
+      />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );

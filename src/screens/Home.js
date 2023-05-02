@@ -20,7 +20,7 @@ import BottomBar from '../components/BottomBar';
 // };
 
 // Componente de la pantalla Home
-const Home = () => {
+const Home = ({navigation}) => {
     const data = [
         { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
         { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
@@ -69,7 +69,7 @@ const Home = () => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()} />
 
-            <BottomBar />
+            <BottomBar navigation={navigation} /> 
         </View>
     );
 };

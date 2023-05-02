@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -6,27 +6,31 @@ const BottomBar = ({navigation}) => {
   const goToHome = () => {
     // Acción al presionar el botón de Home
     console.log('Botón Home presionado');
+    navigation.navigate('Home');
   };
-
+ 
   const goToFilters = () => {
     // Acción al presionar el botón de filtros
     console.log('Botón Filtros presionado');
-    navigation.navigate('RegisterHours');
+    navigation.navigate('FilterHours');
   };
 
   const goToTime = () => {
     // Acción al presionar el botón de tiempo
     console.log('Botón Tiempo presionado');
+    navigation.navigate('RegisterHours');
   };
 
   const goToCalendar = () => {
     // Acción al presionar el botón de calendario
     console.log('Botón Calendario presionado');
+    navigation.navigate('Calendar');
   };
 
   const goToSettings = () => {
     // Acción al presionar el botón de ajustes
     console.log('Botón Ajustes presionado');
+    navigation.navigate('Config');
   };
 
   return (
@@ -59,6 +63,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   navButton: {
     justifyContent: 'center',
