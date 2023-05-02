@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const BottomBar = ({navigation}) => {
+const BottomBar = ({ navigation }) => {
   const goToHome = () => {
     // Acción al presionar el botón de Home
     console.log('Botón Home presionado');
     navigation.navigate('Home');
   };
- 
+
   const goToFilters = () => {
     // Acción al presionar el botón de filtros
     console.log('Botón Filtros presionado');

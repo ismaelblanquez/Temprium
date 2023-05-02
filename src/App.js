@@ -37,7 +37,7 @@ import 'setimmediate';
 
 <Login></Login>;
 
-{/* <Home></Home>; */}
+{/* <Home></Home>; */ }
 
 // Crear el StackNavigator y definir las rutas
 const Stack = createStackNavigator();
@@ -58,11 +58,11 @@ const App = () => {
         <Stack.Screen name="Privacy" component={Privacy} />
         <Stack.Screen name="ProfileConfig" component={ProfileConfig} />
         <Stack.Screen
-        name="BottomBar"
-        component={BottomBar}
-        options={{ headerShown: false }}
-      />
-       
+          name="BottomBar"
+          component={BottomBar}
+          options={{ headerShown: false }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

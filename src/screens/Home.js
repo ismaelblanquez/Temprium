@@ -20,7 +20,7 @@ import BottomBar from '../components/BottomBar';
 // };
 
 // Componente de la pantalla Home
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const data = [
         { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
         { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
@@ -69,138 +69,138 @@ const Home = ({navigation}) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()} />
 
-            <BottomBar navigation={navigation} /> 
+            <BottomBar navigation={navigation} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    marginTop: '5%'
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#FFFFFF',
+        marginTop: '5%'
     },
     headerContainer: {
-    backgroundColor: '#E1F5FE',
-    borderRadius: 12,
-    borderWidth: 4,
-    borderColor: '#0096C7',
-    width: '80%',
-    marginLeft: '9%',
-    marginBottom: '10%',
+        backgroundColor: '#E1F5FE',
+        borderRadius: 12,
+        borderWidth: 4,
+        borderColor: '#0096C7',
+        width: '80%',
+        marginLeft: '9%',
+        marginBottom: '10%',
     },
     horasTotalesContainer: {
-    alignItems: 'center',
+        alignItems: 'center',
     },
     horasTotalesTitulo: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#0096C7',
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#0096C7',
     },
     horasTotalesNumero: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0096C7',
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#0096C7',
     },
     alinearBoton: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     pdfButton: {
-    backgroundColor: '#0096C7',
-    padding: 8,
-    borderRadius: 4,
-    width: 30,
-    height: 30,
+        backgroundColor: '#0096C7',
+        padding: 8,
+        borderRadius: 4,
+        width: 30,
+        height: 30,
     },
     recienteTitulo: {
-    fontSize: 20,
-    fontWeight: 'normal',
-    color: '#0096C7',
-    marginBottom: '20%',
+        fontSize: 20,
+        fontWeight: 'normal',
+        color: '#0096C7',
+        marginBottom: '20%',
     },
     tarjetaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: '4%',
-    marginRight: '4%',
-    marginBottom: 15,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#0096C7',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: '4%',
+        marginRight: '4%',
+        marginBottom: 15,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#0096C7',
     },
     iconContainer: {
-    width: 32,
-    height: 32,
-    backgroundColor: '#12CDD4',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+        width: 32,
+        height: 32,
+        backgroundColor: '#12CDD4',
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     iconNoLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
+        fontSize: 18,
+        color: '#FFFFFF',
     },
     iconLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
+        fontSize: 18,
+        color: '#FFFFFF',
     },
     infoContainer: {
-    alignItems: 'start',
-    flex: 1,
-    marginLeft: '4%',
-    marginBottom: '4%',
-    
+        alignItems: 'start',
+        flex: 1,
+        marginLeft: '4%',
+        marginBottom: '4%',
+
     },
     datosContainer: {
-    flexDirection: 'row',
+        flexDirection: 'row',
     },
     tarjetaTitulo: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#023E8A',
+        fontSize: 16,
+        fontWeight: 'normal',
+        color: '#023E8A',
     },
     tarjetaFecha: {
-    fontSize: 14,
-    color: '#023E8A',
-    fontWeight: 'bold',
+        fontSize: 14,
+        color: '#023E8A',
+        fontWeight: 'bold',
     },
     tarjetaClase: {
-    fontSize: 14,
-    color: '#023E8A',
-    fontWeight: 'bold',
-    marginLeft: '30%'
+        fontSize: 14,
+        color: '#023E8A',
+        fontWeight: 'bold',
+        marginLeft: '30%'
     },
     horasContainer: {
-    backgroundColor: '#12CDD4',
-    alignItems: 'center',
-    borderRadius: 4,
-    padding: 4,
-    width: '25%'
+        backgroundColor: '#12CDD4',
+        alignItems: 'center',
+        borderRadius: 4,
+        padding: 4,
+        width: '25%'
     },
     tarjetaHoras: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
     },
     botoneraContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderTopWidth: 1,
+        borderTopColor: '#CCCCCC',
+        paddingVertical: 8,
     },
     botoneraButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     botoneraButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#007AFF',
     },
-    });
-    
+});
+
 
 export default Home;
