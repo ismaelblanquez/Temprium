@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'setimmediate';
 
+<<<<<<< Updated upstream
 
 const Register = ({navigation}) => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [repPassword, setRepPassword] = useState('');
+=======
+const Register = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repPassword, setRepPassword] = useState('');
+>>>>>>> Stashed changes
 
 const handleTitle = () => {
 // Aquí puedes agregar la lógica para iniciar sesión
 console.log('REGISTRO');
 };
 
+<<<<<<< Updated upstream
 const handleLogin = () => {
 // Aquí puedes agregar la lógica para iniciar sesión
 console.log('Email:', email);
@@ -28,6 +37,23 @@ if(email != '' && password != ''){
 }
 // navigation.navigate("Home");
 };
+=======
+  const handleLogin = () => {
+    // Aquí puedes agregar la lógica para iniciar sesión
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log('Repetir password:', repPassword);
+    AsyncStorage.setItem('Email',email);
+    if (email != '' && password != '') {
+      addUsuario(email, password)
+        .then(() => console.log('Usuario registrado'))
+        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
+    } else {
+      console.log("Error, uno de los campos contiene datos vacíos");
+    }
+    // navigation.navigate("Home");
+  };
+>>>>>>> Stashed changes
 
 const handleGuest = () => {
 // Aquí puedes agregar la lógica para iniciar sesión como invitado

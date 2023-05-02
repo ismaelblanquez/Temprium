@@ -37,18 +37,21 @@ export function addUsuario(email, contrasena) {
 }
 
 export function addHoras(usuario, tipoHoras, horas, minutos, categoria, dia, clase) {
-  db.transaction(tx => {
+  return new Promise((resolve, reject)=>db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
       [usuario, tipoHoras, horas, minutos, categoria, dia, clase],
       (_, results) => {
         console.log('Horas añadidas correctamente');
+        resolve(results)
       },
       (_, error) => {
         console.log(`Error adding todo: ${error}`);
+        reject(error)
       },
     );
-  });
+  })
+  );
 }
 
 export function getAllHoras(usuario, callback) {

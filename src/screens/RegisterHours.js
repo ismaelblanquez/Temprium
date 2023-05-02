@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import {addHoras,getIdUsuario} from '../DataBase/Conexion';
+import AsyncStoragew from '@react-native-async-storage/async-storage';
 
 
 
@@ -11,6 +13,7 @@ const [minutos, setMinutos] = useState('0');
 const [categoria, setCategoria] = useState('');
 const [clase, setClase] = useState('');
 
+<<<<<<< Updated upstream
 const guardarHoras = () => {
 // Lógica para guardar las horas en base de datos o enviar a servidor
 // Puedes acceder a los valores seleccionados en los estados correspondientes
@@ -20,6 +23,22 @@ console.log('Minutos Trabajados:', minutos);
 console.log('Categoría:', categoria);
 console.log('Clase:', clase);
 };
+=======
+  const guardarHoras = () => {
+    // Lógica para guardar las horas en base de datos o enviar a servidor
+    // Puedes acceder a los valores seleccionados en los estados correspondientes
+    console.log('Tipo de Horas:', tipoHoras);
+    console.log('Horas Trabajadas:', horas);
+    console.log('Minutos Trabajados:', minutos);
+    console.log('Categoría:', categoria);
+    console.log('Clase:', clase);
+    getIdUsuario(Email,(id) =>{
+      addHoras(id,tipoHoras,horas,minutos,categoria,clase)
+      .then(() => console.log('Horas registradas'), console.log(id))
+      .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
+    })
+  };
+>>>>>>> Stashed changes
 
 return (
 <View style={styles.container}>
