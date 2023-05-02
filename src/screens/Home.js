@@ -5,12 +5,8 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
-<<<<<<< Updated upstream
-const Home = ({navigation}) => {
-=======
 const Home = ({ navigation }) => {
     // const [data, setData] = useState([]);
->>>>>>> Stashed changes
     const data = [
         { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
         { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },

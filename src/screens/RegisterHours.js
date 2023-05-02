@@ -12,17 +12,6 @@ const [minutos, setMinutos] = useState('0');
 const [categoria, setCategoria] = useState('');
 const [clase, setClase] = useState('');
 
-<<<<<<< Updated upstream
-const guardarHoras = () => {
-// Lógica para guardar las horas en base de datos o enviar a servidor
-// Puedes acceder a los valores seleccionados en los estados correspondientes
-console.log('Tipo de Horas:', tipoHoras);
-console.log('Horas Trabajadas:', horas);
-console.log('Minutos Trabajados:', minutos);
-console.log('Categoría:', categoria);
-console.log('Clase:', clase);
-};
-=======
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
     // Puedes acceder a los valores seleccionados en los estados correspondientes
@@ -36,7 +25,6 @@ console.log('Clase:', clase);
 
     
   };
->>>>>>> Stashed changes
 
 return (
 <View style={styles.container}>

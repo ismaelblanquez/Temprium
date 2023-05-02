@@ -14,74 +14,6 @@ const handleTitle = () => {
 console.log('REGISTRO');
 };
 
-<<<<<<< Updated upstream
-const handleLogin = () => {
-// Aquí puedes agregar la lógica para iniciar sesión
-console.log('Email:', email);
-console.log('Password:', password);
-console.log('Repetir password:', repPassword);
-if(email != '' && password != ''){
-  addUsuario(email, password)
-  .then(() => console.log('Usuario registrado'))
-  .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
-} else {
-  console.log("Error, uno de los campos contiene datos vacíos");
-}
-// navigation.navigate("Home");
-};
-
-const handleGuest = () => {
-// Aquí puedes agregar la lógica para iniciar sesión como invitado
-console.log('Iniciar sesión como invitado');
-};
-
-const handleForgotPassword = () => {
-// Aquí puedes agregar la lógica para recuperar la contraseña
-console.log('Recuperar contraseña');
-};
-
-const handleRegister = () => {
-// Aquí puedes agregar la lógica para registrar una nueva cuenta
-console.log('Registrarse');
-};
-
-return (
-<View style={styles.container}>
-<Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
-<TextInput
-style={styles.title}
-value= 'REGISTRO'
-onChangeText={(title) => setEmail(title)}
-/>
-<View style={styles.inputContainer}>
-<TextInput
-style={styles.input}
-placeholder="Correo electrónico"
-keyboardType="email-address"
-value={email}
-onChangeText={(text) => setEmail(text)}
-/>
-<TextInput
-style={styles.input}
-placeholder="Contraseña"
-secureTextEntry
-value={password}
-onChangeText={(text) => setPassword(text)}
-/>
-<TextInput
-style={styles.input}
-placeholder="Repetir contraseña"
-secureTextEntry
-value={password}
-onChangeText={(text) => setRepPassword(text)}
-/>
-</View>
-<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-<Text style={styles.loginButtonText}>REGISTRARSE</Text>
-</TouchableOpacity>
-</View>
-);
-=======
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para iniciar sesión
     console.log('Email:', email);
@@ -139,7 +71,6 @@ onChangeText={(text) => setRepPassword(text)}
       </TouchableOpacity>
     </View>
   );
->>>>>>> Stashed changes
 };
 
 const styles = StyleSheet.create({
