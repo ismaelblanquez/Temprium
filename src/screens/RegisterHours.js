@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
+import BottomBar from '../components/BottomBar';
 
-const RegisterHoursScreen = () => {
+
+
+const RegisterHoursScreen = ({navigation}) => {
 const [tipoHoras, setTipoHoras] = useState('');
 const [horas, setHoras] = useState('1');
 const [minutos, setMinutos] = useState('0');
@@ -20,7 +23,13 @@ console.log('Clase:', clase);
 
 return (
 <View style={styles.container}>
-<Text style={styles.label}>Tipo de Horas:</Text>
+<View style={styles.headerContainer}>
+<View style={styles.tituloContainer}>
+<Text style={styles.titulo}>AÑADIR HORAS</Text>
+</View>
+</View>
+<View style={styles.componente}>
+<Text style={styles.label}>TIPO DE HORAS</Text>
 <Picker
 style={styles.picker}
 selectedValue={tipoHoras}
@@ -28,11 +37,13 @@ onValueChange={(value) => setTipoHoras(value)}>
 <Picker.Item label="Lectivas" value="Lectivas" />
 <Picker.Item label="No Lectivas" value="No Lectivas" />
 </Picker>
+</View>
 
-  <Text style={styles.label}>Horas Trabajadas:</Text>
+<View style={styles.componente}>
+  <Text style={styles.label}>HORAS TRABAJADAS</Text>
   <View style={styles.pickerContainer}>
     <Picker
-      style={[styles.picker, { flex: 1, marginRight: 8 }]}
+      style={[styles.picker, { flex: 1, marginRight: 4 }]}
       selectedValue={horas}
       onValueChange={(value) => setHoras(value)}>
       {[...Array(12)].map((_, index) => (
@@ -43,9 +54,9 @@ onValueChange={(value) => setTipoHoras(value)}>
         />
       ))}
     </Picker>
-    <Text style={{ fontSize: 16, alignSelf: 'center' }}>horas</Text>
+    <Text style={styles.hourMin}>h</Text>
     <Picker
-      style={[styles.picker, { flex: 1, marginLeft: 8 }]}
+      style={[styles.picker, { flex: 1, marginLeft: '5%' }]}
       selectedValue={minutos}
       onValueChange={(value) => setMinutos(value)}>
       {[...Array(12)].map((_, index) => (
@@ -56,10 +67,12 @@ onValueChange={(value) => setTipoHoras(value)}>
         />
       ))}
     </Picker>
-    <Text style={{ fontSize: 16, alignSelf: 'center' }}>minutos</Text>
+    <Text style={styles.hourMin}>min</Text>
   </View>
+</View>
 
-  <Text style={styles.label}>Categoría:</Text>
+<View style={styles.componente}>
+  <Text style={styles.label}>CATEGORÍAS</Text>
   <Picker
     style={styles.picker}
     selectedValue={categoria}
@@ -84,7 +97,10 @@ onValueChange={(value) => setTipoHoras(value)}>
       value="Atención personal a alumnos"
     />
   </Picker>
-  <Text style={styles.label}>Clase:</Text>
+</View>
+
+<View style={styles.componente}>
+  <Text style={styles.label}>CLASE</Text>
   <Picker
     style={styles.picker}
     selectedValue={clase}
@@ -92,13 +108,15 @@ onValueChange={(value) => setTipoHoras(value)}>
     <Picker.Item label="1SI" value="1SI" />
     <Picker.Item label="2SI" value="2SI" />
   </Picker>
+</View>
 <View style={styles.buttonContainer}>
 
 <TouchableOpacity style={styles.button} onPress={guardarHoras}>
-<Text style={styles.buttonText}>Guardar</Text>
+<Text style={styles.buttonText}>GUARDAR</Text>
 </TouchableOpacity>
-
 </View>
+
+<BottomBar navigation={navigation} /> 
 
 </View>
 );
@@ -109,38 +127,95 @@ container: {
 flex: 1,
 padding: 16,
 backgroundColor: '#FFFFFF',
+marginTop: '5%'
+},
+headerContainer: {
+backgroundColor: '#E1F5FE',
+borderRadius: 12,
+borderWidth: 4,
+borderColor: '#0096C7',
+width: '80%',
+marginLeft: '9%',
+marginBottom: '10%',
+},
+tituloContainer: {
+alignItems: 'center',
+padding: '4%'
+},
+titulo: {
+fontSize: 20,
+fontWeight: 'bold',
+color: '#0096C7',
+},
+componente: {
+borderColor: '#0096C7',
+borderWidth: 2,
+alignItems: 'center',
+width: '80%',
+marginLeft: '9%',
+marginBottom: '10%',
 },
 label: {
 fontSize: 16,
 fontWeight: 'bold',
 marginBottom: 8,
+color: '#0096C7',
 },
 picker: {
+backgroundColor: '#0096C7',
+borderWidth: 1,
+borderColor: '#0096C7',
+color: '#FFFFFF',
+width: '60%',
 height: 40,
 borderRadius: 4,
-borderWidth: 1,
-borderColor: '#CCCCCC',
-marginBottom: 16,
+marginBottom: '8%',
+// alignText: 'center'
+// justifyContent: 'center',
+// alignItems: 'center'
 },
 pickerContainer: {
 flexDirection: 'row',
 alignItems: 'center',
 marginBottom: 16,
+width: '70%',
+},
+hourMin: {
+fontSize: 16,
+alignSelf: 'center',
+color: '#0096C7'
 },
 button: {
-height: 40,
-backgroundColor: '#2196F3',
-justifyContent: 'center',
-alignItems: 'center',
-borderRadius: 4,
-marginBottom: 16,
+backgroundColor: '#0096C7',
+alignItems:'center',
+padding: '5%',
+width: '80%',
+borderRadius: 8,
+marginBottom: '15%',
+alignSelf: 'center'
 },
 buttonText: {
 color: '#FFFFFF',
 fontSize: 16,
 fontWeight: 'bold',
-}
-
+},
+botoneraContainer: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+borderTopWidth: 1,
+borderTopColor: '#CCCCCC',
+paddingVertical: 8,
+},
+botoneraButton: {
+flex: 1,
+justifyContent: 'center',
+alignItems: 'center',
+},
+botoneraButtonText: {
+fontSize: 16,
+fontWeight: 'bold',
+color: '#007AFF',
+},
 });
 
 export default RegisterHoursScreen;
