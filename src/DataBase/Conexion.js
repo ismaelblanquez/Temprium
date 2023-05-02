@@ -1,6 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('Temprium.db');
+const db = SQLite.openDatabase(
+  {name: 'Temprium.db', location: 'default'},
+  () => {},
+  error => {
+    console.log(error);
+  },
+);
 
 db.transaction(tx => {
   tx.executeSql(
@@ -135,7 +141,13 @@ export function verificarUsuario(email, contrasena) {
         [email, contrasena],
         (_, results) => {
           const numRows = results.rows.length;
-          resolve(numRows > 0);
+          if(numRows > 0){
+            resolve(numRows > 0);
+            console.log("rows " + numRows);
+
+          } else {
+            console.log("No hay datos");
+          }
         },
         (_, error) => {
           console.log(`Error verificando el usuario: ${error}`);

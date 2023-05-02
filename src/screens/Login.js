@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import 'setimmediate';
-import { existeUsuario } from '../DataBase/Conexion';
+import { existeUsuario, verificarUsuario, buscarUsuario} from '../DataBase/Conexion';
 
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -10,18 +10,18 @@ const Login = ({navigation}) => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 
-const verificarUsuario = async (email, password) => {
-  const existe = await existeUsuario(email, password);
-  if (existe) {
-    console.log('Usuario existe');
-    // Aquí podrías agregar lógica adicional para iniciar sesión
-    return true;
-  } else {
-    console.log('Usuario no existe');
-    // Aquí podrías agregar lógica adicional para manejar el caso en que el usuario no exista
-    return false;
-  }
-};
+// const verificarUsuario = async (email, password) => {
+//   const existe = await existeUsuario(email, password);
+//   if (existe) {
+//     console.log('Usuario existe');
+//     // Aquí podrías agregar lógica adicional para iniciar sesión
+//     return true;
+//   } else {
+//     console.log('Usuario no existe');
+//     // Aquí podrías agregar lógica adicional para manejar el caso en que el usuario no exista
+//     return false;
+//   }
+// };
 
 
 const handleTitle = () => {
@@ -32,10 +32,15 @@ console.log('INICIO DE SESIÓN');
 const handleLogin = async () => {
   console.log('Email:', email);
   console.log('Password:', password);
-  const usuarioExiste = await verificarUsuario(email, password);
-  if (usuarioExiste) {
-    navigation.navigate('Home');
-  }
+
+  verificarUsuario(email, password)
+  .then(() => navigation.navigate("Home"))
+  .catch(error => console.log(`Error al buscar usuario: ${error.message}`));
+
+  // const usuarioExiste = await verificarUsuario(email, password);
+  // if (usuarioExiste) {
+  //   navigation.navigate('Home');
+  // }
 };
 
 
