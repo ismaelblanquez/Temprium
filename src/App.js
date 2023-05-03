@@ -16,6 +16,7 @@ import Privacy from './screens/Privacy';
 import Security from './screens/Security';
 import Theme from './screens/Theme';
 import ProfileConfig from './screens/ProfileConfig';
+import Calendar from './screens/Calendar';
 import AuthContext from './services/AuthContext';
 import 'setimmediate';
 
@@ -36,7 +37,7 @@ import 'setimmediate';
 //   );
 // };
 
-<Login></Login>;
+
 
 {/* <Home></Home>; */}
 
@@ -57,6 +58,7 @@ const App = () => {
         <Stack.Screen name="Language" component={Language} />
         <Stack.Screen name="Security" component={Security} />
         <Stack.Screen name="Theme" component={Theme} />
+        <Stack.Screen name="Calendar" component={Calendar} />
         <Stack.Screen name="Privacy" component={Privacy} />
         <Stack.Screen name="ProfileConfig" component={ProfileConfig} />
         <Stack.Screen

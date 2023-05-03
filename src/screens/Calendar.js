@@ -1,63 +1,180 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { CalendarList } from 'react-native-calendars';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomBar from '../components/BottomBar';
 
-const CalendarScreen = () => {
-const [events, setEvents] = useState([]);
+function AgendaApp({ navigation }) {
+  const [events, setEvents] = useState([]);
+  const [newEventTitle, setNewEventTitle] = useState('');
+  const [newEventDescription, setNewEventDescription] = useState('');
 
-const fetchCalendarEvents = async () => {
-try {
-// Obtén el token de acceso del usuario autenticado
-const { accessToken } = await GoogleSignin.getTokens();
+  useEffect(() => {
+    // Cargar eventos guardados al iniciar la app
+    AsyncStorage.getItem('events').then((storedEvents) => {
+      if (storedEvents !== null) {
+        setEvents(JSON.parse(storedEvents));
+      }
+    });
+  }, []);
 
-  // Realiza una solicitud a la API de Google Calendar para obtener eventos
-  const response = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  useEffect(() => {
+    // Guardar eventos al actualizar la lista
+    AsyncStorage.setItem('events', JSON.stringify(events));
+  }, [events]);
+
+  const addEvent = () => {
+    const newEvent = { title: newEventTitle, description: newEventDescription };
+    if (newEventTitle != '') {
+      setEvents([...events, newEvent]);
+      setNewEventTitle('');
+      setNewEventDescription('');
+    }
+    else {
+      console.log("error");
+    }
+  };
+
+  const deleteEvent = (index) => {
+    const newEvents = [...events];
+    newEvents.splice(index, 1);
+    setEvents(newEvents);
+  };
+
+  const todayEvents = events.filter((event) => {
+    const eventDate = new Date();
+    const eventTitle = event.title.toLowerCase();
+    const eventDescription = event.description.toLowerCase();
+    const today = new Date().toISOString().substr(0, 10);
+
+    return (
+      eventDate.toISOString().substr(0, 10) === today ||
+      eventTitle.includes(today) ||
+      eventDescription.includes(today)
+    );
   });
 
-  // Parsea la respuesta a JSON y actualiza el estado con los eventos obtenidos
-  const data = await response.json();
-  setEvents(data.items);
-} catch (error) {
-  console.log('Error al obtener eventos del calendario', error);
-}
-};
+  const screenHeight = Dimensions.get('window').height;
 
-useEffect(() => {
-// Llama a la función para obtener los eventos del calendario al cargar la pantalla
-fetchCalendarEvents();
-}, []);
+  return (
+    <KeyboardAvoidingView behavior="padding" style={styles.agendaContainer}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ height: screenHeight - 200 }}>
+          <View style={styles.newEventContainer}>
+            <Text style={styles.sectionTitle}>Agregar evento:</Text>
+            <TextInput
+              style={styles.newEventInput}
+              placeholder="Título"
+              value={newEventTitle}
+              onChangeText={(text) => setNewEventTitle(text)}
+            />
+            <TextInput
+              style={styles.newEventInput}
+              placeholder="Descripción"
+              value={newEventDescription}
+              onChangeText={(text) => setNewEventDescription(text)}
+            />
+            <TouchableOpacity style={styles.addButton} onPress={addEvent}>
+              <Text style={styles.addButtonText}>Agregar evento</Text>
+            </TouchableOpacity>
+          </View>
 
-return (
-<View style={styles.container}>
-<Text style={styles.title}>Eventos del Calendario de Google</Text>
-{events.length > 0 ? (
-<CalendarList
-// Configura las propiedades del componente CalendarList
-// ...
-markedDates={markedDates}
-// ...
-/>
-) : (
-<Text>No se encontraron eventos en el calendario</Text>
-)}
+          <Text style={styles.sectionTitle}>Eventos de hoy:</Text>
+          {todayEvents.length > 0 ? (
+            todayEvents.map((event, index) => (
+              <View style={styles.eventContainer} key={index}>
+                <Text style={styles.eventTitle}>{event.title}</Text>
+                <Text style={styles.eventDescription}>{event.description}</Text>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
+<Text style={styles.deleteButtonText}>Eliminar</Text>
+</TouchableOpacity>
 </View>
-);
-};
+))
+) : (
+<Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
+)}
+      {/* <Text style={styles.sectionTitle}>Todos los eventos:</Text>
+      {events.length > 0 ? (
+        events.map((event, index) => (
+          <View style={styles.eventContainer} key={index}>
+            <Text style={styles.eventTitle}>{event.title}</Text>
+            <Text style={styles.eventDescription}>{event.description}</Text>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
+              <Text style={styles.deleteButtonText}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
+        ))
+      ) : (
+        <Text style={styles.noEventsText}>No hay eventos registrados.</Text>
+      )} */}
+    </View>
+  </ScrollView>
+  <BottomBar navigation={navigation} />
+</KeyboardAvoidingView>);
+}
 
 const styles = StyleSheet.create({
-container: {
+agendaContainer: {
 flex: 1,
-padding: 16,
+backgroundColor: '#FFF',
+marginBottom:50,
 },
-title: {
-fontSize: 20,
+newEventContainer: {
+marginTop: 20,
+paddingHorizontal: 20,
+},
+sectionTitle: {
+fontSize: 24,
 fontWeight: 'bold',
-marginBottom: 16,
+paddingHorizontal: 20,
+marginTop: 30,
+},
+newEventInput: {
+backgroundColor: '#F2F2F2',
+borderRadius: 10,
+padding: 10,
+marginTop: 20,
+},
+addButton: {
+backgroundColor: '#0096C7',
+borderRadius: 10,
+padding: 10,
+marginTop: 20,
+alignItems: 'center',
+},
+addButtonText: {
+color: '#FFF',
+fontWeight: 'bold',
+},
+noEventsText: {
+paddingHorizontal: 20,
+marginTop: 20,
+fontStyle: 'italic',
+},
+eventContainer: {
+paddingHorizontal: 20,
+paddingVertical: 10,
+borderBottomWidth: 1,
+borderBottomColor: '#D1D1D1',
+},
+eventTitle: {
+fontWeight: 'bold',
+fontSize: 16,
+},
+eventDescription: {
+marginTop: 5,
+},
+deleteButton: {
+backgroundColor: '#FF4444',
+borderRadius: 10,
+padding: 5,
+marginTop: 10,
+alignItems: 'center',
+alignSelf: 'flex-start',
+},
+deleteButtonText: {
+color: '#FFF',
+fontWeight: 'bold',
 },
 });
 
-export default CalendarScreen;
+export default AgendaApp;

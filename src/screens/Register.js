@@ -9,10 +9,6 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [repPassword, setRepPassword] = useState('');
 
-const handleTitle = () => {
-// Aquí puedes agregar la lógica para iniciar sesión
-console.log('REGISTRO');
-};
 
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para iniciar sesión

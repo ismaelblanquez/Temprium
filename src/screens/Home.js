@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react
 import BottomBar from '../components/BottomBar';
 import * as SQLite from 'expo-sqlite';
 
+
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
 const Home = ({ navigation }) => {
@@ -29,7 +30,7 @@ const Home = ({ navigation }) => {
         });
       }, []);
 
-    const renderItem = ({ item }) => {
+ const renderItem = ({ item }) => {
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>

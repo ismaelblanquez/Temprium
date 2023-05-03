@@ -21,7 +21,7 @@ const [clase, setClase] = useState('');
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
 
-    addHoras('ismaelblanquez', tipoHoras, horas, minutos, categoria, '01/01/2000',  clase);
+    addHoras(1, tipoHoras, horas, minutos, categoria, '01/01/2000',  clase);
 
     
   };
