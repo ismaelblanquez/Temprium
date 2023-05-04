@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import { selectHoras,getIdUsuario,getAllHoras } from '../DataBase/Conexion';
+import { AuthContext } from './AuthContext';
+import { useContext } from 'react';
 
 // Componente de la botonera para navegar entre pantallas
 // const Botonera = ({ onPressHome, onPressPantalla2, onPressPantalla3 }) => {
@@ -20,7 +23,30 @@ import BottomBar from '../components/BottomBar';
 // };
 
 // Componente de la pantalla Home
+<<<<<<< Updated upstream
 const Home = ({navigation}) => {
+=======
+
+const Home = ({ navigation }) => {
+
+    const idhoras = '';
+    if (navigation.params && navigation.params.idhoras !== undefined) {
+        idhoras = navigation.params.idhoras;
+      }
+    
+      const email = useContext(AuthContext)     
+
+      if (navigation!=undefined) {
+        getAllHoras(email)
+            .then((resultados) => {
+              console.log('Datos recogidos con éxito');
+              console.log(JSON.stringify(resultados));
+            })
+            .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
+        };
+      
+
+>>>>>>> Stashed changes
     const data = [
         { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
         { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
@@ -28,6 +54,7 @@ const Home = ({navigation}) => {
         { id: 4, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '2SI', horas: '+1 H' },
         { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: '+0,2 H' },
     ];
+
 
 
     const renderItem = ({ item }) => {

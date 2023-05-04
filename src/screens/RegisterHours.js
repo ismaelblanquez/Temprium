@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import {addHoras,getIdUsuario} from '../DataBase/Conexion';
+<<<<<<< Updated upstream
 import AsyncStoragew from '@react-native-async-storage/async-storage';
 
 
@@ -12,6 +13,22 @@ const [horas, setHoras] = useState('1');
 const [minutos, setMinutos] = useState('0');
 const [categoria, setCategoria] = useState('');
 const [clase, setClase] = useState('');
+=======
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './AuthContext';
+
+
+
+const RegisterHoursScreen = ({ navigation }) => {
+  const [tipoHoras, setTipoHoras] = useState('');
+  const [horas, setHoras] = useState('1');
+  const [minutos, setMinutos] = useState('0');
+  const [categoria, setCategoria] = useState('');
+  const [clase, setClase] = useState('');
+  const email = useContext(AuthContext);
+  
+
+>>>>>>> Stashed changes
 
 <<<<<<< Updated upstream
 const guardarHoras = () => {
@@ -32,10 +49,23 @@ console.log('Clase:', clase);
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
+<<<<<<< Updated upstream
     getIdUsuario(Email,(id) =>{
       addHoras(id,tipoHoras,horas,minutos,categoria,clase)
       .then(() => console.log('Horas registradas'), console.log(id))
       .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
+=======
+    console.log(email);
+    getIdUsuario(email,(id) =>{
+      addHoras(id,tipoHoras,horas,minutos,categoria,clase)
+      .then((results) => {
+        const idHoras = results.insertId;
+      console.log('Horas registradas y id de horas'+idHoras)  
+      navigation.navigate('Home',{ idhoras: idHoras});
+    })
+      .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
+      );
+>>>>>>> Stashed changes
     })
   };
 >>>>>>> Stashed changes

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+<<<<<<< Updated upstream
 import 'setimmediate';
 
 <<<<<<< Updated upstream
@@ -11,16 +12,29 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [repPassword, setRepPassword] = useState('');
 =======
+=======
+import { AuthContext } from './AuthContext';
+import 'setimmediate';
+
+>>>>>>> Stashed changes
 const Register = ({ navigation }) => {
+  const {setUserEmail} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 const handleTitle = () => {
 // Aquí puedes agregar la lógica para iniciar sesión
 console.log('REGISTRO');
 };
+=======
+  const handleTitle = () => {
+    // Aquí puedes agregar la lógica para iniciar sesión
+    console.log('REGISTRO');
+  };
+>>>>>>> Stashed changes
 
 <<<<<<< Updated upstream
 const handleLogin = () => {
@@ -43,7 +57,12 @@ if(email != '' && password != ''){
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Repetir password:', repPassword);
+<<<<<<< Updated upstream
     AsyncStorage.setItem('Email',email);
+=======
+    AsyncStorage.setItem('UserEmail',email);
+    setUserEmail(email);
+>>>>>>> Stashed changes
     if (email != '' && password != '') {
       addUsuario(email, password)
         .then(() => console.log('Usuario registrado'))

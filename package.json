@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
+<<<<<<< Updated upstream
     "@react-native-async-storage/async-storage": "^1.18.1",
+=======
+    "@react-native-async-storage/async-storage": "1.17.11",
+>>>>>>> Stashed changes
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "expo": "~48.0.11",
