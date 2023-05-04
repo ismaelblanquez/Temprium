@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import {addHoras,getIdUsuario} from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './AuthContext';
 
 
 
@@ -10,6 +13,9 @@ const RegisterHoursScreen = ({ navigation }) => {
   const [minutos, setMinutos] = useState('0');
   const [categoria, setCategoria] = useState('');
   const [clase, setClase] = useState('');
+  const email = useContext(AuthContext);
+  
+
 
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -19,6 +25,17 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
+    console.log(email);
+    getIdUsuario(email,(id) =>{
+      addHoras(id,tipoHoras,horas,minutos,categoria,clase)
+      .then((results) => {
+        const idHoras = results.insertId;
+      console.log('Horas registradas y id de horas'+idHoras)  
+      navigation.navigate('Home',{ idhoras: idHoras});
+    })
+      .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
+      );
+    })
   };
 
   return (

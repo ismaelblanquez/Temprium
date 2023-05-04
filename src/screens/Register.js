@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from './AuthContext';
 import 'setimmediate';
 
-
 const Register = ({ navigation }) => {
+  const {setUserEmail} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
-
   const handleTitle = () => {
     // Aquí puedes agregar la lógica para iniciar sesión
     console.log('REGISTRO');
@@ -19,6 +20,8 @@ const Register = ({ navigation }) => {
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Repetir password:', repPassword);
+    AsyncStorage.setItem('UserEmail',email);
+    setUserEmail(email);
     if (email != '' && password != '') {
       addUsuario(email, password)
         .then(() => console.log('Usuario registrado'))

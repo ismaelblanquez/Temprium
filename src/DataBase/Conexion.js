@@ -37,21 +37,25 @@ export function addUsuario(email, contrasena) {
 }
 
 export function addHoras(usuario, tipoHoras, horas, minutos, categoria, dia, clase) {
-  db.transaction(tx => {
+  return new Promise((resolve, reject)=>db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
       [usuario, tipoHoras, horas, minutos, categoria, dia, clase],
       (_, results) => {
         console.log('Horas añadidas correctamente');
+        resolve(results)
       },
       (_, error) => {
         console.log(`Error adding todo: ${error}`);
+        reject(error)
       },
     );
-  });
+  })
+  );
 }
 
-export function getAllHoras(usuario, callback) {
+export function getAllHoras(usuario) {
+  return new Promise((resolve, reject)=>{
   db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
@@ -61,13 +65,14 @@ export function getAllHoras(usuario, callback) {
         for (let i = 0; i < results.rows.length; i++) {
           todos.push(results.rows.item(i));
         }
-        callback(todos);
+        resolve(todos)
       },
       (_, error) => {
         console.log(`Error getting todos: ${error}`);
+        reject(error)
       },
     );
-  });
+  });})
 }
 
 export function selectHoras(
@@ -78,13 +83,14 @@ export function selectHoras(
   categoria,
   dia,
   clase,
+  idhora,
   solucion,
   error,
 ) {
   db.transaction(tx => {
     tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND HORAS.Horas=? AND HORAS.minutos=? AND HORAS.Categoria=? AND HORAS.Dia=? AND HORAS.Clase=?  AND USUARIOS.email =?',
-      [tipoHoras, horas, minutos, categoria, dia, clase, usuario],
+      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE (HORAS.Tipohoras =? OR HORAS.Horas=? OR HORAS.minutos=? OR HORAS.Categoria=? OR HORAS.Dia=? OR HORAS.Clase=? OR HORAS.Id_horas=?) AND USUARIOS.email =? ',
+      [tipoHoras, horas, minutos, categoria, dia, clase, idhora,usuario],
       (_, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
