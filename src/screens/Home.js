@@ -1,206 +1,270 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Modal, TextInput, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import RegisterHours from '../screens/RegisterHours';
+import * as SQLite from 'expo-sqlite';
 
-// Componente de la botonera para navegar entre pantallas
-// const Botonera = ({ onPressHome, onPressPantalla2, onPressPantalla3 }) => {
-// return (
-// <View style={styles.botoneraContainer}>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressHome}>
-// <Text style={styles.botoneraButtonText}>Home</Text>
-// </TouchableOpacity>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla2}>
-// <Text style={styles.botoneraButtonText}>Pantalla 2</Text>
-// </TouchableOpacity>
-// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla3}>
-// <Text style={styles.botoneraButtonText}>Pantalla 3</Text>
-// </TouchableOpacity>
-// </View>
-// );
-// };
+const db = SQLite.openDatabase('Temprium.db');
 
-// Componente de la pantalla Home
-const Home = ({navigation}) => {
-    const data = [
-        { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
-        { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
-        { id: 3, tipo: 'No Lectiva', titulo: 'REUNIÓN', fecha: '08/04/2023', clase: '2SI', horas: '+2,5 H' },
-        { id: 4, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '2SI', horas: '+1 H' },
-        { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: '+0,2 H' },
-    ];
+const Home = ({ navigation }) => {
+    const [tarjetas, setTarjetas] = useState([
+        { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: 3 },
+        { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: 1 },
+        { id: 3, tipo: 'No Lectiva', titulo: 'REUNIÓN', fecha: '08/04/2023', clase: '2SI', horas: 2.5 },
+        { id: 4, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '2SI', horas: 1 },
+        { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: 0.2 },
+    ]);
+    const [totalHoras, setTotalHoras] = useState(8.7);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [nuevaTarjeta, setNuevaTarjeta] = useState({ tipo: '', titulo: '', fecha: '', clase: '', horas: '' });
 
+    //   useEffect(() => {
+    //     db.transaction(tx => {
+    //       tx.executeSql(
+    //         'SELECT * FROM HORAS;',
+    //         [],
+    //         (_, { rows }) => {
+    //           setTarjetas(rows._array);
+    //           console.log(rows);
+    //           console.log(tx);
+    //         },
+    //         (_, error) => {
+    //           console.log('Error en la consulta: ', error);
+    //         }
+    //       );
+    //     });
+    //   }, []);
+
+    const agregarTarjeta = () => {
+        if (!nuevaTarjeta.tipo || !nuevaTarjeta.titulo || !nuevaTarjeta.fecha || !nuevaTarjeta.clase || !nuevaTarjeta.horas) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return;
+        }
+        setTarjetas([...tarjetas, nuevaTarjeta]);
+        setTotalHoras(totalHoras + nuevaTarjeta.horas);
+        setNuevaTarjeta({ tipo: '', titulo: '', fecha: '', clase: '', horas: '' });
+        setModalVisible(false);
+    };
+
+    const eliminarTarjeta = tarjeta => {
+        setTarjetas(tarjetas.filter(t => t !== tarjeta));
+        setTotalHoras(totalHoras - tarjeta.horas);
+    };
 
     const renderItem = ({ item }) => {
         return (
-            <View style={styles.tarjetaContainer}>
-                <View style={styles.iconContainer}>
-                    <Text style={item.tipo === 'No Lectiva' ? styles.iconNoLectiva : styles.iconLectiva}>
-                        {item.tipo === 'No Lectiva' ? 'NL' : 'L'}
-                    </Text>
+            <View style={styles.tarjeta}>
+                <View style={styles.tarjetaHeader}>
+                    <Text style={styles.tipoTarjeta}>{item.tipo}</Text>
+                    <TouchableOpacity onPress={() => eliminarTarjeta(item)}>
+                        <Image style={styles.iconoEliminar} source={require('../assets/images/remove.png')} />
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.tarjetaTitulo}>{item.titulo}</Text>
-                    <View style={styles.datosContainer}>
-                        <Text style={styles.tarjetaFecha}>{item.fecha}</Text>
-                        <Text style={styles.tarjetaClase}>{item.clase}</Text>
-                    </View>
-                </View>
-                <View style={styles.horasContainer}>
-                    <Text style={styles.tarjetaHoras}>{item.horas}</Text>
-                </View>
+                <Text style={styles.tituloTarjeta}>{item.titulo}</Text>
+                <Text style={styles.fechaTarjeta}>{item.fecha}</Text>
+
+
+                <Text style={styles.claseTarjeta}>{item.clase}</Text>
+                <Text style={styles.horasTarjeta}>{item.horas} horas</Text>
             </View>
         );
+    };
+    const handleInput = (name, value) => {
+        setNuevaTarjeta({ ...nuevaTarjeta, [name]: value });
     };
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <View style={styles.horasTotalesContainer}>
-                    <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
-                    <Text style={styles.horasTotalesNumero}>100</Text>
-                </View>
-            </View>
-            <View style={styles.alinearBoton}>
-                <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
+            <View style={styles.header}>
+                <Text style={styles.titulo}>Temprium</Text>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <Image style={styles.iconoAgregar} source={require('../assets/images/plus.png')} />
+                </TouchableOpacity>
             </View>
             <FlatList
-                data={data}
+                style={styles.listaTarjetas}
+                data={tarjetas}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()} />
+                keyExtractor={item => item.id.toString()}
+            />
+            <View style={styles.footer}>
+                <Text style={styles.totalHoras}>Total horas: {totalHoras} horas</Text>
+                <BottomBar navigation={navigation} />
+            </View>
+            <Modal visible={modalVisible} animationType="slide">
+                <View style={styles.modalContainer}>
+                    {/* <Text style={styles.modalTitulo}>Agregar tarjeta de horas</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Tipo"
+            value={nuevaTarjeta.tipo}
+            onChangeText={text => handleInput('tipo', text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Título"
+            value={nuevaTarjeta.titulo}
+            onChangeText={text => handleInput('titulo', text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Fecha (DD/MM/AAAA)"
+            value={nuevaTarjeta.fecha}
+            onChangeText={text => handleInput('fecha', text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Clase"
+            value={nuevaTarjeta.clase}
+            onChangeText={text => handleInput('clase', text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Horas"
+            keyboardType="numeric"
+            value={nuevaTarjeta.horas.toString()}
+            onChangeText={text => handleInput('horas', parseFloat(text))}
+          /> */}
+                    <RegisterHours navigation={navigation} />
 
-            <BottomBar navigation={navigation} /> 
+                    <TouchableOpacity style={styles.boton} onPress={() => agregarTarjeta()}>
+                        <Text style={styles.textoBoton}>Agregar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.botonCancelar} onPress={() => setModalVisible(false)}>
+                        <Text style={styles.textoBoton}>Cancelar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    marginTop: '5%'
+        flex: 1,
+        backgroundColor: '#fff',
     },
-    headerContainer: {
-    backgroundColor: '#E1F5FE',
-    borderRadius: 12,
-    borderWidth: 4,
-    borderColor: '#0096C7',
-    width: '80%',
-    marginLeft: '9%',
-    marginBottom: '10%',
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
-    horasTotalesContainer: {
-    alignItems: 'center',
+    titulo: {
+        fontSize: 22,
+        fontWeight: 'bold',
     },
-    horasTotalesTitulo: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#0096C7',
+    iconoAgregar: {
+
+        width: 30,
+        height: 30,
     },
-    horasTotalesNumero: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0096C7',
+    listaTarjetas: {
+        paddingHorizontal: 20,
     },
-    alinearBoton: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    tarjeta: {
+        backgroundColor: '#fff',
+        marginVertical: 10,
+        padding: 15,
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
-    pdfButton: {
-    backgroundColor: '#0096C7',
-    padding: 8,
-    borderRadius: 4,
-    width: 30,
-    height: 30,
+    tarjetaHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 10,
     },
-    recienteTitulo: {
-    fontSize: 20,
-    fontWeight: 'normal',
-    color: '#0096C7',
-    marginBottom: '20%',
+    tipoTarjeta: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#007aff',
     },
-    tarjetaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: '4%',
-    marginRight: '4%',
-    marginBottom: 15,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#0096C7',
+    iconoEliminar: {
+        width: 20,
+        height: 20,
     },
-    iconContainer: {
-    width: 32,
-    height: 32,
-    backgroundColor: '#12CDD4',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    tituloTarjeta: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
-    iconNoLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
+    fechaTarjeta: {
+        fontSize: 14,
+        color: '#888',
+        marginBottom: 5,
     },
-    iconLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
+    claseTarjeta: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#555',
+        marginBottom: 5,
     },
-    infoContainer: {
-    alignItems: 'start',
-    flex: 1,
-    marginLeft: '4%',
-    marginBottom: '4%',
-    
+    horasTarjeta: {
+        fontSize: 16,
+        color: '#333',
     },
-    datosContainer: {
-    flexDirection: 'row',
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderTopWidth: 1,
+        borderTopColor: '#ccc',
     },
-    tarjetaTitulo: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#023E8A',
+    totalHoras: {
+        fontSize: 18,
+        fontWeight: 'bold',
     },
-    tarjetaFecha: {
-    fontSize: 14,
-    color: '#023E8A',
-    fontWeight: 'bold',
+    modalContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical: 40,
     },
-    tarjetaClase: {
-    fontSize: 14,
-    color: '#023E8A',
-    fontWeight: 'bold',
-    marginLeft: '30%'
+    modalTitulo: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 20,
     },
-    horasContainer: {
-    backgroundColor: '#12CDD4',
-    alignItems: 'center',
-    borderRadius: 4,
-    padding: 4,
-    width: '25%'
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginBottom: 10,
     },
-    tarjetaHoras: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    boton: {
+        backgroundColor: '#007aff',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginBottom: 10,
     },
-    botoneraContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 8,
+    botonCancelar: {
+        backgroundColor: '#ccc',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 5,
+        alignItems: 'center',
     },
-    botoneraButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    textoBoton: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
-    botoneraButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    },
-    });
-    
+});
 
 export default Home;
