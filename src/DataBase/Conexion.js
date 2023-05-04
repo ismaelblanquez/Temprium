@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
+
 const db = SQLite.openDatabase(
   { name: 'Temprium.db', location: 'default' },
   () => { },
@@ -7,6 +8,7 @@ const db = SQLite.openDatabase(
     console.log(error);
   },
 );
+
 
 db.transaction(tx => {
   tx.executeSql(
@@ -36,25 +38,29 @@ export function addUsuario(email, contrasena) {
   });
 }
 
-export function addHoras(usuario, tipoHoras, horas, minutos, categoria, dia, clase) {
-  
-  db.transaction(tx => {
+export function addHoras(usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase) {
+  return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
-      [usuario, tipoHoras, horas, minutos, categoria, dia, clase],
+      [usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase],
       (_, results) => {
-        console.log('Horas añadidas correctamente');
-        console.log('results:' + JSON.stringify(results))
+        console.log("BBDD Usuario " + usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
+
+        console.log('Horas añadidas correctamente:', results);
+        resolve(results)
       },
       (_, error) => {
         console.log(`Error adding todo: ${error}`);
+        reject(error)
       },
     );
-  });
+  }));
 }
 
+
+
 export function getAllHoras(email) {
-  db.transaction(tx => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
       [email],
@@ -62,14 +68,17 @@ export function getAllHoras(email) {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
           todos.push(results.rows.item(i));
+          
         }
+        resolve(results)
         callback(todos);
       },
       (_, error) => {
         console.log(`Error getting todos: ${error}`);
+        reject(error)
       },
     );
-  });
+  }));
 }
 
 export function selectHoras(
@@ -159,6 +168,25 @@ export function verificarUsuario(email, contrasena) {
     });
   });
 }
+export function buscarUsuario(email) {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Usuarios WHERE email = ?',
+        [email],
+        (_, results) => {
+          console.log('Datos encontrados correctamente');
+          resolve(results.rows.item(0));
+        },
+        (_, error) => {
+          console.log(`Error buscando usuario: ${error}`);
+          reject(error);
+        },
+      );
+    });
+  });
+}
+
 
 export function updateUsu(db, nuevoemail, nuevacontrasena, email) {
   db.transaction((tx) => {

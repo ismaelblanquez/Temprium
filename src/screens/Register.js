@@ -3,11 +3,10 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'reac
 import { db, addUsuario } from '../DataBase/Conexion';
 import 'setimmediate';
 
-
-const Register = ({navigation}) => {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [repPassword, setRepPassword] = useState('');
+const Register = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repPassword, setRepPassword] = useState('');
 
 
   const handleRegister = () => {

@@ -3,6 +3,9 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'reac
 import 'setimmediate';
 import { existeUsuario, verificarUsuario, buscarUsuario} from '../DataBase/Conexion';
 
+
+
+
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 
