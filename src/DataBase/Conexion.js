@@ -62,7 +62,7 @@ export function addHoras(usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
 export function getAllHoras(email) {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+      'SELECT Id_usu, Tipohoras,Horas,minutos,Categoria,Dia,Clase  FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
       [email],
       (_, results) => {
         const todos = [];
@@ -71,6 +71,7 @@ export function getAllHoras(email) {
           
         }
         resolve(results)
+        console.log(results.rows)
         callback(todos);
       },
       (_, error) => {

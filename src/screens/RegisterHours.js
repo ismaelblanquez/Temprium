@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SQLite from 'expo-sqlite';
 
 
-
+const db = SQLite.openDatabase('Temprium.db');
 
 const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('');
@@ -30,7 +30,7 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
-    console.log('Día Acutal:', diaActual);
+    console.log('Día:', clase);
     getIdUsuario('a23858@svalero.com1', (id) => {
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual,  clase)
         .then(() => {

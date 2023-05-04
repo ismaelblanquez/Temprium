@@ -10,18 +10,19 @@ const db = SQLite.openDatabase('Temprium.db');
 const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
     // const data = [
-    //     { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
-    //     { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
-    //     { id: 3, tipo: 'No Lectiva', titulo: 'REUNIÓN', fecha: '08/04/2023', clase: '2SI', horas: '+2,5 H' },
-    //     { id: 4, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '2SI', horas: '+1 H' },
-    //     { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: '+0,2 H' },
+    //     { Id_usu: 1, Tipohoras: 'No Lectiva', Categoria: 'CORREGIR EXAMEN', Dia: '10/04/2023', Clase: '2SI', Horas: '+3,0 H' },
+    //     { Id_usu: 2, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '09/04/2023', Clase: '1SI', Horas: '+1,0 H' },
+    //     { Id_usu: 3, Tipohoras: 'No Lectiva', Categoria: 'REUNIÓN', Dia: '08/04/2023', Clase: '2SI', Horas: '+2,5 H' },
+    //     { Id_usu: 4, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '07/04/2023', Clase: '2SI', Horas: '+1 H' },
+    //     { Id_usu: 5, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '07/04/2023', Clase: '1SI', Horas: '+0,2 H' },
     // ];
 
     getAllHoras("ismaelblanquez@hotmail.com")
-       .then((results)=> console.log("Datos introducidos correctamente" + JSON.stringify(results)) );
+       .then((results)=> console.log("Datos introducidos correctamente" + JSON.stringify(results.rows[1])) );
             
 
     const renderItem = ({ item }) => {
+        // console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>
@@ -42,8 +43,9 @@ const Home = ({ navigation }) => {
             </View>
         );
     };
-
+ 
     return (
+        
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
@@ -58,7 +60,7 @@ const Home = ({ navigation }) => {
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.Id_hor.toString()} />
+                keyExtractor={(item) => item.Id_usu.toString() } />
 
             <BottomBar navigation={navigation} />
         </View>
