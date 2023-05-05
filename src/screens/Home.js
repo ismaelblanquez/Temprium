@@ -48,9 +48,10 @@ const Home = ({ navigation }) => {
                 <View style={styles.infoContainer}>
                     <Text style={styles.tarjetaTitulo}>{item.Categoria}</Text>
                     <View style={styles.datosContainer}>
-                        <Text style={styles.tarjetaFecha}>{item.Dia}</Text>
+                        <Text style={[styles.tarjetaFecha, styles.fechaAnchoFijo]}>{item.Dia}</Text>
                         <Text style={styles.tarjetaClase}>{item.Clase}</Text>
                     </View>
+
                 </View>
                 <View style={styles.horasContainer}>
                     <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
@@ -77,7 +78,7 @@ const Home = ({ navigation }) => {
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
                     <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
-                    <Text style={styles.horasTotalesNumero}>{horasTotales}</Text>
+                    <Text style={styles.horasTotalesNumero}>{horasTotales} HORAS</Text>
                 </View>
 
             </View>
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#0096C7',
     },
+
     alinearBoton: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     infoContainer: {
-        alignItems: 'start',
+        // alignItems: 'start',
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
     },
     datosContainer: {
         flexDirection: 'row',
+        // textAlign: 'center',
     },
     tarjetaTitulo: {
         fontSize: 16,
@@ -188,14 +191,25 @@ const styles = StyleSheet.create({
     },
     tarjetaFecha: {
         fontSize: 14,
-        color: '#023E8A',
+        fontWeight: 'normal',
+        color: '#424242',
+        // marginBottom: 4,
+        flex: 1,
+        numberOfLines: 1,
         fontWeight: 'bold',
+        color: '#777',
+        width: 80,
     },
+    fechaAnchoFijo: {
+        width: 10,
+    },
+
     tarjetaClase: {
         fontSize: 14,
         color: '#023E8A',
         fontWeight: 'bold',
-        marginLeft: '30%'
+        marginRight:20,
+        // marginLeft: '30%'
     },
     horasContainer: {
         backgroundColor: '#12CDD4',

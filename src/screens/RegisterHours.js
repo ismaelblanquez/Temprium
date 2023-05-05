@@ -20,7 +20,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   const mes = fechaActual.getMonth() + 1;
   const anio = fechaActual.getFullYear();
   const email = useContext(AuthContext);
-  const diaActual = `${anio}-${mes}-${dia}`;
+  const diaActual = `${dia}-${mes}-${anio}`;
   const db = SQLite.openDatabase('Temprium.db');
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
