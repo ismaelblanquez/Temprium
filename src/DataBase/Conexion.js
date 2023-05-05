@@ -38,13 +38,13 @@ export function addUsuario(email, contrasena) {
   });
 }
 
-export function addHoras(usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase) {
+export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase) {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
-      [usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase],
+      [parseInt(Usuario), Tipohoras, parseInt(Horas), parseInt(minutos), Categoria, Dia, Clase],
       (_, results) => {
-        console.log("BBDD Usuario " + usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
+        console.log("BBDD Usuario " + Usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
 
         console.log('Horas añadidas correctamente:', results);
         resolve(results)
@@ -59,28 +59,28 @@ export function addHoras(usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
 
 
 
-export function getAllHoras(email) {
-  return new Promise((resolve, reject) => db.transaction(tx => {
+export function getAllHoras(usuario) {
+  return new Promise((resolve, reject)=>{
+  db.transaction(tx => {
     tx.executeSql(
-      'SELECT Id_usu, Tipohoras,Horas,minutos,Categoria,Dia,Clase  FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
-      [email],
+      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+      [usuario],
       (_, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
           todos.push(results.rows.item(i));
-          
         }
-        resolve(results)
-        console.log(results.rows)
-        callback(todos);
+        resolve(todos)
       },
       (_, error) => {
         console.log(`Error getting todos: ${error}`);
         reject(error)
       },
     );
-  }));
+  });})
 }
+
+
 
 export function selectHoras(
   tipoHoras,
@@ -117,8 +117,12 @@ export function getIdUsuario(usuario, callback) {
       'SELECT Id_usu FROM USUARIOS WHERE email=?',
       [usuario],
       (_, results) => {
-        const id = results.rows.item(0).Id_usu;
-        callback(id);
+        if (results.rows.length > 0) {
+          const id = results.rows.item(0).Id_usu;
+          callback(id);
+        } else {
+          console.log('No se encontraron resultados');
+        }
       },
       error => {
         console.log('Error al obtener el id del usuario: ', error.message);
@@ -238,21 +242,23 @@ export function updateHoras(db, Tipohoras, horas, minutos, categoria, dia, clase
   });
 };
 
-export function deleteHoras(db, email) {
-  getIdUsuario(db, email, (id_usuario) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'DELETE * FROM HORAS WHERE Usuario = ?',
-        [id_usuario],
-        (tx, results) => {
-          console.log('Horas borradas correctamente');
-        },
-        (error) => {
-          console.log('Error al borrar las horas: ', error.message);
-        }
-      )
-    });
+export function deleteHoras() {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'DELETE FROM HORAS',
+      [],
+      (tx, results) => {
+        console.log('Horas borradas correctamente');
+      },
+      (tx, error) => {
+        console.log('Error al borrar las horas: ', error);
+      }
+    );
+  }, (error) => {
+    console.log('Error al iniciar la transacción: ', error);
+  }, () => {
+    console.log('Transacción finalizada con éxito.');
   });
-};
+}
 
 

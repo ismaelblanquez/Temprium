@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario, getAllHoras } from '../DataBase/Conexion';
+import { addHoras, getIdUsuario, getAllHoras, deleteHoras } from '../DataBase/Conexion';
 import * as SQLite from 'expo-sqlite';
+import { AuthContext } from '../services/AuthContext';
+import { useContext } from 'react';
 
 
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
 const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
-    // const data = [
-    //     { Id_usu: 1, Tipohoras: 'No Lectiva', Categoria: 'CORREGIR EXAMEN', Dia: '10/04/2023', Clase: '2SI', Horas: '+3,0 H' },
-    //     { Id_usu: 2, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '09/04/2023', Clase: '1SI', Horas: '+1,0 H' },
-    //     { Id_usu: 3, Tipohoras: 'No Lectiva', Categoria: 'REUNIÓN', Dia: '08/04/2023', Clase: '2SI', Horas: '+2,5 H' },
-    //     { Id_usu: 4, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '07/04/2023', Clase: '2SI', Horas: '+1 H' },
-    //     { Id_usu: 5, Tipohoras: 'Lectiva', Categoria: 'CLASE NORMAL', Dia: '07/04/2023', Clase: '1SI', Horas: '+0,2 H' },
-    // ];
+    const [loading, setLoading] = useState(true);
+    const email = useContext(AuthContext);    
 
-    getAllHoras("ismaelblanquez@hotmail.com")
-       .then((results)=> console.log("Datos introducidos correctamente" + JSON.stringify(results.rows[1])) );
-            
-
+    useEffect(() => {
+        getAllHoras(email)
+            .then((results) => {
+                const todos = [];
+                console.log("prueba" + results?.rows?.length);
+                if (results && results.rows) {
+                    for (let i = 0; i < results.rows.length; i++) {
+                        todos.push(results.rows.item(i));
+                    }
+                    setData(todos);
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+      }, []);
+      
     const renderItem = ({ item }) => {
         // console.log("item: " + item);
         return (
@@ -43,9 +55,21 @@ const Home = ({ navigation }) => {
             </View>
         );
     };
- 
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <Text>Cargando datos...</Text>
+            </View>
+        );
+    }
+
+
+
+
+
     return (
-        
+
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
@@ -55,12 +79,15 @@ const Home = ({ navigation }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
+                <TouchableOpacity style={styles.pdfButton} onPress={() => { console.log("prueba"); deleteHoras(); }}>
+                    <Image source={require('../assets/images/share.png')} />
+                </TouchableOpacity>
+
             </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.Id_usu.toString() } />
+                keyExtractor={(item) => item.Id_usu.toString()} />
 
             <BottomBar navigation={navigation} />
         </View>
@@ -72,7 +99,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%'
+        marginTop: '5%',
+        marginBottom: 50,
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
