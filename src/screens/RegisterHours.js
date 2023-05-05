@@ -20,7 +20,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   const mes = fechaActual.getMonth() + 1;
   const anio = fechaActual.getFullYear();
   const email = useContext(AuthContext);
-  const diaActual = `${dia}/${mes}/${anio}`;
+  const diaActual = `${anio}-${mes}-${dia}`;
   const db = SQLite.openDatabase('Temprium.db');
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -32,7 +32,9 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
     console.log(email);
+    
     getIdUsuario('ismaelblanquez@hotmail.com', (id) => {
+      console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
       addHoras(id, tipoHoras,  horas, minutos, categoria, diaActual, clase)
         .then((results) => {
           const idHoras = results.insertId;

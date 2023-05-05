@@ -12,29 +12,32 @@ const db = SQLite.openDatabase('Temprium.db');
 const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const email = useContext(AuthContext);    
-
+    const email = useContext(AuthContext);
     useEffect(() => {
-        getAllHoras(email)
+        getAllHoras("ismaelblanquez@hotmail.com")
             .then((results) => {
                 const todos = [];
-                console.log("prueba" + results?.rows?.length);
-                if (results && results.rows) {
-                    for (let i = 0; i < results.rows.length; i++) {
-                        todos.push(results.rows.item(i));
-                    }
-                    setData(todos);
-                }
+                console.log("prueba" + JSON.stringify(results));
+                results.forEach((item) => {
+                    todos.push(item);
+                    console.log("PRUEBA DENTRO FOR " + JSON.stringify(item));
+                });
+
+
+                console.log("TODOS", JSON.stringify(todos));
+                setData(todos);
                 setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
             });
-      }, []);
-      
+    }, []);
+
+
+
     const renderItem = ({ item }) => {
-        // console.log("item: " + item);
+        console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>
@@ -87,7 +90,8 @@ const Home = ({ navigation }) => {
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.Id_usu.toString()} />
+                keyExtractor={(item) => item.Id_hor.toString()}
+            />
 
             <BottomBar navigation={navigation} />
         </View>

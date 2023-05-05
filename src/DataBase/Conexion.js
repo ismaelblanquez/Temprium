@@ -37,40 +37,43 @@ export function addUsuario(email, contrasena) {
     });
   });
 }
-
 export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Clase) {
-  return new Promise((resolve, reject) => db.transaction(tx => {
-    tx.executeSql(
-      'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
-      [parseInt(Usuario), Tipohoras, parseInt(Horas), parseInt(minutos), Categoria, Dia, Clase],
-      (_, results) => {
-        console.log("BBDD Usuario " + Usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
-
-        console.log('Horas añadidas correctamente:', results);
-        resolve(results)
-      },
-      (_, error) => {
-        console.log(`Error adding todo: ${error}`);
-        reject(error)
-      },
-    );
-  }));
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
+        [parseInt(Usuario), Tipohoras, parseInt(Horas), parseInt(minutos), Categoria, Dia, Clase],
+        (_, results) => {
+          console.log("BBDD Usuario " + Usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
+          console.log('Horas añadidas correctamente:', results);
+          resolve(results);
+        },
+        (_, error) => {
+          console.log(`Error adding todo: ${error}`);
+          reject(error);
+        },
+      );
+    });
+  });
 }
 
 
 
-export function getAllHoras(usuario) {
+
+export function getAllHoras(email) {
   return new Promise((resolve, reject)=>{
   db.transaction(tx => {
     tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
-      [usuario],
+      'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+      [email],
       (_, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {
           todos.push(results.rows.item(i));
+          console.log("resultados" + JSON.stringify(results.rows.item(i)));
         }
-        resolve(todos)
+        console.log("todos" + todos)
+        resolve(todos);
       },
       (_, error) => {
         console.log(`Error getting todos: ${error}`);
