@@ -21,6 +21,8 @@ const RegisterHoursScreen = ({ navigation }) => {
   const anio = fechaActual.getFullYear();
   const email = useContext(AuthContext);
   const diaActual = `${dia}-${mes}-${anio}`;
+
+  
   const db = SQLite.openDatabase('Temprium.db');
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -40,7 +42,7 @@ const RegisterHoursScreen = ({ navigation }) => {
           const idHoras = results.insertId;
           console.log(results.rows);
           console.log('Horas registradas y id de horas' + idHoras)
-          navigation.navigate('Home', { idhoras: idHoras });
+          navigation.navigate('Home', { idhoras: idHoras }, location.reload());
         })
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
         );

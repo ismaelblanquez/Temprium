@@ -6,7 +6,6 @@ import * as SQLite from 'expo-sqlite';
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
 
-
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
 const Home = ({ navigation }) => {
@@ -14,6 +13,7 @@ const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const email = useContext(AuthContext);
     const [horasTotales, setHorasTotales] = useState(0);
+    
 
     useEffect(() => {
         getAllHoras("ismaelblanquez@hotmail.com")
