@@ -13,19 +13,18 @@ const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const email = useContext(AuthContext);
+    const [horasTotales, setHorasTotales] = useState(0);
+
     useEffect(() => {
         getAllHoras("ismaelblanquez@hotmail.com")
             .then((results) => {
                 const todos = [];
-                console.log("prueba" + JSON.stringify(results));
                 results.forEach((item) => {
                     todos.push(item);
-                    console.log("PRUEBA DENTRO FOR " + JSON.stringify(item));
                 });
-
-
-                console.log("TODOS", JSON.stringify(todos));
                 setData(todos);
+                const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                setHorasTotales(horas);
                 setLoading(false);
             })
             .catch((error) => {
@@ -33,6 +32,7 @@ const Home = ({ navigation }) => {
                 setLoading(false);
             });
     }, []);
+
 
 
 
@@ -53,7 +53,7 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.horasContainer}>
-                    <Text style={styles.tarjetaHoras}>{item.Horas}</Text>
+                    <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
                 </View>
             </View>
         );
@@ -77,8 +77,9 @@ const Home = ({ navigation }) => {
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
                     <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
-                    <Text style={styles.horasTotalesNumero}>100</Text>
+                    <Text style={styles.horasTotalesNumero}>{horasTotales}</Text>
                 </View>
+
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
