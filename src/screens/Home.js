@@ -41,8 +41,8 @@ const Home = ({ navigation }) => {
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>
-                    <Text style={item.Tipohoras === 'No Lectiva' ? styles.iconNoLectiva : styles.iconLectiva}>
-                        {item.Tipohoras === 'No Lectiva' ? 'NL' : 'L'}
+                    <Text style={item.Tipohoras === "No Lectivas" ? styles.iconNoLectiva : styles.iconLectiva}>
+                        {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
                 <View style={styles.infoContainer}>
