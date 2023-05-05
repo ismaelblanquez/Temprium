@@ -29,11 +29,6 @@ const Home = ({navigation}) => {
 
 const Home = ({ navigation }) => {
 
-    const idhoras = '';
-    if (navigation.params && navigation.params.idhoras !== undefined) {
-        idhoras = navigation.params.idhoras;
-      }
-    
       const email = useContext(AuthContext)     
 
       if (navigation!=undefined) {
