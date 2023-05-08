@@ -42,7 +42,7 @@ const RegisterHoursScreen = ({ navigation }) => {
           const idHoras = results.insertId;
           console.log(results.rows);
           console.log('Horas registradas y id de horas' + idHoras)
-          navigation.navigate('Home', { idhoras: idHoras }, location.reload());
+          navigation.navigate('Home', { idhoras: idHoras });
         })
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
         );
