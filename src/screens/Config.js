@@ -4,7 +4,7 @@ import BottomBar from '../components/BottomBar';
 
 
 
-const Config = ({navigation}) => {
+const Config = ({ navigation }) => {
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
@@ -16,7 +16,7 @@ const Config = ({navigation}) => {
     ];
 
     const handleItemPress = (item) => {
-        switch(item.id) {
+        switch (item.id) {
             case 1:
                 navigation.navigate('ProfileConfig');
                 break;
