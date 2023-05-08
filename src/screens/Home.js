@@ -1,105 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario, getAllHoras, deleteHoras } from '../DataBase/Conexion';
-import * as SQLite from 'expo-sqlite';
-import { AuthContext } from '../services/AuthContext';
+import { selectHoras,getIdUsuario,getAllHoras } from '../DataBase/Conexion';
+import { AuthContext } from './AuthContext';
 import { useContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const db = SQLite.openDatabase('Temprium.db');
+// Componente de la botonera para navegar entre pantallas
+// const Botonera = ({ onPressHome, onPressPantalla2, onPressPantalla3 }) => {
+// return (
+// <View style={styles.botoneraContainer}>
+// <TouchableOpacity style={styles.botoneraButton} onPress={onPressHome}>
+// <Text style={styles.botoneraButtonText}>Home</Text>
+// </TouchableOpacity>
+// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla2}>
+// <Text style={styles.botoneraButtonText}>Pantalla 2</Text>
+// </TouchableOpacity>
+// <TouchableOpacity style={styles.botoneraButton} onPress={onPressPantalla3}>
+// <Text style={styles.botoneraButtonText}>Pantalla 3</Text>
+// </TouchableOpacity>
+// </View>
+// );
+// };
+
 // Componente de la pantalla Home
+
 const Home = ({ navigation }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [horasTotales, setHorasTotales] = useState(0);
-    const [email, setEmail] = useState('');
 
-    const getEmail = async () => {
-        const email = await AsyncStorage.getItem('email');
-        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-        getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
-            .then((results) => {
-                const todos = [];
-                results.forEach((item) => {
-                    todos.push(item);
-                });
-                setData(todos);
-                const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
-                setHorasTotales(horas);
-                setLoading(false);
+    const idhoras = '';
+    if (navigation.params && navigation.params.idhoras !== undefined) {
+        idhoras = navigation.params.idhoras;
+      }
+    
+      const email = useContext(AuthContext)     
+
+      if (navigation!=undefined) {
+        getAllHoras(email)
+            .then((resultados) => {
+              console.log('Datos recogidos con éxito');
+              console.log(JSON.stringify(resultados));
             })
-            .catch((error) => {
-                console.log(error);
-                setLoading(false);
-            });
-    };
+            .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
+        };
+      
 
-    useEffect(() => {
-        console.log("EMAIL:::" + email)
-        getEmail();
-    }, []);
+    const data = [
+        { id: 1, tipo: 'No Lectiva', titulo: 'CORREGIR EXAMEN', fecha: '10/04/2023', clase: '2SI', horas: '+3,0 H' },
+        { id: 2, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '09/04/2023', clase: '1SI', horas: '+1,0 H' },
+        { id: 3, tipo: 'No Lectiva', titulo: 'REUNIÓN', fecha: '08/04/2023', clase: '2SI', horas: '+2,5 H' },
+        { id: 4, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '2SI', horas: '+1 H' },
+        { id: 5, tipo: 'Lectiva', titulo: 'CLASE NORMAL', fecha: '07/04/2023', clase: '1SI', horas: '+0,2 H' },
+    ];
 
 
 
     const renderItem = ({ item }) => {
-        console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>
-                    <Text style={item.Tipohoras === "No Lectivas" ? styles.iconNoLectiva : styles.iconLectiva}>
-                        {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
+                    <Text style={item.tipo === 'No Lectiva' ? styles.iconNoLectiva : styles.iconLectiva}>
+                        {item.tipo === 'No Lectiva' ? 'NL' : 'L'}
                     </Text>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.tarjetaTitulo}>{item.Categoria}</Text>
+                    <Text style={styles.tarjetaTitulo}>{item.titulo}</Text>
                     <View style={styles.datosContainer}>
-                        <Text style={[styles.tarjetaFecha, styles.fechaAnchoFijo]}>{item.Dia}</Text>
-                        <Text style={styles.tarjetaClase}>{item.Clase}</Text>
+                        <Text style={styles.tarjetaFecha}>{item.fecha}</Text>
+                        <Text style={styles.tarjetaClase}>{item.clase}</Text>
                     </View>
-
                 </View>
                 <View style={styles.horasContainer}>
-                    <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
+                    <Text style={styles.tarjetaHoras}>{item.horas}</Text>
                 </View>
             </View>
         );
     };
 
-    if (loading) {
-        return (
-            <View style={styles.loadingContainer}>
-                <Text>Cargando datos...</Text>
-            </View>
-        );
-    }
-
-
-
-
-
     return (
-
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
                     <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
-                    <Text style={styles.horasTotalesNumero}>{horasTotales} HORAS</Text>
+                    <Text style={styles.horasTotalesNumero}>100</Text>
                 </View>
-
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity style={styles.pdfButton} onPress={() => { console.log("prueba"); deleteHoras(); }}>
-                    <Image source={require('../assets/images/share.png')} />
-                </TouchableOpacity>
-
+                <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
             </View>
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.Id_hor.toString()}
-            />
+                keyExtractor={(item) => item.id.toString()} />
 
             <BottomBar navigation={navigation} />
         </View>
@@ -111,8 +102,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%',
-        marginBottom: 50,
+        marginTop: '5%'
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
@@ -136,7 +126,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#0096C7',
     },
-
     alinearBoton: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -180,7 +169,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     infoContainer: {
-        // alignItems: 'start',
+        alignItems: 'start',
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -188,7 +177,6 @@ const styles = StyleSheet.create({
     },
     datosContainer: {
         flexDirection: 'row',
-        // textAlign: 'center',
     },
     tarjetaTitulo: {
         fontSize: 16,
@@ -197,25 +185,14 @@ const styles = StyleSheet.create({
     },
     tarjetaFecha: {
         fontSize: 14,
-        fontWeight: 'normal',
-        color: '#424242',
-        // marginBottom: 4,
-        flex: 1,
-        numberOfLines: 1,
+        color: '#023E8A',
         fontWeight: 'bold',
-        color: '#777',
-        width: 80,
     },
-    fechaAnchoFijo: {
-        width: 10,
-    },
-
     tarjetaClase: {
         fontSize: 14,
         color: '#023E8A',
         fontWeight: 'bold',
-        marginRight: 20,
-        // marginLeft: '30%'
+        marginLeft: '30%'
     },
     horasContainer: {
         backgroundColor: '#12CDD4',
