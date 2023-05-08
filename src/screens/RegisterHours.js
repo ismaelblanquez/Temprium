@@ -1,21 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import {addHoras,getIdUsuario} from '../DataBase/Conexion';
+import { addHoras, getIdUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './AuthContext';
 
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('Temprium.db');
 
 
 const RegisterHoursScreen = ({ navigation }) => {
-  const [tipoHoras, setTipoHoras] = useState('');
+  const [tipoHoras, setTipoHoras] = useState('Lectivas');
   const [horas, setHoras] = useState('1');
   const [minutos, setMinutos] = useState('0');
-  const [categoria, setCategoria] = useState('');
-  const [clase, setClase] = useState('');
-  const email = useContext(AuthContext);
-  
+  const [categoria, setCategoria] = useState('Ninguna');
+  const [clase, setClase] = useState('1SI');
+  const fechaActual = new Date();
+  const dia = fechaActual.getDate();
+  const mes = fechaActual.getMonth() + 1;
+  const anio = fechaActual.getFullYear();
+  const diaActual = `${dia}-${mes}-${anio}`;
+  const [email, setEmail] = useState('');
+  const getEmail = async () => {
+    const email = await AsyncStorage.getItem('email');
+    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+  }
 
+  useEffect(() => {
+    console.log("EMAIL:::" + email)
+    getEmail();
+  }, []);
 
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -25,17 +39,21 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
+    console.log('Día:', diaActual);
     console.log(email);
-    getIdUsuario(email,(id) =>{
-      addHoras(id,tipoHoras,horas,minutos,categoria,clase)
-      .then((results) => {
-        const idHoras = results.insertId;
-      console.log('Horas registradas y id de horas'+idHoras)  
-      navigation.navigate('Home',{ idhoras: idHoras});
-    })
-      .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
-      );
-    })
+    getIdUsuario(email, (id) => {
+      // console.log(Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase});
+      addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
+        .then((results) => {
+          const idHoras = results.insertId;
+          console.log(results.rows);
+          console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
+         
+          navigation.navigate('Home', { idhoras: idHoras });
+        })
+        .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
+        );
+    });
   };
 
   return (

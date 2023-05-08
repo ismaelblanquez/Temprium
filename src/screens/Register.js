@@ -74,11 +74,11 @@ const Register = ({ navigation }) => {
           style={styles.input}
           placeholder="Repetir contraseña"
           secureTextEntry
-          value={password}
+          value={repPassword}
           onChangeText={(text) => setRepPassword(text)}
         />
       </View>
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
         <Text style={styles.loginButtonText}>REGISTRARSE</Text>
       </TouchableOpacity>
     </View>
