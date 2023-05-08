@@ -96,10 +96,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 2,
     borderRadius: 8,
-    borderColor: '#1A1A1A', //#1A1A1A
+    borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    color: '#BDBDBD', //#BDBDBD
+    placeholderTextColor: '#BDBDBD',
+    color: '#1A1A1A'
   },
   loginButton: {
     backgroundColor: '#0096C7',

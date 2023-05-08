@@ -65,7 +65,7 @@ const handleLogin = async () => {
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para registrar una nueva cuenta
     console.log('Registrarse');
-    navigation.replace('Register');
+    navigation.navigate('Register');
   };
 
   return (
@@ -139,8 +139,9 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    color: '#BDBDBD'
-  },
+    placeholderTextColor: '#BDBDBD',
+    color: '#1A1A1A'
+    },
   forgotPasswordButton: {
     alignSelf: 'center'
   },
