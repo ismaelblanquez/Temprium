@@ -17,10 +17,12 @@ const RegisterHoursScreen = ({ navigation }) => {
   const [categoria, setCategoria] = useState('Ninguna');
   const [clase, setClase] = useState('1SI');
   const fechaActual = new Date();
-  const dia = fechaActual.getDate();
-  const mes = fechaActual.getMonth() + 1;
+  const dia = fechaActual.getDate().toString().padStart(2, '0');
+  const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
   const anio = fechaActual.getFullYear();
   const diaActual = `${dia}-${mes}-${anio}`;
+  
+
   const [email, setEmail] = useState('');
   const getEmail = async () => {
     const email = await AsyncStorage.getItem('email');
@@ -41,6 +43,8 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
+
+
     console.log(email);
     getIdUsuario(email, (id) => {
       // console.log(Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase});
@@ -49,8 +53,8 @@ const RegisterHoursScreen = ({ navigation }) => {
           const idHoras = results.insertId;
           console.log(results.rows);
           console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
-         
-          navigation.navigate('Home', { idhoras: idHoras });
+
+          navigation.replace('Home', { idhoras: idHoras });
         })
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
         );
@@ -113,7 +117,7 @@ const RegisterHoursScreen = ({ navigation }) => {
           style={styles.picker}
           selectedValue={categoria}
           onValueChange={(value) => setCategoria(value)}>
-          <Picker.Item label="Ninguna" value="" />
+          <Picker.Item label="Ninguna" value=" " />
           <Picker.Item label="Impartir clases" value="Impartir clases" />
           <Picker.Item label="Preparar clases" value="Preparar clases" />
           <Picker.Item label="Corregir" value="Corregir" />

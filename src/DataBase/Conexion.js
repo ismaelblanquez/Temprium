@@ -243,11 +243,11 @@ export function updateHoras(db, Tipohoras, horas, minutos, categoria, dia, clase
   });
 };
 
-export function deleteHoras() {
+export function deleteHoras(id) {
   db.transaction((tx) => {
     tx.executeSql(
-      'DELETE FROM HORAS',
-      [],
+      'DELETE FROM HORAS where Id_hor =?',
+      [id],
       (tx, results) => {
         console.log('Horas borradas correctamente');
       },
