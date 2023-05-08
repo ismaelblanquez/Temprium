@@ -61,7 +61,11 @@ export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
   });
 }
 
-export function getAllHoras(usuario, callback) {
+
+
+
+export function getAllHoras(email) {
+  return new Promise((resolve, reject)=>{
   db.transaction(tx => {
     tx.executeSql(
       'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
@@ -72,14 +76,15 @@ export function getAllHoras(usuario, callback) {
           todos.push(results.rows.item(i));
           console.log("resultados" + JSON.stringify(results.rows.item(i)));
         }
-        callback(todos);
+        console.log("todos" + todos)
+        resolve(todos);
       },
       (_, error) => {
         console.log(`Error getting todos: ${error}`);
         reject(error)
       },
     );
-  });
+  });})
 }
 
 
@@ -92,14 +97,13 @@ export function selectHoras(
   categoria,
   dia,
   clase,
-  idhora,
   solucion,
   error,
 ) {
   db.transaction(tx => {
     tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE (HORAS.Tipohoras =? OR HORAS.Horas=? OR HORAS.minutos=? OR HORAS.Categoria=? OR HORAS.Dia=? OR HORAS.Clase=? OR HORAS.Id_horas=?) AND USUARIOS.email =? ',
-      [tipoHoras, horas, minutos, categoria, dia, clase, idhora,usuario],
+      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND HORAS.Horas=? AND HORAS.minutos=? AND HORAS.Categoria=? AND HORAS.Dia=? AND HORAS.Clase=?  AND USUARIOS.email =?',
+      [tipoHoras, horas, minutos, categoria, dia, clase, usuario],
       (_, results) => {
         const todos = [];
         for (let i = 0; i < results.rows.length; i++) {

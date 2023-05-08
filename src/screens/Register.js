@@ -1,51 +1,37 @@
-import React, { useContext, useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './AuthContext';
 import 'setimmediate';
 
+
+
 const Register = ({ navigation }) => {
-  const {setUserEmail} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
-  const handleTitle = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión
-    console.log('REGISTRO');
-  };
 
-  const handleLogin = () => {
+
+
+  const handleRegister = () => {
     // Aquí puedes agregar la lógica para iniciar sesión
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Repetir password:', repPassword);
-    AsyncStorage.setItem('UserEmail',email);
-    setUserEmail(email);
-    if (email != '' && password != '') {
+    if ((email != '' && password != '') && (password == repPassword)) {
       addUsuario(email, password)
         .then(() => console.log('Usuario registrado'))
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     } else {
-      console.log("Error, uno de los campos contiene datos vacíos");
+      if (password != repPassword) {
+        console.log("Las contraseñas no coinciden");
+      } else {
+        console.log("Error, uno de los campos contiene datos vacíos");
+      }
     }
     // navigation.navigate("Home");
   };
 
-  const handleGuest = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión como invitado
-    console.log('Iniciar sesión como invitado');
-  };
 
-  const handleForgotPassword = () => {
-    // Aquí puedes agregar la lógica para recuperar la contraseña
-    console.log('Recuperar contraseña');
-  };
-
-  const handleRegister = () => {
-    // Aquí puedes agregar la lógica para registrar una nueva cuenta
-    console.log('Registrarse');
-  };
 
   return (
     <View style={styles.container}>
