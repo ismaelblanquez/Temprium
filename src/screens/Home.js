@@ -61,6 +61,10 @@ const Home = ({ navigation }) => {
                 <View style={styles.horasContainer}>
                     <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
                 </View>
+                <Image
+                    style={styles.deleteButton}
+                    source={require('../assets/images/remove.png')}
+                />
             </View>
         );
     };
@@ -135,7 +139,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#0096C7',
     },
-
+    deleteButton: {
+        padding: 8,
+        borderRadius: 4,
+        width: 30,
+        height: 30,
+        marginLeft: 20,
+      },
     alinearBoton: {
         flexDirection: 'row',
         justifyContent: 'space-around',
