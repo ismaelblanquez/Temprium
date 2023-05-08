@@ -54,10 +54,11 @@ const Home = ({ navigation }) => {
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={styles.iconContainer}>
-                    <Text style={item.Tipohoras === "No Lectivas" ? styles.iconNoLectiva : styles.iconLectiva}>
+                <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, {horasContainer: '#8E44AD', horasContainer:'#8E44AD'}] : styles.iconLectiva}>
                         {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
+
                 <View style={styles.infoContainer}>
                     <Text style={styles.tarjetaTitulo}>{item.Categoria}</Text>
                     <View style={styles.datosContainer}>
@@ -67,13 +68,14 @@ const Home = ({ navigation }) => {
 
                 </View>
                 <View style={styles.horasContainer}>
-                <Text style={styles.tarjetaHoras}>{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
+                    <Text style={styles.tarjetaHoras}>{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
                 </View>
-                
+                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home')}}>
                 <Image
                     style={styles.deleteButton}
                     source={require('../assets/images/remove.png')}
                 />
+                </TouchableOpacity>
             </View>
         );
     };
@@ -102,7 +104,7 @@ const Home = ({ navigation }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity style={styles.pdfButton} onPress={() => { console.log("prueba"); deleteHoras(); }}>
+                <TouchableOpacity style={styles.pdfButton} onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home')}}>
                     <Image source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
 
