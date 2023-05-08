@@ -41,39 +41,6 @@ const Home = ({ navigation }) => {
     }, []);
 
 
-    //   useEffect(() => {
-    //     db.transaction(tx => {
-    //       tx.executeSql(
-    //         'SELECT * FROM HORAS;',
-    //         [],
-    //         (_, { rows }) => {
-    //           setTarjetas(rows._array);
-    //           console.log(rows);
-    //           console.log(tx);
-    //         },
-    //         (_, error) => {
-    //           console.log('Error en la consulta: ', error);
-    //         }
-    //       );
-    //     });
-    //   }, []);
-
-    const agregarTarjeta = () => {
-        if (!nuevaTarjeta.tipo || !nuevaTarjeta.titulo || !nuevaTarjeta.fecha || !nuevaTarjeta.clase || !nuevaTarjeta.horas) {
-            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
-            return;
-        }
-        setTarjetas([...tarjetas, nuevaTarjeta]);
-        setTotalHoras(totalHoras + nuevaTarjeta.horas);
-        setNuevaTarjeta({ tipo: '', titulo: '', fecha: '', clase: '', horas: '' });
-        setModalVisible(false);
-    };
-
-    const eliminarTarjeta = tarjeta => {
-        setTarjetas(tarjetas.filter(t => t !== tarjeta));
-        setTotalHoras(totalHoras - tarjeta.horas);
-    };
-
     const renderItem = ({ item }) => {
         console.log("item: " + item);
         return (
@@ -94,17 +61,8 @@ const Home = ({ navigation }) => {
                 <View style={styles.horasContainer}>
                     <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
                 </View>
-                <Text style={styles.tituloTarjeta}>{item.titulo}</Text>
-                <Text style={styles.fechaTarjeta}>{item.fecha}</Text>
-
-
-                <Text style={styles.claseTarjeta}>{item.clase}</Text>
-                <Text style={styles.horasTarjeta}>{item.horas} horas</Text>
             </View>
         );
-    };
-    const handleInput = (name, value) => {
-        setNuevaTarjeta({ ...nuevaTarjeta, [name]: value });
     };
 
     if (loading) {
@@ -137,59 +95,12 @@ const Home = ({ navigation }) => {
 
             </View>
             <FlatList
-                style={styles.listaTarjetas}
-                data={tarjetas}
+                data={data}
                 renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={(item) => item.Id_hor.toString()}
             />
-            <View style={styles.footer}>
-                <Text style={styles.totalHoras}>Total horas: {totalHoras} horas</Text>
-                <BottomBar navigation={navigation} />
-            </View>
-            <Modal visible={modalVisible} animationType="slide">
-                <View style={styles.modalContainer}>
-                    {/* <Text style={styles.modalTitulo}>Agregar tarjeta de horas</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Tipo"
-            value={nuevaTarjeta.tipo}
-            onChangeText={text => handleInput('tipo', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Título"
-            value={nuevaTarjeta.titulo}
-            onChangeText={text => handleInput('titulo', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Fecha (DD/MM/AAAA)"
-            value={nuevaTarjeta.fecha}
-            onChangeText={text => handleInput('fecha', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Clase"
-            value={nuevaTarjeta.clase}
-            onChangeText={text => handleInput('clase', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Horas"
-            keyboardType="numeric"
-            value={nuevaTarjeta.horas.toString()}
-            onChangeText={text => handleInput('horas', parseFloat(text))}
-          /> */}
-                    <RegisterHours navigation={navigation} />
 
-                    <TouchableOpacity style={styles.boton} onPress={() => agregarTarjeta()}>
-                        <Text style={styles.textoBoton}>Agregar</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.botonCancelar} onPress={() => setModalVisible(false)}>
-                        <Text style={styles.textoBoton}>Cancelar</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+            <BottomBar navigation={navigation} />
         </View>
     );
 };
@@ -335,7 +246,6 @@ const styles = StyleSheet.create({
         color: '#007AFF',
     },
 });
-
 
 
 export default Home;
