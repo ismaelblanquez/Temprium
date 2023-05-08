@@ -79,7 +79,7 @@ export function getAllHoras(usuario, callback) {
         reject(error)
       },
     );
-  });})
+  });
 }
 
 
