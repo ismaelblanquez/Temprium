@@ -20,7 +20,7 @@ db.transaction(tx => {
   tx.executeSql(
     "INSERT OR IGNORE INTO Usuarios (email, contrasena) VALUES ('dummy@nosession.com', '92r8hfv2n9fuvy<9v8h')"
   );
-  
+
 });
 
 export function addUsuario(email, contrasena) {
@@ -65,26 +65,27 @@ export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
 
 
 export function getAllHoras(email) {
-  return new Promise((resolve, reject)=>{
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
-      [email],
-      (_, results) => {
-        const todos = [];
-        for (let i = 0; i < results.rows.length; i++) {
-          todos.push(results.rows.item(i));
-          console.log("resultados" + JSON.stringify(results.rows.item(i)));
-        }
-        console.log("todos" + todos)
-        resolve(todos);
-      },
-      (_, error) => {
-        console.log(`Error getting todos: ${error}`);
-        reject(error)
-      },
-    );
-  });})
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+        [email],
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+            console.log("resultados" + JSON.stringify(results.rows.item(i)));
+          }
+          console.log("todos" + todos)
+          resolve(todos);
+        },
+        (_, error) => {
+          console.log(`Error getting todos: ${error}`);
+          reject(error)
+        },
+      );
+    });
+  })
 }
 
 

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
-
+import { Calendar } from 'react-native-calendars';
 
 const FilterHoursScreen = ({ navigation }) => {
     const [tipoHoras, setTipoHoras] = useState('');
-    const [dia, setDia] = useState('1');
-    const [mes, setMes] = useState('1');
+    const [fecha, setFecha] = useState('');
     const [categoria, setCategoria] = useState('');
     const [clase, setClase] = useState('');
 
@@ -14,8 +13,7 @@ const FilterHoursScreen = ({ navigation }) => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
         // Puedes acceder a los valores seleccionados en los estados correspondientes
         console.log('Tipo de Horas:', tipoHoras);
-        console.log('Día:', dia);
-        console.log('Mes:', mes);
+        console.log('Fecha:', fecha);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
     };
@@ -33,6 +31,7 @@ const FilterHoursScreen = ({ navigation }) => {
                     style={styles.picker}
                     selectedValue={tipoHoras}
                     onValueChange={(value) => setTipoHoras(value)}>
+                    <Picker.Item label="Todas" value="" />
                     <Picker.Item label="Lectivas" value="Lectivas" />
                     <Picker.Item label="No Lectivas" value="No Lectivas" />
                 </Picker>
@@ -40,33 +39,10 @@ const FilterHoursScreen = ({ navigation }) => {
 
             <View style={styles.componente}>
                 <Text style={styles.label}>FECHA</Text>
-                <View style={styles.pickerContainer}>
-                    <Picker
-                        style={[styles.picker, { flex: 1, marginRight: 4 }]}
-                        selectedValue={dia}
-                        onValueChange={(value) => setDia(value)}>
-                        {[...Array(31)].map((_, index) => (
-                            <Picker.Item
-                                key={index}
-                                label={String(index + 1)}
-                                value={String(index + 1)}
-                            />
-                        ))}
-                    </Picker>
-                    <Text style={styles.diaMes}>/</Text>
-                    <Picker
-                        style={[styles.picker, { flex: 1, marginLeft: '5%' }]}
-                        selectedValue={mes}
-                        onValueChange={(value) => setMes(value)}>
-                        {[...Array(12)].map((_, index) => (
-                            <Picker.Item
-                                key={index}
-                                label={String(index + 1)}
-                                value={String(index + 1)}
-                            />
-                        ))}
-                    </Picker>
-                </View>
+                <Calendar
+                    onDayPress={(day) => setFecha(day.dateString)}
+                    markedDates={{ [fecha]: { selected: true, selectedColor: '#0096C7' } }}
+                />
             </View>
 
             <View style={styles.componente}>
@@ -75,7 +51,7 @@ const FilterHoursScreen = ({ navigation }) => {
                     style={styles.picker}
                     selectedValue={categoria}
                     onValueChange={(value) => setCategoria(value)}>
-                    <Picker.Item label="Ninguna" value="" />
+                    <Picker.Item label="Todas" value="" />
                     <Picker.Item label="Impartir clases" value="Impartir clases" />
                     <Picker.Item label="Preparar clases" value="Preparar clases" />
                     <Picker.Item label="Corregir" value="Corregir" />
@@ -97,12 +73,16 @@ const FilterHoursScreen = ({ navigation }) => {
                 </Picker>
             </View>
 
+
+
+
             <View style={styles.componente}>
                 <Text style={styles.label}>CLASE</Text>
                 <Picker
                     style={styles.picker}
                     selectedValue={clase}
                     onValueChange={(value) => setClase(value)}>
+                    <Picker.Item label="Todas" value="" />
                     <Picker.Item label="1SI" value="1SI" />
                     <Picker.Item label="2SI" value="2SI" />
                 </Picker>
