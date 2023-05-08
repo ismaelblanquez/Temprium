@@ -40,6 +40,8 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
+  
+
     console.log(email);
     getIdUsuario(email, (id) => {
       // console.log(Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase});
@@ -48,8 +50,8 @@ const RegisterHoursScreen = ({ navigation }) => {
           const idHoras = results.insertId;
           console.log(results.rows);
           console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
-         
-          navigation.navigate('Home', { idhoras: idHoras });
+
+          navigation.replace('Home', { idhoras: idHoras });
         })
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
         );

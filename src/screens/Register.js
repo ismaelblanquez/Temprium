@@ -19,7 +19,7 @@ const Register = ({ navigation }) => {
     console.log('Repetir password:', repPassword);
     if ((email != '' && password != '') && (password == repPassword)) {
       addUsuario(email, password)
-        .then(() => console.log('Usuario registrado'))
+        .then(() => console.log('Usuario registrado'), navigation.replace('Login'))
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     } else {
       if (password != repPassword) {

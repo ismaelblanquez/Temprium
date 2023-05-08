@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function ProfileConfig() {
-    const [correoElectronico, setCorreoElectronico] = useState('ejemplo@correo.com');
+function ProfileConfig({ navigation }) {
+    const [email, setEmail] = useState('');
 
-    const cerrarSesion = () => {
-        // Lógica para cerrar sesión
-        console.log('Sesión cerrada');
+    const getEmail = async () => {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email);
+    } 
+
+    useEffect(() => {
+        getEmail();
+    }, []);
+
+    const cerrarSesion = async () => {
+        try {
+            await AsyncStorage.removeItem('email');
+            navigation.replace('Login'); // redirige al usuario a la pantalla de inicio de sesión
+        } catch (error) {
+            Alert.alert('Error', 'No se pudo cerrar sesión');
+        }
     };
 
     return (
@@ -14,7 +28,7 @@ function ProfileConfig() {
             <Text style={styles.text}>Configuración de perfil</Text>
             <View style={styles.row}>
                 <Text style={styles.label}>Correo electrónico:</Text>
-                <Text style={styles.texto}>{correoElectronico}</Text>
+                <Text style={styles.texto}>{email}</Text>
             </View>
             <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
                 <Text style={styles.buttonText}>Cerrar sesión</Text>

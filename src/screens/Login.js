@@ -40,7 +40,7 @@ const handleLogin = async () => {
   await AsyncStorage.setItem('password', password);
 
     verificarUsuario(email, password)
-      .then(() => navigation.navigate("Home"))
+      .then(() => navigation.replace("Home"))
       .catch(error => console.log(`Error al buscar usuario: ${error.message}`));
 
     // const usuarioExiste = await verificarUsuario(email, password);
@@ -54,7 +54,7 @@ const handleLogin = async () => {
   const handleGuest = () => {
     // Aquí puedes agregar la lógica para iniciar sesión como invitado
     console.log('Iniciar sesión como invitado');
-    navigation.navigate('Home');
+    navigation.replace('Home');
   };
 
   const handleForgotPassword = () => {
@@ -65,7 +65,7 @@ const handleLogin = async () => {
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para registrar una nueva cuenta
     console.log('Registrarse');
-    navigation.navigate('Register');
+    navigation.replace('Register');
   };
 
   return (

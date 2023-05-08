@@ -16,17 +16,25 @@ const Home = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {
+
+
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
         getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
             .then((results) => {
                 const todos = [];
+                console.log("resulttttts" + results);
+
                 results.forEach((item) => {
                     todos.push(item);
                 });
                 setData(todos);
                 const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
-                setHorasTotales(horas);
+                const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                const horasTotales = minutosTotales / 60;
+
+                console.log("Horas totales: " + horasTotales)
+                setHorasTotales(horasTotales.toFixed(1));
                 setLoading(false);
             })
             .catch((error) => {
@@ -59,8 +67,9 @@ const Home = ({ navigation }) => {
 
                 </View>
                 <View style={styles.horasContainer}>
-                    <Text style={styles.tarjetaHoras}>{item.Horas} H</Text>
+                <Text style={styles.tarjetaHoras}>{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
                 </View>
+                
                 <Image
                     style={styles.deleteButton}
                     source={require('../assets/images/remove.png')}
@@ -145,7 +154,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginLeft: 20,
-      },
+    },
     alinearBoton: {
         flexDirection: 'row',
         justifyContent: 'space-around',
