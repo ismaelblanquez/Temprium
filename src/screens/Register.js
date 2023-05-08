@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
 import 'setimmediate';
-import { AuthContext } from '../services/AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
-  const {setUserEmail} = useContext(AuthContext);
+
 
 
   const handleRegister = () => {

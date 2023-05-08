@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import 'setimmediate';
 import { existeUsuario, verificarUsuario, buscarUsuario} from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -35,6 +36,8 @@ console.log('INICIO DE SESIÓN');
 const handleLogin = async () => {
   console.log('Email:', email);
   console.log('Password:', password);
+  await AsyncStorage.setItem('email', email);
+  await AsyncStorage.setItem('password', password);
 
   verificarUsuario(email, password)
   .then(() => navigation.navigate("Home"))

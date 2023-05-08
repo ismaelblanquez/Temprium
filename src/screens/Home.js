@@ -5,18 +5,20 @@ import { addHoras, getIdUsuario, getAllHoras, deleteHoras } from '../DataBase/Co
 import * as SQLite from 'expo-sqlite';
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
 const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const email = useContext(AuthContext);
     const [horasTotales, setHorasTotales] = useState(0);
-    
+    const [email, setEmail] = useState('');
 
-    useEffect(() => {
-        getAllHoras("ismaelblanquez@hotmail.com")
+    const getEmail = async () => {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+        getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
             .then((results) => {
                 const todos = [];
                 results.forEach((item) => {
@@ -31,9 +33,12 @@ const Home = ({ navigation }) => {
                 console.log(error);
                 setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        console.log("EMAIL:::" + email)
+        getEmail();
     }, []);
-
-
 
 
     const renderItem = ({ item }) => {
@@ -208,7 +213,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#023E8A',
         fontWeight: 'bold',
-        marginRight:20,
+        marginRight: 20,
         // marginLeft: '30%'
     },
     horasContainer: {
