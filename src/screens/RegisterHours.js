@@ -13,7 +13,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('Lectivas');
   const [horas, setHoras] = useState('1');
   const [minutos, setMinutos] = useState('0');
-  const [categoria, setCategoria] = useState('');
+  const [categoria, setCategoria] = useState('Ninguna');
   const [clase, setClase] = useState('1SI');
   const fechaActual = new Date();
   const dia = fechaActual.getDate().toString().padStart(2, '0');
