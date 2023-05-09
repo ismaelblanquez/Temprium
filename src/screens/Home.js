@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {
-
+        
 
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
@@ -53,8 +53,8 @@ const Home = ({ navigation }) => {
         console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
-                <View style={styles.iconContainer}>
-                <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, {horasContainer: '#8E44AD', horasContainer:'#8E44AD'}] : styles.iconLectiva}>
+                <View style={[styles.iconContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
+                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, {horasContainer: '#8E44AD', horasContainer:'#8E44AD'}] : styles.iconLectiva}>
                         {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
@@ -67,14 +67,14 @@ const Home = ({ navigation }) => {
                     </View>
 
                 </View>
-                <View style={styles.horasContainer}>
-                    <Text style={styles.tarjetaHoras}>{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
+                <View style={[styles.horasContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
+                    <Text style={styles.tarjetaHoras} >{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
                 </View>
                 <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home')}}>
-                <Image
-                    style={styles.deleteButton}
-                    source={require('../assets/images/remove.png')}
-                />
+                    <Image
+                        style={styles.deleteButton}
+                        source={require('../assets/images/delete.png')}
+                    />
                 </TouchableOpacity>
             </View>
         );
@@ -88,10 +88,7 @@ const Home = ({ navigation }) => {
         );
     }
 
-
-
-
-
+    
     return (
 
         <View style={styles.container}>
@@ -104,8 +101,8 @@ const Home = ({ navigation }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity style={styles.pdfButton} onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home')}}>
-                    <Image source={require('../assets/images/share.png')} />
+                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home')}}>
+                    <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
 
             </View>
@@ -131,7 +128,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: '#E1F5FE',
         borderRadius: 12,
-        borderWidth: 4,
+        borderWidth: 4, //2
         borderColor: '#0096C7',
         width: '80%',
         marginLeft: '9%',
@@ -165,8 +162,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0096C7',
         padding: 8,
         borderRadius: 4,
-        width: 30,
-        height: 30,
+        width: 35,
+        height: 35,
     },
     recienteTitulo: {
         fontSize: 20,
@@ -186,10 +183,11 @@ const styles = StyleSheet.create({
     iconContainer: {
         width: 32,
         height: 32,
-        backgroundColor: '#12CDD4',
+        // backgroundColor: '#12CDD4',
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
+        color: '#FFFFFF',
     },
     iconNoLectiva: {
         fontSize: 18,
@@ -200,7 +198,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     infoContainer: {
-        // alignItems: 'start',
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -208,7 +205,6 @@ const styles = StyleSheet.create({
     },
     datosContainer: {
         flexDirection: 'row',
-        // textAlign: 'center',
     },
     tarjetaTitulo: {
         fontSize: 16,
@@ -218,27 +214,23 @@ const styles = StyleSheet.create({
     tarjetaFecha: {
         fontSize: 14,
         fontWeight: 'normal',
-        color: '#424242',
-        // marginBottom: 4,
+        color: '#023E8A',
         flex: 1,
         numberOfLines: 1,
         fontWeight: 'bold',
-        color: '#777',
         width: 80,
     },
     fechaAnchoFijo: {
         width: 10,
     },
-
     tarjetaClase: {
         fontSize: 14,
         color: '#023E8A',
         fontWeight: 'bold',
         marginRight: 20,
-        // marginLeft: '30%'
     },
     horasContainer: {
-        backgroundColor: '#12CDD4',
+        // backgroundColor: '#12CDD4',
         alignItems: 'center',
         borderRadius: 4,
         padding: 4,
