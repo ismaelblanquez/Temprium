@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updatePassword } from '../DataBase/Conexion';
+import * as SQLite from 'expo-sqlite';
 import {
     View,
     Text,
@@ -6,18 +9,48 @@ import {
     Button,
     TextInput,
     Switch,
+    Alert,
 } from 'react-native';
 
 function Security() {
-    const [contrasena, setContrasena] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [contrasenaAnterior, setContrasenaAnterior] = useState('');
+    const [contrasena, setContrasena] = useState('');
     const [confirmarContrasena, setConfirmarContrasena] = useState('');
     const [autenticacionDosFactores, setAutenticacionDosFactores] =
+
         useState(false);
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const email = await AsyncStorage.getItem('email');
+            if (email) {
+                setLoggedIn(true);
+                setEmail(email);
+            } else {
+                setLoggedIn(false);
+            }
+        };
+        checkLoginStatus();
+    }, []);
+
+    const getEmail = async () => {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+    }
+    const getPassword = async () => {
+        const password = await AsyncStorage.getItem('password');
+        setPassword(password); // Establecer un valor predeterminado si email es nulo o indefinido
+    }
 
     const handleChangeContrasena = (text) => {
         setContrasena(text);
     };
+
 
     const handleChangeContrasenaAnterior = (text) => {
         setContrasenaAnterior(text);
@@ -33,11 +66,18 @@ function Security() {
 
     const handleGuardarCambios = () => {
         // Lógica para guardar los cambios de seguridad en la aplicación
-        // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
-        console.log('Contraseña actualizada:', contrasena);
-        console.log('Contraseña anterior:', contrasenaAnterior);
-        console.log('Confirmar contraseña:', confirmarContrasena);
-        console.log('Autenticación de dos factores:', autenticacionDosFactores);
+
+        if ((password !== contrasenaAnterior) || contrasena !== confirmarContrasena) {
+            Alert.alert('La contraseña anterior no es correcta o las contraseñas no coinciden.');
+            return;
+        }
+        else {
+            // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
+            console.log('Contraseña actualizada:', contrasena);
+            console.log('Contraseña anterior:', contrasenaAnterior);
+            console.log('Confirmar contraseña:', confirmarContrasena);
+            console.log('Autenticación de dos factores:', autenticacionDosFactores);
+        }
     };
 
     return (

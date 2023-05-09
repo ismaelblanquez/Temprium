@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     position: 'fixed',
@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
   highlightedButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#007AFF',
-    borderRadius: 15,
+    backgroundColor: '#0096C7',
+    borderRadius: '100%',
     height: 30,
     width: 30,
-    marginBottom: 10,
+    // padding: 8,
+    // paddingLeft: 9.5,
   },
 });
 

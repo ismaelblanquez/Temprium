@@ -205,7 +205,7 @@ export function buscarUsuario(email) {
 export function updateUsu(db, nuevoemail, nuevacontrasena, email) {
   db.transaction((tx) => {
     tx.executeSql(
-      'UPDATE USUARIOS SET emai=?, contrasena=? WHERE email=?',
+      'UPDATE USUARIOS SET contrasena=? WHERE email=?',
       [nuevoemail, nuevacontrasena, email],
       (tx, results) => {
         console.log('Usuario modificado correctamente');
