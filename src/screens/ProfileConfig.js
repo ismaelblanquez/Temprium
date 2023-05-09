@@ -25,13 +25,24 @@ function ProfileConfig({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Configuración de perfil</Text>
-            <View style={styles.row}>
-                <Text style={styles.label}>Correo electrónico:</Text>
-                <Text style={styles.texto}>{email}</Text>
+            <View style={styles.headerContainer}>
+                <View style={styles.tituloContainer}>
+                    <Text style={styles.titulo}>
+                        CONFIGURACIÓN{'\n'}
+                        <Text style={styles.titulo2}>DE PERFIL</Text>
+                    </Text>
+                </View>
+            </View>
+            <View style={styles.contenido}>
+                <View style={styles.row}>
+                    <Text style={styles.label}>Correo electrónico:</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.texto}>{email}</Text>
+                </View>
             </View>
             <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
-                <Text style={styles.buttonText}>Cerrar sesión</Text>
+                <Text style={styles.buttonText}>CERRAR SESIÓN</Text>
             </TouchableOpacity>
         </View>
     );
@@ -46,32 +57,57 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        justifyContent: 'center',
+        marginBottom: '5%',
+    },
+    headerContainer: {
+        backgroundColor: '#E1F5FE',
+        borderRadius: 12,
+        borderWidth: 4,
+        borderColor: '#0096C7',
+        width: '80%',
+        marginLeft: '9%',
+        marginBottom: '10%',
+    },
+    tituloContainer: {
+        alignItems: 'center',
+        padding: '4%',
+    },
+    titulo: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#0096C7',
+    },
+    titulo2: {
+        paddingLeft: '23%',
+    },
+    contenido: {
+        marginBottom: '5%'
     },
     label: {
-        fontSize: 16,
-        fontWeight: 'bold',
         marginRight: 8,
+        fontSize: 16,
+        color: '#023E8A',
+        fontWeight: 'bold',
     },
     texto: {
         fontSize: 16,
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
+        fontWeight: 'normal',
+        color: '#023E8A',
     },
     button: {
-        backgroundColor: 'blue',
-        padding: 16,
-        borderRadius: 4,
-        marginTop: 16,
+        backgroundColor: '#0096C7',
+        alignItems: 'center',
+        padding: '5%',
+        width: '80%',
+        borderRadius: 8,
+        marginBottom: '15%',
+        alignSelf: 'center',    
     },
     buttonText: {
-        color: 'white',
+        color: '#FFFFFF',
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
     },
 });
 
