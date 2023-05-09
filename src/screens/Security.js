@@ -67,19 +67,17 @@ function Security() {
     const handleGuardarCambios = () => {
         // Lógica para guardar los cambios de seguridad en la aplicación
 
-        if ((password !== contrasenaAnterior) || password !== contrasenaAnterior) {
+        if ((password !== contrasenaAnterior) || contrasena !== confirmarContrasena) {
             Alert.alert('La contraseña anterior no es correcta o las contraseñas no coinciden.');
+            return;
         }
-
-       
-        // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
-        console.log('Contraseña actualizada:', contrasena);
-        console.log('Contraseña anterior:', contrasenaAnterior);
-        console.log('Confirmar contraseña:', confirmarContrasena);
-        console.log('Autenticación de dos factores:', autenticacionDosFactores);
-
-
-
+        else {
+            // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
+            console.log('Contraseña actualizada:', contrasena);
+            console.log('Contraseña anterior:', contrasenaAnterior);
+            console.log('Confirmar contraseña:', confirmarContrasena);
+            console.log('Autenticación de dos factores:', autenticacionDosFactores);
+        }
     };
 
     return (
