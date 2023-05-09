@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {
-        
+
 
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
@@ -53,8 +53,8 @@ const Home = ({ navigation }) => {
         console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
-                <View style={[styles.iconContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
-                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, {horasContainer: '#8E44AD', horasContainer:'#8E44AD'}] : styles.iconLectiva}>
+                <View style={[styles.iconContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
+                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, { horasContainer: '#8E44AD', horasContainer: '#8E44AD' }] : styles.iconLectiva}>
                         {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
@@ -67,10 +67,10 @@ const Home = ({ navigation }) => {
                     </View>
 
                 </View>
-                <View style={[styles.horasContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
+                <View style={[styles.horasContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
                     <Text style={styles.tarjetaHoras} >{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
                 </View>
-                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home')}}>
+                <TouchableOpacity onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home') }}>
                     <Image
                         style={styles.deleteButton}
                         source={require('../assets/images/delete.png')}
@@ -88,7 +88,7 @@ const Home = ({ navigation }) => {
         );
     }
 
-    
+
     return (
 
         <View style={styles.container}>
@@ -101,7 +101,7 @@ const Home = ({ navigation }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home')}}>
+                <TouchableOpacity onPress={() => { console.log("prueba");  }}>
                     <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
 

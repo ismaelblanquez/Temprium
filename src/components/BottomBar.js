@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     borderRadius: '100%',
     height: 30,
     width: 30,
-    padding: 8,
-    paddingLeft: 9.5,
+    // padding: 8,
+    // paddingLeft: 9.5,
   },
 });
 
