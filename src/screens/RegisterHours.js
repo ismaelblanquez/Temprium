@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario } from '../DataBase/Conexion';

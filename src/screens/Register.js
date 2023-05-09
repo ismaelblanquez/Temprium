@@ -1,11 +1,10 @@
-import React, { useContext, useState,useEffect } from 'react';
+import React,{ useContext, useState,useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-<<<<<<< Updated upstream
 import 'setimmediate';
 
-<<<<<<< Updated upstream
+
 
 
 const Register = ({ navigation }) => {

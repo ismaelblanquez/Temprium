@@ -85,32 +85,40 @@ export function getAllHoras(usuario, callback) {
 export function selectHoras(
   tipoHoras,
   usuario,
-  horas,
-  minutos,
   categoria,
-  dia,
+  fechaInicio,
+  fechaFin,
   clase,
-  idhora,
-  solucion,
-  error,
 ) {
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE (HORAS.Tipohoras =? OR HORAS.Horas=? OR HORAS.minutos=? OR HORAS.Categoria=? OR HORAS.Dia=? OR HORAS.Clase=? OR HORAS.Id_horas=?) AND USUARIOS.email =? ',
-      [tipoHoras, horas, minutos, categoria, dia, clase, idhora,usuario],
-      (_, results) => {
-        const todos = [];
-        for (let i = 0; i < results.rows.length; i++) {
-          todos.push(results.rows.item(i));
-        }
-        solucion(todos);
-      },
-      err => {
-        error(err);
-      },
-    );
+  return new Promise((resolve, reject) => {
+    let consulta = '';
+    let parametros = [];
+    if (fechaInicio && fechaFin) {
+      consulta = 'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras = ? AND HORAS.Categoria = ? AND HORAS.Dia BETWEEN ? AND ? AND HORAS.Clase = ? AND USUARIOS.email = ?';
+      parametros = [tipoHoras, categoria,fechaInicio, fechaFin, clase, usuario];
+    } else if (fechaInicio) {
+      consulta = 'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras = ? AND HORAS.Categoria = ? AND HORAS.Dia = ? AND HORAS.Clase = ? AND USUARIOS.email = ?';
+      parametros = [tipoHoras, categoria,fechaInicio, clase, usuario];
+    }
+    db.transaction(tx => {
+      tx.executeSql(
+        consulta,
+        parametros,
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+          }
+          resolve(todos);
+        },
+        err => {
+          reject(err);
+        },
+      );
+    });
   });
 }
+
 
 export function getIdUsuario(usuario, callback) {
   db.transaction(tx => {
