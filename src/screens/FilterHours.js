@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Picker, TouchableOpacity,DatePickerAndroid } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar } from 'react-native-calendars';
 import { selectHoras } from '../DataBase/Conexion';
@@ -21,18 +21,19 @@ const FilterHoursScreen = ({ navigation }) => {
     getEmail();
   }, []);
 
+  const fechaInvertida = fecha.split('-').reverse().join('-');
 
     const guardarHoras = () => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
         // Puedes acceder a los valores seleccionados en los estados correspondientes
         console.log('Tipo de Horas:', tipoHoras);
-        console.log('Fecha:', fecha);
+        console.log('Fecha:', fechaInvertida);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
-        
-        selectHoras(tipoHoras,email,categoria,fecha,clase)
+       
+        selectHoras(tipoHoras,email,categoria,fechaInvertida,clase)
          .then((results)=>{
-           console.log(results.rows)
+           
          })
          .catch((errors)=>{
             console.log(errors);
@@ -60,10 +61,10 @@ const FilterHoursScreen = ({ navigation }) => {
 
             <View style={styles.componente}>
                 <Text style={styles.label}>FECHA</Text>
-                <Calendar
+              <Calendar
                     onDayPress={(day) => setFecha(day.dateString)}
                     markedDates={{ [fecha]: { selected: true, selectedColor: '#0096C7' } }}
-                />
+    />
             </View>
 
             <View style={styles.componente}>

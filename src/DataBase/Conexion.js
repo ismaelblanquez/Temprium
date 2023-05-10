@@ -100,13 +100,28 @@ export function selectHoras(
 ) {
   return new Promise((resolve, reject) => {
     let consulta = '';
-    let parametros = [];
-    if (fechaInicio && fechaFin) {
-      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON HORAS.Usuario = Usuarios.Id_usu WHERE HORAS.Tipohoras = ? AND HORAS.Categoria = ? AND HORAS.Dia BETWEEN ? AND ? AND HORAS.Clase = ? AND Usuarios.email = ?';
-      parametros = [tipoHoras, categoria,fechaInicio, fechaFin, clase, usuario];
-    } else if (fechaInicio) {
-      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON HORAS.Usuario = Usaurios.Id_usu WHERE HORAS.Tipohoras = ? AND HORAS.Categoria = ? AND HORAS.Dia = ? AND HORAS.Clase = ? AND Usuarios.email = ?';
-      parametros = [tipoHoras, categoria,fechaInicio, clase, usuario];
+    let parametros = []; 
+    if (fechaInicio  && fechaFin ) {
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia BETWEEN ? AND ?  AND Usuarios.email = ?';
+      parametros = [fechaInicio, fechaFin, usuario];
+    }
+    if (fechaInicio) {
+      console.log('Filtro por dia')
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia = ?  AND Usuarios.email = ?';
+      parametros = [fechaInicio, usuario];
+    }
+     if (fechaInicio  && tipoHoras  ) {
+      console.log('Filtro por tipohoras y fecha')
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Tipohoras = ? AND HORAS.Dia = ?  AND Usuarios.email = ?';
+      parametros = [tipoHoras,fechaInicio, usuario];
+    }
+     if (tipoHoras) {
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Tipohoras = ?   AND Usuarios.email = ?';
+      parametros = [tipoHoras, usuario];
+    }
+     if (categoria) {
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Categoria = ?   AND Usuarios.email = ?';
+      parametros = [categoria, usuario];
     }
     db.transaction(tx => {
       tx.executeSql(
