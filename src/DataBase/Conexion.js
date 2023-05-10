@@ -101,19 +101,19 @@ export function selectHoras(
   return new Promise((resolve, reject) => {
     let consulta = '';
     let parametros = []; 
+    
     if (fechaInicio  && fechaFin ) {
       consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia BETWEEN ? AND ?  AND Usuarios.email = ?';
       parametros = [fechaInicio, fechaFin, usuario];
-    }
-    if (fechaInicio) {
-      console.log('Filtro por dia')
-      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia = ?  AND Usuarios.email = ?';
-      parametros = [fechaInicio, usuario];
     }
      if (fechaInicio  && tipoHoras  ) {
       console.log('Filtro por tipohoras y fecha')
       consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Tipohoras = ? AND HORAS.Dia = ?  AND Usuarios.email = ?';
       parametros = [tipoHoras,fechaInicio, usuario];
+    } else{
+      console.log('Filtro por dia')
+      consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia = ?  AND Usuarios.email = ?';
+      parametros = [fechaInicio, usuario];
     }
      if (tipoHoras) {
       consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Tipohoras = ?   AND Usuarios.email = ?';
@@ -132,7 +132,8 @@ export function selectHoras(
           for (let i = 0; i < results.rows.length; i++) {
             todos.push(results.rows.item(i));
           }
-          resolve(console.log(todos));
+          console.log(todos);
+          resolve(todos);
         },
         err => {
           reject(err);

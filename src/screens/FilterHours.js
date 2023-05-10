@@ -30,14 +30,12 @@ const FilterHoursScreen = ({ navigation }) => {
         console.log('Fecha:', fechaInvertida);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
-       
-        selectHoras(tipoHoras,email,categoria,fechaInvertida,clase)
-         .then((results)=>{
-           
-         })
-         .catch((errors)=>{
-            console.log(errors);
-         })
+        navigation.replace('Home', { 
+            tipoHoras: tipoHoras, 
+            fecha: fechaInvertida, 
+            categoria: categoria, 
+            clase: clase 
+          });
     };
 
     return (

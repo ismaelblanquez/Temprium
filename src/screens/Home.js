@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario, getAllHoras, deleteHoras } from '../DataBase/Conexion';
+import { addHoras, getIdUsuario, getAllHoras, deleteHoras,selectHoras } from '../DataBase/Conexion';
 import * as SQLite from 'expo-sqlite';
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
@@ -9,15 +9,46 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [horasTotales, setHorasTotales] = useState(0);
     const [email, setEmail] = useState('');
 
-    const getEmail = async () => {
-        
 
+    const getEmail = async () => {
+        if(route.params){
+            const email = await AsyncStorage.getItem('email');
+            setEmail(email || 'dummy@nosession.com');
+            const {tipoHoras,fecha,categoria,clase,fechafin} = route.params;
+            console.log('Hola')
+            console.log('Tipo de Horas:', tipoHoras);
+                console.log('Fecha:', fecha);
+                console.log('Categoría:', categoria);
+                console.log('Clase:', clase);
+               
+                selectHoras(tipoHoras,email,categoria,fecha,fechafin,clase)
+                .then((results)=>{
+                    const todos = [];
+                    console.log("resulttttts" + results);
+        
+                    results.forEach((item) => {
+                        todos.push(item);
+                    });
+                    setData(todos);
+                    const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                    const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                    const horasTotales = minutosTotales / 60;
+        
+                    console.log("Horas totales: " + horasTotales)
+                    setHorasTotales(horasTotales.toFixed(1));
+                    setLoading(false);
+                }).catch((error) => {
+                    console.log(error);
+                    setLoading(false);
+                });
+        
+            } else{
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
         getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
@@ -40,14 +71,14 @@ const Home = ({ navigation }) => {
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
-            });
+            });}
     };
 
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
     }, []);
-
+    
 
     const renderItem = ({ item }) => {
         console.log("item: " + item);
