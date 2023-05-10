@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: '#E1F5FE',
         borderRadius: 12,
-        borderWidth: 4,
+        borderWidth: 2,
         borderColor: '#0096C7',
         width: '80%',
         marginLeft: '9%',

@@ -68,7 +68,7 @@ export function getAllHoras(email) {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =?',
+        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =? ORDER BY Id_hor DESC',
         [email],
         (_, results) => {
           const todos = [];
