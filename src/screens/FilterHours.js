@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar } from 'react-native-calendars';
+import { selectHoras } from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FilterHoursScreen = ({ navigation }) => {
     const [tipoHoras, setTipoHoras] = useState('');
     const [fecha, setFecha] = useState('');
     const [categoria, setCategoria] = useState('');
     const [clase, setClase] = useState('');
+    const [email, setEmail] = useState('');
+  const getEmail = async () => {
+    const email = await AsyncStorage.getItem('email');
+    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+  }
+
+  useEffect(() => {
+    console.log("EMAIL:::" + email)
+    getEmail();
+  }, []);
+
+  const fechaInvertida = fecha.split('-').reverse().join('-');
+
 
     const guardarHoras = () => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -16,6 +31,14 @@ const FilterHoursScreen = ({ navigation }) => {
         console.log('Fecha:', fecha);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
+        
+        selectHoras(tipoHoras,email,categoria,fechaInvertida,clase)
+         .then((results)=>{
+           console.log(results.rows)
+         })
+         .catch((errors)=>{
+            console.log(errors);
+         })
     };
 
     return (
