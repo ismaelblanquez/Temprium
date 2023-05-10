@@ -102,6 +102,11 @@ export function selectHoras(
     let consulta = '';
     let parametros = []; 
     
+    // consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND ';
+    // if (tipoHoras != ''){
+    //   consulta += 'HORAS.Tipohoras = ? ';
+    // }
+    // parametros
     if (fechaInicio  && fechaFin ) {
       consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  AND HORAS.Dia BETWEEN ? AND ?  AND Usuarios.email = ?';
       parametros = [fechaInicio, fechaFin, usuario];
@@ -123,6 +128,9 @@ export function selectHoras(
       consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario AND HORAS.Categoria = ?   AND Usuarios.email = ?';
       parametros = [categoria, usuario];
     }
+
+
+
     db.transaction(tx => {
       tx.executeSql(
         consulta,
