@@ -21,8 +21,6 @@ const FilterHoursScreen = ({ navigation }) => {
     getEmail();
   }, []);
 
-  const fechaInvertida = fecha.split('-').reverse().join('-');
-
 
     const guardarHoras = () => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -32,7 +30,7 @@ const FilterHoursScreen = ({ navigation }) => {
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
         
-        selectHoras(tipoHoras,email,categoria,fechaInvertida,clase)
+        selectHoras(tipoHoras,email,categoria,fecha,clase)
          .then((results)=>{
            console.log(results.rows)
          })
