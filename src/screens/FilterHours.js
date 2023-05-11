@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, TouchableOpacity,DatePickerAndroid } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Picker, TouchableOpacity, DatePickerAndroid } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar } from 'react-native-calendars';
 import { selectHoras } from '../DataBase/Conexion';
@@ -11,17 +11,17 @@ const FilterHoursScreen = ({ navigation }) => {
     const [categoria, setCategoria] = useState('');
     const [clase, setClase] = useState('');
     const [email, setEmail] = useState('');
-  const getEmail = async () => {
-    const email = await AsyncStorage.getItem('email');
-    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-  }
+    const getEmail = async () => {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+    }
 
-  useEffect(() => {
-    console.log("EMAIL:::" + email)
-    getEmail();
-  }, []);
+    useEffect(() => {
+        console.log("EMAIL:::" + email)
+        getEmail();
+    }, []);
 
-  const fechaInvertida = fecha.split('-').reverse().join('-');
+    const fechaInvertida = fecha.split('-').reverse().join('-');
 
     const guardarHoras = () => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -30,12 +30,12 @@ const FilterHoursScreen = ({ navigation }) => {
         console.log('Fecha:', fechaInvertida);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
-        navigation.replace('Home', { 
-            tipoHoras: tipoHoras, 
-            fecha: fechaInvertida, 
-            categoria: categoria, 
-            clase: clase 
-          });
+        navigation.replace('Home', {
+            tipoHoras: tipoHoras,
+            fecha: fechaInvertida,
+            categoria: categoria,
+            clase: clase
+        });
     };
 
     return (
@@ -59,10 +59,10 @@ const FilterHoursScreen = ({ navigation }) => {
 
             <View style={styles.componente}>
                 <Text style={styles.label}>FECHA</Text>
-              <Calendar
+                <Calendar
                     onDayPress={(day) => setFecha(day.dateString)}
                     markedDates={{ [fecha]: { selected: true, selectedColor: '#0096C7' } }}
-    />
+                />
             </View>
 
             <View style={styles.componente}>
