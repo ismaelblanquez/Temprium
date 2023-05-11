@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario, getAllHoras, deleteHoras } from '../DataBase/Conexion';
+import { addHoras, getIdUsuario, getAllHoras, deleteHoras,selectHoras } from '../DataBase/Conexion';
 import * as SQLite from 'expo-sqlite';
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
@@ -9,11 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const db = SQLite.openDatabase('Temprium.db');
 // Componente de la pantalla Home
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [horasTotales, setHorasTotales] = useState(0);
     const [email, setEmail] = useState('');
+
 
     const getEmail = async () => {
         
@@ -47,7 +48,7 @@ const Home = ({ navigation }) => {
         console.log("EMAIL:::" + email)
         getEmail();
     }, []);
-
+    
 
     const renderItem = ({ item }) => {
         console.log("item: " + item);

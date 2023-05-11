@@ -93,29 +93,54 @@ export function getAllHoras(email) {
 export function selectHoras(
   tipoHoras,
   usuario,
-  horas,
-  minutos,
   categoria,
-  dia,
+  fechaInicio,
+  fechaFin,
   clase,
-  solucion,
-  error,
 ) {
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT * FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu WHERE HORAS.Tipohoras =? AND HORAS.Horas=? AND HORAS.minutos=? AND HORAS.Categoria=? AND HORAS.Dia=? AND HORAS.Clase=?  AND USUARIOS.email =?',
-      [tipoHoras, horas, minutos, categoria, dia, clase, usuario],
-      (_, results) => {
-        const todos = [];
-        for (let i = 0; i < results.rows.length; i++) {
-          todos.push(results.rows.item(i));
-        }
-        solucion(todos);
-      },
-      err => {
-        error(err);
-      },
-    );
+  return new Promise((resolve, reject) => {
+    let consulta = '';
+    let parametros = []; 
+     consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario ';
+    if (tipoHoras != ''){
+       consulta += 'AND HORAS.Tipohoras = ? ';
+       parametros.push(tipoHoras);
+    }
+    if (categoria != ''){
+      consulta += 'AND HORAS.Categoria = ? ';
+      parametros.push(categoria);
+   }
+   if (fechaInicio != ''){
+    consulta += 'AND HORAS.Dia = ? ';
+    parametros.push(fechaInicio);
+ }
+ if (clase != ''){
+  consulta += 'AND HORAS.Clase = ? ';
+  parametros.push(clase);
+}
+if (usuario != ''){
+  consulta += 'AND Usuarios.email = ? ';
+  parametros.push(usuario);
+}
+console.log(consulta),
+        console.log(parametros),
+    db.transaction(tx => {
+      tx.executeSql(
+        consulta,
+        parametros,
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+          }
+          console.log(todos);
+          resolve(todos);
+        },
+        err => {
+          reject(err);
+        },
+      );
+    });
   });
 }
 
