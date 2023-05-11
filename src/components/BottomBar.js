@@ -6,7 +6,7 @@ const BottomBar = ({ navigation }) => {
   const goToHome = () => {
     // Acción al presionar el botón de Home
     console.log('Botón Home presionado');
-    navigation.navigate('Home');
+    navigation.replace('Home');
   };
 
   const goToFilters = () => {
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    
   },
   navButton: {
     justifyContent: 'center',
