@@ -53,7 +53,7 @@ const RegisterHoursScreen = ({ navigation }) => {
           console.log(results.rows);
           console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
 
-          navigation.replace('Home', { idhoras: idHoras });
+          navigation.replace('Home'/*, { idhoras: idHoras }*/);
         })
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
         );

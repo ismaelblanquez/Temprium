@@ -17,15 +17,16 @@ const Home = ({ navigation, route }) => {
 
 
     const getEmail = async () => {
+        console.log(route.params)
         if(route.params){
             const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com');
             const {tipoHoras,fecha,categoria,clase,fechafin} = route.params;
-            console.log('Hola')
             console.log('Tipo de Horas:', tipoHoras);
                 console.log('Fecha:', fecha);
                 console.log('Categoría:', categoria);
                 console.log('Clase:', clase);
+                console.log('Email:',email);
                
                 selectHoras(tipoHoras,email,categoria,fecha,fechafin,clase)
                 .then((results)=>{
