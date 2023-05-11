@@ -17,8 +17,39 @@ const Home = ({ navigation, route }) => {
 
 
     const getEmail = async () => {
+        console.log(route.params)
+        if(route.params){
+            const email = await AsyncStorage.getItem('email');
+            setEmail(email || 'dummy@nosession.com');
+            const {tipoHoras,fecha,categoria,clase,fechafin} = route.params;
+            console.log('Tipo de Horas:', tipoHoras);
+                console.log('Fecha:', fecha);
+                console.log('Categoría:', categoria);
+                console.log('Clase:', clase);
+                console.log('Email:',email);
+               
+                selectHoras(tipoHoras,email,categoria,fecha,fechafin,clase)
+                .then((results)=>{
+                    const todos = [];
+                    console.log("resulttttts" + results);
         
-
+                    results.forEach((item) => {
+                        todos.push(item);
+                    });
+                    setData(todos);
+                    const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                    const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                    const horasTotales = minutosTotales / 60;
+        
+                    console.log("Horas totales: " + horasTotales)
+                    setHorasTotales(horasTotales.toFixed(1));
+                    setLoading(false);
+                }).catch((error) => {
+                    console.log(error);
+                    setLoading(false);
+                });
+        
+            } else{
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
         getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
@@ -41,7 +72,7 @@ const Home = ({ navigation, route }) => {
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
-            });
+            });}
     };
 
     useEffect(() => {
