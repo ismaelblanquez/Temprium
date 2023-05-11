@@ -63,7 +63,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   navButton: {
     justifyContent: 'center',
@@ -76,8 +79,8 @@ const styles = StyleSheet.create({
     borderRadius: '100%',
     height: 30,
     width: 30,
-    padding: 8,
-    paddingLeft: 9.5,
+    // padding: 8,
+    // paddingLeft: 9.5,
   },
 });
 
