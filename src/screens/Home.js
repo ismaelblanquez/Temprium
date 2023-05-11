@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario, getAllHoras, deleteHoras,selectHoras } from '../DataBase/Conexion';
+import { addHoras, getIdUsuario, getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
 import * as SQLite from 'expo-sqlite';
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
@@ -18,75 +18,86 @@ const Home = ({ navigation, route }) => {
 
     const getEmail = async () => {
         console.log(route.params)
-        if(route.params){
+        if (route.params) {
             const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com');
-            const {tipoHoras,fecha,categoria,clase,fechafin} = route.params;
+            const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
             console.log('Tipo de Horas:', tipoHoras);
-                console.log('Fecha:', fecha);
-                console.log('Categoría:', categoria);
-                console.log('Clase:', clase);
-                console.log('Email:',email);
-               
-                selectHoras(tipoHoras,email,categoria,fecha,fechafin,clase)
-                .then((results)=>{
+            console.log('Fecha:', fecha);
+            console.log('Categoría:', categoria);
+            console.log('Clase:', clase);
+            console.log('Email:', email);
+
+            selectHoras(tipoHoras, email, categoria, fecha, fechafin, clase)
+                .then((results) => {
                     const todos = [];
                     console.log("resulttttts" + results);
-        
+
                     results.forEach((item) => {
                         todos.push(item);
                     });
                     setData(todos);
-                    const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                    // const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                    // const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                    // const horasTotales = minutosTotales / 60;
+
+                    // console.log("Horas totales: " + horasTotales)
+                    // setHorasTotales(horasTotales.toFixed(1));
+                 
                     const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
-                    const horasTotales = minutosTotales / 60;
-        
-                    console.log("Horas totales: " + horasTotales)
-                    setHorasTotales(horasTotales.toFixed(1));
+                    const horasTotales = Math.floor(minutosTotales / 60);
+                    const minutosRestantes = minutosTotales % 60;
+                    const tiempoTotal = `${horasTotales}h ${minutosRestantes}m`;
+                    setHorasTotales(tiempoTotal);
                     setLoading(false);
                 }).catch((error) => {
                     console.log(error);
                     setLoading(false);
                 });
-        
-            } else{
-        const email = await AsyncStorage.getItem('email');
-        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-        getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
-            .then((results) => {
-                const todos = [];
-                console.log("resulttttts" + results);
 
-                results.forEach((item) => {
-                    todos.push(item);
+        } else {
+            const email = await AsyncStorage.getItem('email');
+            setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+            getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
+                .then((results) => {
+                    const todos = [];
+                    console.log("resulttttts" + results);
+
+                    results.forEach((item) => {
+                        todos.push(item);
+                    });
+                    setData(todos);
+                    // const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
+                    // const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                    // const horasTotales = minutosTotales / 60;
+                    const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+                    const horasTotales = Math.floor(minutosTotales / 60);
+                    const minutosRestantes = minutosTotales % 60;
+                    const tiempoTotal = `${horasTotales}h ${minutosRestantes}m`;
+                    setHorasTotales(tiempoTotal);
+                    // console.log("Horas totales: " + horasTotales)
+                    // setHorasTotales(horasTotales.toFixed(1));
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setLoading(false);
                 });
-                setData(todos);
-                const horas = todos.map((item) => item.Horas).reduce((acc, cur) => acc + cur, 0);
-                const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
-                const horasTotales = minutosTotales / 60;
-
-                console.log("Horas totales: " + horasTotales)
-                setHorasTotales(horasTotales.toFixed(1));
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                setLoading(false);
-            });}
+        }
     };
 
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
     }, []);
-    
+
 
     const renderItem = ({ item }) => {
         console.log("item: " + item);
         return (
             <View style={styles.tarjetaContainer}>
-                <View style={[styles.iconContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
-                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, {horasContainer: '#8E44AD', horasContainer:'#8E44AD'}] : styles.iconLectiva}>
+                <View style={[styles.iconContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
+                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, { horasContainer: '#8E44AD', horasContainer: '#8E44AD' }] : styles.iconLectiva}>
                         {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
@@ -99,10 +110,11 @@ const Home = ({ navigation, route }) => {
                     </View>
 
                 </View>
-                <View style={[styles.horasContainer, {backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4"}]}>
-                    <Text style={styles.tarjetaHoras} >{(item.Horas + item.minutos / 60).toFixed(1)} H</Text>
+                <View style={[styles.horasContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
+                    <Text style={styles.tarjetaHoras}>{item.Horas}h {item.minutos}m</Text>
+
                 </View>
-                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home')}}>
+                <TouchableOpacity onPress={() => { console.log("prueba"); deleteHoras(item.Id_hor); navigation.replace('Home') }}>
                     <Image
                         style={styles.deleteButton}
                         source={require('../assets/images/delete.png')}
@@ -120,20 +132,20 @@ const Home = ({ navigation, route }) => {
         );
     }
 
-    
+
     return (
 
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.horasTotalesContainer}>
                     <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
-                    <Text style={styles.horasTotalesNumero}>{horasTotales} HORAS</Text>
+                    <Text style={styles.horasTotalesNumero}>{horasTotales}</Text>
                 </View>
 
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity  onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home')}}>
+                <TouchableOpacity onPress={() => { console.log("prueba"); deleteHoras(); navigation.replace('Home') }}>
                     <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
 
