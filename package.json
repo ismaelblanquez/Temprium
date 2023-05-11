@@ -23,6 +23,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.7",
     "react-native-calendars": "^1.1295.0",
+    "react-native-pdf": "^6.6.2",
     "react-native-push-notification": "^8.1.1",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-web": "~0.18.10",
