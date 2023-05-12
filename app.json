@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Temprium",
-    "slug": "Temprium",
+    "slug": "temprium",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -15,16 +15,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "Temprium"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iblanquez.temprium"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aff9a4a3-09ca-4a19-9320-e8bb4fd2be3d"
+      }
+    },
+    "owner": "iblanquez"
   }
 }
