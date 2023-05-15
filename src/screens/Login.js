@@ -83,6 +83,7 @@ const handleLogin = async () => {
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -90,6 +91,7 @@ const handleLogin = async () => {
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
           <Text style={styles.forgotPasswordText}>¿OLVIDASTE TU CONTRASEÑA?</Text>
@@ -139,7 +141,6 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    placeholderTextColor: '#BDBDBD',
     color: '#1A1A1A'
     },
   forgotPasswordButton: {
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   registerContainer: {
-    alignItems: 'bottom',
+    //alignItems: 'bottom',
     paddingVertical: 20
   },
   registerText: {
