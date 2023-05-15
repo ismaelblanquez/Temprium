@@ -9,6 +9,7 @@ const db = SQLite.openDatabase(
   },
 );
 
+console.log(db)
 
 db.transaction(tx => {
   tx.executeSql(
@@ -18,7 +19,7 @@ db.transaction(tx => {
     'CREATE TABLE IF NOT EXISTS HORAS (Id_hor INTEGER PRIMARY KEY AUTOINCREMENT, Usuario INTEGER NOT NULL, Tipohoras TEXT NOT NULL, Horas INTEGER NOT NULL, minutos INTEGER NOT NULL, Categoria TEXT NOT NULL, Dia DATE NOT NULL, Clase TEXT NOT NULL, FOREIGN KEY (Usuario) REFERENCES Usuarios(Id_usu))'
   );
   tx.executeSql(
-    "INSERT OR IGNORE INTO Usuarios (email, contrasena) VALUES ('dummy@nosession.com', '92r8hfv2n9fuvy<9v8h')"
+   'INSERT INTO Usuarios (email, contrasena) VALUES ("dummy@nosession.com", "92r8hfv2n9fuvy<9v8h")'
   );
 
 });

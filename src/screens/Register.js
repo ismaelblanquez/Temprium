@@ -48,6 +48,7 @@ const Register = ({ navigation }) => {
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -55,6 +56,7 @@ const Register = ({ navigation }) => {
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    placeholderTextColor: '#BDBDBD',
     color: '#1A1A1A'
   },
   loginButton: {
