@@ -24,12 +24,11 @@ function AgendaApp({ navigation }) {
 
   const addEvent = () => {
     const newEvent = { title: newEventTitle, description: newEventDescription };
-    if (newEventTitle != '') {
+    if (newEventTitle !== '') {
       setEvents([...events, newEvent]);
       setNewEventTitle('');
       setNewEventDescription('');
-    }
-    else {
+    } else {
       console.log("error");
     }
   };
@@ -56,9 +55,9 @@ function AgendaApp({ navigation }) {
   const screenHeight = Dimensions.get('window').height;
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.agendaContainer}>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{ height: screenHeight - 200 }}>
+    <View style={styles.agendaContainer}>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={styles.scrollView}>
           <View style={styles.newEventContainer}>
             <Text style={styles.sectionTitle}>Agregar evento:</Text>
             <TextInput
@@ -85,96 +84,95 @@ function AgendaApp({ navigation }) {
                 <Text style={styles.eventTitle}>{event.title}</Text>
                 <Text style={styles.eventDescription}>{event.description}</Text>
                 <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-<Text style={styles.deleteButtonText}>Eliminar</Text>
-</TouchableOpacity>
-</View>
-))
-) : (
-<Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
-)}
-      {/* <Text style={styles.sectionTitle}>Todos los eventos:</Text>
-      {events.length > 0 ? (
-        events.map((event, index) => (
-          <View style={styles.eventContainer} key={index}>
-            <Text style={styles.eventTitle}>{event.title}</Text>
-            <Text style={styles.eventDescription}>{event.description}</Text>
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-              <Text style={styles.deleteButtonText}>Eliminar</Text>
-            </TouchableOpacity>
-          </View>
-        ))
-      ) : (
-        <Text style={styles.noEventsText}>No hay eventos registrados.</Text>
-      )} */}
-    </View>
-  </ScrollView>
-  <BottomBar navigation={navigation} />
-</KeyboardAvoidingView>);
+                  <Text style={styles.deleteButtonText}>Eliminar</Text>
+                </TouchableOpacity>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
+          )}
+        </ScrollView>
+        <View style={styles.bottomBarContainer}>
+          <BottomBar navigation={navigation} />
+        </View>
+      </View>
+      </View>
+  
+  );
 }
 
 const styles = StyleSheet.create({
-agendaContainer: {
-flex: 1,
-backgroundColor: '#FFF',
-marginBottom:50,
-},
-newEventContainer: {
-marginTop: 20,
-paddingHorizontal: 20,
-},
-sectionTitle: {
-fontSize: 24,
-fontWeight: 'bold',
-paddingHorizontal: 20,
-marginTop: 30,
-},
-newEventInput: {
-backgroundColor: '#F2F2F2',
-borderRadius: 10,
-padding: 10,
-marginTop: 20,
-},
-addButton: {
-backgroundColor: '#0096C7',
-borderRadius: 10,
-padding: 10,
-marginTop: 20,
-alignItems: 'center',
-},
-addButtonText: {
-color: '#FFF',
-fontWeight: 'bold',
-},
-noEventsText: {
-paddingHorizontal: 20,
-marginTop: 20,
-fontStyle: 'italic',
-},
-eventContainer: {
-paddingHorizontal: 20,
-paddingVertical: 10,
-borderBottomWidth: 1,
-borderBottomColor: '#D1D1D1',
-},
-eventTitle: {
-fontWeight: 'bold',
-fontSize: 16,
-},
-eventDescription: {
-marginTop: 5,
-},
-deleteButton: {
-backgroundColor: '#FF4444',
-borderRadius: 10,
-padding: 5,
-marginTop: 10,
-alignItems: 'center',
-alignSelf: 'flex-start',
-},
-deleteButtonText: {
-color: '#FFF',
-fontWeight: 'bold',
-},
+  agendaContainer: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    // marginBottom: 50,
+  },
+  newEventContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  }, 
+   scrollView: {
+    flex: 1,
+    marginBottom: 50, // Aplica un margen inferior de 50 unidades
+  },
+  bottomBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },  
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingHorizontal: 20,
+    marginTop: 30,
+  },
+  newEventInput: {
+    backgroundColor: '#F2F2F2',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+  },
+  addButton: {
+    backgroundColor: '#0096C7',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  noEventsText: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    fontStyle: 'italic',
+  },
+  eventContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D1D1D1',
+  },
+  eventTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  eventDescription: {
+    marginTop: 5,
+  },
+  deleteButton: {
+    backgroundColor: '#FF4444',
+    borderRadius: 10,
+    padding: 5,
+    marginTop: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  deleteButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
 });
 
 export default AgendaApp;
