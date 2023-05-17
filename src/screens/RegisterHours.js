@@ -31,7 +31,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   useEffect(() => {
     console.log("EMAIL:::" + email)
     getEmail();
-  }, []);
+  });
 
   const guardarHoras = () => {
     // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -238,23 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  botoneraContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 8,
-  },
-  botoneraButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  botoneraButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
+
 });
 
 export default RegisterHoursScreen;

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario, getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
-import * as SQLite from 'expo-sqlite';
+
+
 import { AuthContext } from '../services/AuthContext';
 import { useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -89,7 +90,7 @@ const Home = ({ navigation, route }) => {
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
-    }, []);
+    });
 
 
     const renderItem = ({ item }) => {
@@ -97,7 +98,7 @@ const Home = ({ navigation, route }) => {
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={[styles.iconContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
-                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, { horasContainer: '#8E44AD', horasContainer: '#8E44AD' }] : styles.iconLectiva}>
+                    <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, { horasContainer: '#8E44AD' }] : styles.iconLectiva}>
                         {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
                     </Text>
                 </View>
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
     },
     tarjetaFecha: {
         fontSize: 14,
-        fontWeight: 'normal',
+        
         color: '#023E8A',
         flex: 1,
         numberOfLines: 1,
@@ -285,23 +286,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#FFFFFF',
     },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+  
 });
 
 

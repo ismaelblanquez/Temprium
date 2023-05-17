@@ -19,7 +19,7 @@ const FilterHoursScreen = ({ navigation }) => {
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
-    }, []);
+    });
 
     const fechaInvertida = fecha.split('-').reverse().join('-');
 
@@ -172,17 +172,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center'
     },
-    pickerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 16,
-        width: '70%',
-    },
-    diaMes: {
-        fontSize: 30,
-        alignSelf: 'center',
-        color: '#0096C7',
-    },
+
     button: {
         backgroundColor: '#0096C7',
         alignItems: 'center',
@@ -197,23 +187,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+
 });
 
 export default FilterHoursScreen;
