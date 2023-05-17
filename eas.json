@@ -12,7 +12,8 @@
         "simulator": true
       },
       "android":{
-        "buildType": "apk"
+        "buildType": "apk",
+        "simulator": true
       }
     },
     "production": {}

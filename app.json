@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iblanquez.Temprium"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "83d5e0e1-00d7-4e9c-a453-bbe74e69eb50"
+      }
     }
   }
 }
