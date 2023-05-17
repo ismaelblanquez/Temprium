@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#0096C7',
-    borderRadius: '100%',
+    borderRadius: 100,
     height: 30,
     width: 30,
     // padding: 8,

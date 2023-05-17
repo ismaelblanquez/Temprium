@@ -1,69 +1,41 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
-import 'setimmediate';
-import { existeUsuario, verificarUsuario, buscarUsuario} from '../DataBase/Conexion';
+import { existeUsuario, verificarUsuario, buscarUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-
-
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const verificarUsuario = async (email, password) => {
-  //   const existe = await existeUsuario(email, password);
-  //   if (existe) {
-  //     console.log('Usuario existe');
-  //     // Aquí podrías agregar lógica adicional para iniciar sesión
-  //     return true;
-  //   } else {
-  //     console.log('Usuario no existe');
-  //     // Aquí podrías agregar lógica adicional para manejar el caso en que el usuario no exista
-  //     return false;
-  //   }
-  // };
-
-
   const handleTitle = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión
     console.log('INICIO DE SESIÓN');
   };
 
-const handleLogin = async () => {
-  console.log('Email:', email);
-  console.log('Password:', password);
-  await AsyncStorage.setItem('email', email);
-  await AsyncStorage.setItem('password', password);
+  const handleLogin = async () => {
+    console.log('Email:', email);
+    console.log('Password:', password);
+    await AsyncStorage.setItem('email', email);
+    await AsyncStorage.setItem('password', password);
 
-    verificarUsuario(email, password)
-      .then(() => navigation.replace("Home"))
-      .catch(error => console.log(`Error al buscar usuario: ${error.message}`));
-
-    // const usuarioExiste = await verificarUsuario(email, password);
-    // if (usuarioExiste) {
-    //   navigation.navigate('Home');
-    // }
+    try {
+      await verificarUsuario(email, password);
+      console.log(email, password);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.log(`Error al buscar usuario: ${error.message}`);
+    }
   };
 
-
-
   const handleGuest = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión como invitado
     console.log('Iniciar sesión como invitado');
     navigation.replace('Home');
   };
 
   const handleForgotPassword = () => {
-    // Aquí puedes agregar la lógica para recuperar la contraseña
     console.log('Recuperar contraseña');
   };
 
   const handleRegister = () => {
-    // Aquí puedes agregar la lógica para registrar una nueva cuenta
     console.log('Registrarse');
     navigation.navigate('Register');
   };
@@ -83,7 +55,7 @@ const handleLogin = async () => {
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
-          placeholderTextColor = '#BDBDBD'
+          placeholderTextColor="#BDBDBD"
         />
         <TextInput
           style={styles.input}
@@ -91,7 +63,7 @@ const handleLogin = async () => {
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
-          placeholderTextColor = '#BDBDBD'
+          placeholderTextColor="#BDBDBD"
         />
         <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
           <Text style={styles.forgotPasswordText}>¿OLVIDASTE TU CONTRASEÑA?</Text>
@@ -117,13 +89,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', //#F7FAFC
+    backgroundColor: '#FFFFFF',
   },
   cabecera: {
     height: '18%',
     width: '100%',
   },
-  title: { //inicio de sesion
+  title: {
     textAlign: 'center',
     marginTop: 30,
     marginBottom: 25,
@@ -132,7 +104,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 20,
-    width: '80%'
+    width: '80%',
   },
   input: {
     height: 40,
@@ -141,14 +113,14 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    color: '#1A1A1A'
-    },
+    color: '#1A1A1A',
+  },
   forgotPasswordButton: {
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   forgotPasswordText: {
     color: '#1A1A1A',
-    fontSize: 12
+    fontSize: 12,
   },
   loginButton: {
     backgroundColor: '#0096C7',
@@ -174,19 +146,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   registerContainer: {
-    //alignItems: 'bottom',
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   registerText: {
     marginTop: 30,
     alignItems: 'center',
     color: '#1A1A1A',
-    fontSize: 12
+    fontSize: 12,
   },
   registerLink: {
     color: '#0096C7',
     fontWeight: 'bold',
-    fontSize: 12
+    fontSize: 12,
   },
 });
+
 export default Login;

@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import * as SQLite from 'expo-sqlite';
-
-const db = SQLite.openDatabase('Temprium.db');
-
 
 const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('Lectivas');
@@ -20,43 +15,40 @@ const RegisterHoursScreen = ({ navigation }) => {
   const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
   const anio = fechaActual.getFullYear();
   const diaActual = `${dia}-${mes}-${anio}`;
-  
 
   const [email, setEmail] = useState('');
+
   const getEmail = async () => {
-    const email = await AsyncStorage.getItem('email');
-    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-  }
+    try {
+      const email = await AsyncStorage.getItem('email');
+      setEmail(email || 'dummy@nosession.com');
+    } catch (error) {
+      console.log(`Error getting email from AsyncStorage: ${error}`);
+    }
+  };
 
   useEffect(() => {
-    console.log("EMAIL:::" + email)
     getEmail();
-  });
+  }, []);
 
   const guardarHoras = () => {
-    // Lógica para guardar las horas en base de datos o enviar a servidor
-    // Puedes acceder a los valores seleccionados en los estados correspondientes
     console.log('Tipo de Horas:', tipoHoras);
     console.log('Horas Trabajadas:', horas);
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
-
-
-    console.log(email);
+    console.log('Email', email);
+    
     getIdUsuario(email, (id) => {
-      // console.log(Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase});
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
           const idHoras = results.insertId;
           console.log(results.rows);
           console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
-
-          navigation.replace('Home'/*, { idhoras: idHoras }*/);
+          navigation.replace('Home', { idhoras: idHoras });
         })
-        .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
-        );
+        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     });
   };
 
@@ -72,7 +64,8 @@ const RegisterHoursScreen = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={tipoHoras}
-          onValueChange={(value) => setTipoHoras(value)}>
+          onValueChange={(value) => setTipoHoras(value)}
+        >
           <Picker.Item label="Lectivas" value="Lectivas" />
           <Picker.Item label="No Lectivas" value="No Lectivas" />
         </Picker>
@@ -84,7 +77,8 @@ const RegisterHoursScreen = ({ navigation }) => {
           <Picker
             style={[styles.picker, { flex: 1, marginRight: 4 }]}
             selectedValue={horas}
-            onValueChange={(value) => setHoras(value)}>
+            onValueChange={(value) => setHoras(value)}
+          >
             {[...Array(12)].map((_, index) => (
               <Picker.Item
                 key={index}
@@ -97,7 +91,8 @@ const RegisterHoursScreen = ({ navigation }) => {
           <Picker
             style={[styles.picker, { flex: 1, marginLeft: '5%' }]}
             selectedValue={minutos}
-            onValueChange={(value) => setMinutos(value)}>
+            onValueChange={(value) => setMinutos(value)}
+          >
             {[...Array(12)].map((_, index) => (
               <Picker.Item
                 key={index}
@@ -115,7 +110,8 @@ const RegisterHoursScreen = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={categoria}
-          onValueChange={(value) => setCategoria(value)}>
+          onValueChange={(value) => setCategoria(value)}
+        >
           <Picker.Item label="Ninguna" value=" " />
           <Picker.Item label="Impartir clases" value="Impartir clases" />
           <Picker.Item label="Preparar clases" value="Preparar clases" />
@@ -143,20 +139,18 @@ const RegisterHoursScreen = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={clase}
-          onValueChange={(value) => setClase(value)}>
+          onValueChange={(value) => setClase(value)}
+        >
           <Picker.Item label="1SI" value="1SI" />
           <Picker.Item label="2SI" value="2SI" />
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-
         <TouchableOpacity style={styles.button} onPress={guardarHoras}>
           <Text style={styles.buttonText}>GUARDAR</Text>
         </TouchableOpacity>
       </View>
-
       <BottomBar navigation={navigation} />
-
     </View>
   );
 };
@@ -209,9 +203,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 4,
     marginBottom: '8%',
-    // alignText: 'center'
-    // justifyContent: 'center',
-    // alignItems: 'center'
   },
   pickerContainer: {
     flexDirection: 'row',
@@ -238,7 +229,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
 });
 
 export default RegisterHoursScreen;

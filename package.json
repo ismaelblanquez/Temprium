@@ -22,7 +22,7 @@
     "react-big-calendar": "^1.6.9",
     "react-date-picker": "^10.0.3",
     "react-dom": "18.2.0",
-    "react-native": "0.71.7",
+    "react-native": "0.71.8",
     "react-native-calendars": "^1.1295.0",
     "react-native-push-notification": "^8.1.1",
     "react-native-sqlite-storage": "^6.0.1",
