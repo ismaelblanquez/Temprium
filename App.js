@@ -19,6 +19,7 @@ import ProfileConfig from './src/screens/ProfileConfig';
 import Calendar from './src/screens/Calendar';
 import AuthContext from './src/services/AuthContext';
 import 'setimmediate';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Definir los componentes Login y Home
 // const Login = ({ navigation }) => {
@@ -46,6 +47,7 @@ const Stack = createStackNavigator();
 const App = () => {
   
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
@@ -69,6 +71,7 @@ const App = () => {
 
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
