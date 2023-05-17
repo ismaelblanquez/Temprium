@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flexDirection: 'row',
-        alignItems: 'start',
+       
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',

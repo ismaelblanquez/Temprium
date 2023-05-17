@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, TouchableOpacity, DatePickerAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, DatePickerAndroid, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar } from 'react-native-calendars';
 import { selectHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {Picker} from '@react-native-picker/picker';
 
 const FilterHoursScreen = ({ navigation }) => {
     const [tipoHoras, setTipoHoras] = useState('');
@@ -40,6 +42,7 @@ const FilterHoursScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.headerContainer}>
                 <View style={styles.tituloContainer}>
                     <Text style={styles.titulo}>FILTRAR HORAS</Text>
@@ -114,8 +117,9 @@ const FilterHoursScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <BottomBar navigation={navigation} />
 
+        </ScrollView>
+            <BottomBar navigation={navigation} />
         </View>
     );
 };
@@ -140,6 +144,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: '4%'
     },
+    scrollViewContainer: {
+        flexGrow: 1,
+      },
     titulo: {
         fontSize: 20,
         fontWeight: 'bold',

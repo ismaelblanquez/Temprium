@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Componente de la pantalla Home
 const Home = ({ navigation, route }) => {
@@ -14,7 +14,7 @@ const Home = ({ navigation, route }) => {
   const getEmail = async () => {
     console.log(route.params);
     if (route.params) {
-      const email = await AsyncStorage.getItem('email');
+    //   const email = await AsyncStorage.getItem('email');
       setEmail(email || 'dummy@nosession.com');
       const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
       console.log('Tipo de Horas:', tipoHoras);
@@ -45,7 +45,7 @@ const Home = ({ navigation, route }) => {
         });
 
     } else {
-      const email = await AsyncStorage.getItem('email');
+    //   const email = await AsyncStorage.getItem('email');
       setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
       getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
         .then((results) => {
@@ -82,7 +82,7 @@ const Home = ({ navigation, route }) => {
     return (
       <View style={styles.tarjetaContainer}>
         <View style={[styles.iconContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
-          <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva, { horasContainer: '#8E44AD' }] : styles.iconLectiva}>
+          <Text style={item.Tipohoras === "No Lectivas" ? [styles.iconNoLectiva] : styles.iconLectiva}>
             {item.Tipohoras === "No Lectivas" ? 'NL' : 'L'}
           </Text>
         </View>
@@ -122,7 +122,9 @@ const Home = ({ navigation, route }) => {
   }
 
   return (
+    
     <View style={styles.container}>
+        
       <View style={styles.headerContainer}>
         <View style={styles.horasTotalesContainer}>
           <Text style={styles.horasTotalesTitulo}>HORAS REALIZADAS:</Text>
@@ -133,8 +135,8 @@ const Home = ({ navigation, route }) => {
         <Text style={styles.recienteTitulo}>RECIENTE</Text>
         <TouchableOpacity onPress={() => {
           console.log("prueba");
-          deleteHoras();
-          navigation.replace('Home');
+          
+          
         }}>
           <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
         </TouchableOpacity>
@@ -144,6 +146,7 @@ const Home = ({ navigation, route }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.Id_hor.toString()}
       />
+      
       <BottomBar navigation={navigation} />
     </View>
   );
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'normal',
     color: '#0096C7',
-    marginBottom: '20%',
+    marginBottom: '10%',
   },
   tarjetaContainer: {
     flexDirection: 'row',
@@ -244,7 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#023E8A',
     flex: 1,
-    numberOfLines: 1,
+    // numberOfLines: 1,
     fontWeight: 'bold',
     width: 80,
   },

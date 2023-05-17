@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    position: 'fixed',
+    // position: fixed,
     bottom: 0,
     left: 0,
     right: 0,

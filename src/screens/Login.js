@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { existeUsuario, verificarUsuario, buscarUsuario } from '../DataBase/Conexion';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleTitle = () => {
-    console.log('INICIO DE SESIÓN');
-  };
-
   const handleLogin = async () => {
-    console.log('Email:', email);
-    console.log('Password:', password);
-    await AsyncStorage.setItem('email', email);
-    await AsyncStorage.setItem('password', password);
-
     try {
-      await verificarUsuario(email, password);
-      console.log(email, password);
-      navigation.navigate('Home');
+      console.log('Email:', email);
+      console.log('Password:', password);
+      // await AsyncStorage.setItem('email', email);
+      // await AsyncStorage.setItem('password', password);
+
+      const usuarioExiste = await verificarUsuario(email, password);
+      if (usuarioExiste) {
+        console.log("La madre que me pario");
+        navigation.navigate('Home');
+      }
     } catch (error) {
       console.log(`Error al buscar usuario: ${error.message}`);
     }
