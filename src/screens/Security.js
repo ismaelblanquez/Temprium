@@ -60,6 +60,7 @@ function Seguridad() {
           secureTextEntry
           value={contrasenaAnterior}
           onChangeText={handleChangeContrasenaAnterior}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -67,6 +68,7 @@ function Seguridad() {
           secureTextEntry
           value={contrasena}
           onChangeText={handleChangeContrasena}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -74,6 +76,7 @@ function Seguridad() {
           secureTextEntry
           value={confirmarContrasena}
           onChangeText={handleChangeConfirmarContrasena}
+          placeholderTextColor = '#BDBDBD'
         />
         <View style={styles.optionContainer}>
           {/* <Text style={styles.optionText}>Autenticación de dos factores</Text>
@@ -129,7 +132,6 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A', //#1A1A1A
     paddingHorizontal: 10,
     marginBottom: 20,
-    placeholderTextColor: "#BDBDBD",
     color: '#1A1A1A',
   },
   optionContainer: {
