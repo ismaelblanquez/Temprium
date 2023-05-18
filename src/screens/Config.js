@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
 
 
@@ -21,11 +21,11 @@ const Config = ({ navigation }) => {
                 navigation.navigate('ProfileConfig');
                 break;
             case 2:
-                navigation.navigate('Notifications');
+                // navigation.navigate('Notifications');
                 Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 3:
-                navigation.navigate('privacy');
+                // navigation.navigate('privacy');
                 Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 4:
