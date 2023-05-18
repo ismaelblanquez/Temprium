@@ -4,10 +4,10 @@
     "slug": "temprium",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/images/logo2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/splash.png",
+      "image": "./src/assets/images/pantallainicio.png",
       "resizeMode": "contain",
       "backgroundColor": "#0096c7"
     },
@@ -20,8 +20,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/logo.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/images/logo2.png",
+        "backgroundColor": "#0096c7"
       },
       "package": "com.iblanquez.Temprium"
     },

@@ -14,8 +14,8 @@ const Home = ({ navigation, route }) => {
     const getEmail = async () => {
 
         if (route.params) {
-               const email = await AsyncStorage.getItem('email');
-            setEmail(email || 'dummy@nosession.com');
+            const storedEmail = await AsyncStorage.getItem('email');
+            const email = storedEmail || 'dummy@nosession.com';
             const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
             console.log('Tipo de Horas:', tipoHoras);
             console.log('Fecha:', fecha);
