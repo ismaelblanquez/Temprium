@@ -25,8 +25,13 @@ const Home = ({ navigation, route }) => {
         console.log(route.params)
         if (route.params) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com');
+=======
+            const storedEmail = await AsyncStorage.getItem('email');
+            const email = storedEmail || 'dummy@nosession.com';
+>>>>>>> Stashed changes
 =======
             const storedEmail = await AsyncStorage.getItem('email');
             const email = storedEmail || 'dummy@nosession.com';

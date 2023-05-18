@@ -20,7 +20,11 @@
     "android": {
       "adaptiveIcon": {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         "foregroundImage": "./src/assets/adaptive-icon.png",
+=======
+        "foregroundImage": "./src/assets/images/logo2.png",
+>>>>>>> Stashed changes
 =======
         "foregroundImage": "./src/assets/images/logo2.png",
 >>>>>>> Stashed changes
