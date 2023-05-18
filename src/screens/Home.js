@@ -14,13 +14,23 @@ const Home = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const [horasTotales, setHorasTotales] = useState(0);
     const [email, setEmail] = useState('');
+<<<<<<< Updated upstream
 
+=======
+    
+    const getEmail = async () => {
+>>>>>>> Stashed changes
 
     const getEmail = async () => {
         console.log(route.params)
         if (route.params) {
+<<<<<<< Updated upstream
             const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com');
+=======
+            const storedEmail = await AsyncStorage.getItem('email');
+            const email = storedEmail || 'dummy@nosession.com';
+>>>>>>> Stashed changes
             const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
             console.log('Tipo de Horas:', tipoHoras);
             console.log('Fecha:', fecha);

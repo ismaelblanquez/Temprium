@@ -119,7 +119,52 @@ function Security() {
             </View>
             <Button title="Guardar cambios" onPress={handleGuardarCambios} />
         </View>
+<<<<<<< Updated upstream
     );
+=======
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña anterior"
+          secureTextEntry
+          value={contrasenaAnterior}
+          onChangeText={handleChangeContrasenaAnterior}
+          placeholderTextColor="#BDBDBD"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña nueva"
+          secureTextEntry
+          value={contrasena}
+          onChangeText={handleChangeContrasena}
+          placeholderTextColor="#BDBDBD"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirmar contraseña"
+          secureTextEntry
+          value={confirmarContrasena}
+          onChangeText={handleChangeConfirmarContrasena}
+          placeholderTextColor="#BDBDBD"
+        />
+        <View style={styles.optionContainer}>
+          {/* <Text style={styles.optionText}>Autenticación de dos factores</Text>
+          <Switch
+            trackColor={{ true: '#0096C7', false: '#E1F5FE' }}
+            value={autenticacionDosFactores}
+            onValueChange={toggleAutenticacionDosFactores}
+            thumbColor={autenticacionDosFactores ? '#E1F5FE' : '#0096C7'}
+          /> */}
+        </View>
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleGuardarCambios}>
+        <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
+      </TouchableOpacity>
+    </View>
+  );
+>>>>>>> Stashed changes
 }
 
 const styles = StyleSheet.create({

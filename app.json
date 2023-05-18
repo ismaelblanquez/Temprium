@@ -4,12 +4,12 @@
     "slug": "Temprium",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/images/logo2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/splash.png",
+      "image": "./src/assets/images/pantallainicio.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0096c7"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,7 +19,11 @@
     },
     "android": {
       "adaptiveIcon": {
+<<<<<<< Updated upstream
         "foregroundImage": "./src/assets/adaptive-icon.png",
+=======
+        "foregroundImage": "./src/assets/images/logo2.png",
+>>>>>>> Stashed changes
         "backgroundColor": "#ffffff"
       }
     },
