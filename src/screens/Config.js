@@ -8,8 +8,8 @@ const Config = ({ navigation }) => {
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
-        // { id: 2, titulo: 'NOTIFICACIONES' },
-        // { id: 3, titulo: 'PRIVACIDAD' },
+        { id: 2, titulo: 'NOTIFICACIONES' },
+        { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
         // { id: 5, titulo: 'IDIOMA' },
         // { id: 6, titulo: 'TEMAS' },
@@ -18,22 +18,24 @@ const Config = ({ navigation }) => {
     const handleItemPress = (item) => {
         switch (item.id) {
             case 1:
-                navigation.navigate('ProfileConfig');
+                navigation.replace('ProfileConfig');
                 break;
             case 2:
-                navigation.navigate('Notifications');
+                navigation.replace('Notifications');
+                Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 3:
-                navigation.navigate('privacy');
+                navigation.replace('privacy');
+                Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 4:
-                navigation.navigate('Security');
+                navigation.replace('Security');
                 break;
             case 5:
-                navigation.navigate('Language');
+                navigation.replace('Language');
                 break;
             case 6:
-                navigation.navigate('Theme');
+                navigation.replace('Theme');
                 break;
             default:
                 break;
