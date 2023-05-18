@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Componente de la pantalla Home
 const Home = ({ navigation, route }) => {
@@ -14,8 +14,8 @@ const Home = ({ navigation, route }) => {
     const getEmail = async () => {
 
         if (route.params) {
-            //   const email = await AsyncStorage.getItem('email');
-            setEmail(email || 'dummy@nosession.com');
+            const storedEmail = await AsyncStorage.getItem('email');
+            const email = storedEmail || 'dummy@nosession.com';
             const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
             console.log('Tipo de Horas:', tipoHoras);
             console.log('Fecha:', fecha);
@@ -43,7 +43,7 @@ const Home = ({ navigation, route }) => {
                 });
 
         } else {
-            //   const email = await AsyncStorage.getItem('email');
+               const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
             getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
                 .then((results) => {
