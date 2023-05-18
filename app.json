@@ -23,16 +23,15 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.iblanquez.temprium"
+      "package": "com.iblanquez.Temprium"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "aff9a4a3-09ca-4a19-9320-e8bb4fd2be3d"
+        "projectId": "83d5e0e1-00d7-4e9c-a453-bbe74e69eb50"
       }
-    },
-    "owner": "iblanquez"
+    }
   }
 }

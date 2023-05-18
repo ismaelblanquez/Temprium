@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, TouchableOpacity, DatePickerAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, DatePickerAndroid, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar } from 'react-native-calendars';
 import { selectHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {Picker} from '@react-native-picker/picker';
 
 const FilterHoursScreen = ({ navigation }) => {
     const [tipoHoras, setTipoHoras] = useState('');
@@ -19,7 +21,7 @@ const FilterHoursScreen = ({ navigation }) => {
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
-    }, []);
+    });
 
     const fechaInvertida = fecha.split('-').reverse().join('-');
 
@@ -40,6 +42,7 @@ const FilterHoursScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.headerContainer}>
                 <View style={styles.tituloContainer}>
                     <Text style={styles.titulo}>FILTRAR HORAS</Text>
@@ -114,8 +117,9 @@ const FilterHoursScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <BottomBar navigation={navigation} />
 
+        </ScrollView>
+            <BottomBar navigation={navigation} />
         </View>
     );
 };
@@ -140,6 +144,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: '4%'
     },
+    scrollViewContainer: {
+        flexGrow: 1,
+      },
     titulo: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -172,17 +179,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center'
     },
-    pickerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 16,
-        width: '70%',
-    },
-    diaMes: {
-        fontSize: 30,
-        alignSelf: 'center',
-        color: '#0096C7',
-    },
+
     button: {
         backgroundColor: '#0096C7',
         alignItems: 'center',
@@ -197,23 +194,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+
 });
 
 export default FilterHoursScreen;

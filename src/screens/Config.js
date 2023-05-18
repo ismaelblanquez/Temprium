@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flexDirection: 'row',
-        alignItems: 'start',
+       
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -112,28 +112,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         color: '#0096C7',
     },
-    tarjetaFlecha: {
-        // alignItems: '',
-        color: '#0096C7',
-        fontWeight: 'bold'
-    },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+
 });
 
 export default Config;
