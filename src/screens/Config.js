@@ -18,24 +18,24 @@ const Config = ({ navigation }) => {
     const handleItemPress = (item) => {
         switch (item.id) {
             case 1:
-                navigation.replace('ProfileConfig');
+                navigation.navigate('ProfileConfig');
                 break;
             case 2:
-                navigation.replace('Notifications');
+                navigation.navigate('Notifications');
                 Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 3:
-                navigation.replace('privacy');
+                navigation.navigate('privacy');
                 Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                 break;
             case 4:
-                navigation.replace('Security');
+                navigation.navigate('Security');
                 break;
             case 5:
-                navigation.replace('Language');
+                navigation.navigate('Language');
                 break;
             case 6:
-                navigation.replace('Theme');
+                navigation.navigate('Theme');
                 break;
             default:
                 break;

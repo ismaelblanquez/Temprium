@@ -60,6 +60,7 @@ const Register = ({ navigation }) => {
           secureTextEntry
           value={repPassword}
           onChangeText={(text) => setRepPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
