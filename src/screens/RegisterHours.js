@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import * as SQLite from 'expo-sqlite';
-
-const db = SQLite.openDatabase('Temprium.db');
-
-
+import {Picker} from '@react-native-picker/picker';
 const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('Lectivas');
   const [horas, setHoras] = useState('1');
@@ -20,48 +16,47 @@ const RegisterHoursScreen = ({ navigation }) => {
   const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
   const anio = fechaActual.getFullYear();
   const diaActual = `${dia}-${mes}-${anio}`;
-  
 
   const [email, setEmail] = useState('');
+
   const getEmail = async () => {
-    const email = await AsyncStorage.getItem('email');
-    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-  }
+    try {
+      const email = await AsyncStorage.getItem('email');
+      setEmail(email || 'dummy@nosession.com');
+    } catch (error) {
+      console.log(`Error getting email from AsyncStorage: ${error}`);
+    }
+  };
 
   useEffect(() => {
-    console.log("EMAIL:::" + email)
     getEmail();
   }, []);
 
   const guardarHoras = () => {
-    // Lógica para guardar las horas en base de datos o enviar a servidor
-    // Puedes acceder a los valores seleccionados en los estados correspondientes
     console.log('Tipo de Horas:', tipoHoras);
     console.log('Horas Trabajadas:', horas);
     console.log('Minutos Trabajados:', minutos);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
-
-
-    console.log(email);
+    console.log('Email', email);
+    
     getIdUsuario(email, (id) => {
-      // console.log(Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase});
+      console.log('IIIIIIDDDDD', id)
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
-          const idHoras = results.insertId;
+          // const idHoras = results.insertId;
           console.log(results.rows);
           console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
-
-          navigation.replace('Home'/*, { idhoras: idHoras }*/);
+          navigation.replace('Home');
         })
-        .catch(error => console.log(`Error al registrar usuario: ${error.message}`)
-        );
+        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     });
   };
 
   return (
     <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.headerContainer}>
         <View style={styles.tituloContainer}>
           <Text style={styles.titulo}>AÑADIR HORAS</Text>
@@ -72,50 +67,54 @@ const RegisterHoursScreen = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={tipoHoras}
-          onValueChange={(value) => setTipoHoras(value)}>
+          onValueChange={(value) => setTipoHoras(value)}
+        >
           <Picker.Item label="Lectivas" value="Lectivas" />
           <Picker.Item label="No Lectivas" value="No Lectivas" />
         </Picker>
       </View>
 
       <View style={styles.componente}>
-        <Text style={styles.label}>HORAS TRABAJADAS</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            style={[styles.picker, { flex: 1, marginRight: 4 }]}
-            selectedValue={horas}
-            onValueChange={(value) => setHoras(value)}>
-            {[...Array(12)].map((_, index) => (
-              <Picker.Item
-                key={index}
-                label={String(index)}
-                value={String(index)}
-              />
-            ))}
-          </Picker>
-          <Text style={styles.hourMin}>h</Text>
-          <Picker
-            style={[styles.picker, { flex: 1, marginLeft: '5%' }]}
-            selectedValue={minutos}
-            onValueChange={(value) => setMinutos(value)}>
-            {[...Array(12)].map((_, index) => (
-              <Picker.Item
-                key={index}
-                label={String(index * 5)}
-                value={String(index * 5)}
-              />
-            ))}
-          </Picker>
-          <Text style={styles.hourMin}>min</Text>
-        </View>
-      </View>
+  <Text style={styles.label}>HORAS TRABAJADAS</Text>
+  <View style={[styles.pickerContainer, { marginBottom: 0 }]}>
+    <Picker
+      style={[styles.picker, { width: '50%' }]}
+      selectedValue={horas}
+      onValueChange={(value) => setHoras(value)}
+    >
+      {[...Array(12)].map((_, index) => (
+        <Picker.Item
+          key={index}
+          label={String(index)}
+          value={String(index)}
+        />
+      ))}
+    </Picker>
+    <Text style={styles.hourMin}>h</Text>
+    <Picker
+      style={[styles.picker, { width: '50%' }]}
+      selectedValue={minutos}
+      onValueChange={(value) => setMinutos(value)}
+    >
+      {[...Array(12)].map((_, index) => (
+        <Picker.Item
+          key={index}
+          label={String(index * 5)}
+          value={String(index * 5)}
+        />
+      ))}
+    </Picker>
+    <Text style={styles.hourMin}>min</Text>
+  </View>
+</View>
 
       <View style={styles.componente}>
         <Text style={styles.label}>CATEGORÍAS</Text>
         <Picker
           style={styles.picker}
           selectedValue={categoria}
-          onValueChange={(value) => setCategoria(value)}>
+          onValueChange={(value) => setCategoria(value)}
+        >
           <Picker.Item label="Ninguna" value=" " />
           <Picker.Item label="Impartir clases" value="Impartir clases" />
           <Picker.Item label="Preparar clases" value="Preparar clases" />
@@ -143,20 +142,19 @@ const RegisterHoursScreen = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={clase}
-          onValueChange={(value) => setClase(value)}>
+          onValueChange={(value) => setClase(value)}
+        >
           <Picker.Item label="1SI" value="1SI" />
           <Picker.Item label="2SI" value="2SI" />
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-
         <TouchableOpacity style={styles.button} onPress={guardarHoras}>
           <Text style={styles.buttonText}>GUARDAR</Text>
         </TouchableOpacity>
       </View>
-
-      <BottomBar navigation={navigation} />
-
+    </ScrollView>
+    <BottomBar navigation={navigation} />
     </View>
   );
 };
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
-    marginTop: '5%'
+    // marginTop: '5%'
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
@@ -176,6 +174,7 @@ const styles = StyleSheet.create({
     width: '80%',
     marginLeft: '9%',
     marginBottom: '10%',
+    marginTop:'15%'
   },
   tituloContainer: {
     alignItems: 'center',
@@ -193,6 +192,7 @@ const styles = StyleSheet.create({
     width: '80%',
     marginLeft: '9%',
     marginBottom: '10%',
+    
   },
   label: {
     fontSize: 16,
@@ -208,21 +208,23 @@ const styles = StyleSheet.create({
     width: '60%',
     height: 40,
     borderRadius: 4,
-    marginBottom: '8%',
-    // alignText: 'center'
-    // justifyContent: 'center',
-    // alignItems: 'center'
+    marginBottom: '10%',
+    
   },
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
     width: '70%',
+    justifyContent: 'center',
   },
   hourMin: {
     fontSize: 16,
     alignSelf: 'center',
     color: '#0096C7'
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
   },
   button: {
     backgroundColor: '#0096C7',
@@ -237,23 +239,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  botoneraContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 8,
-  },
-  botoneraButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  botoneraButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
   },
 });
 

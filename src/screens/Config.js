@@ -8,11 +8,11 @@ const Config = ({ navigation }) => {
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
-        { id: 2, titulo: 'NOTIFICACIONES' },
-        { id: 3, titulo: 'PRIVACIDAD' },
+        // { id: 2, titulo: 'NOTIFICACIONES' },
+        // { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
-        { id: 5, titulo: 'IDIOMA' },
-        { id: 6, titulo: 'TEMAS' },
+        // { id: 5, titulo: 'IDIOMA' },
+        // { id: 6, titulo: 'TEMAS' },
     ];
 
     const handleItemPress = (item) => {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%'
+        // marginTop: '5%'
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '15%',
+        marginTop:'15%'
     },
     tituloContainer: {
         alignItems: 'center',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flexDirection: 'row',
-        alignItems: 'start',
+       
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -112,28 +113,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         color: '#0096C7',
     },
-    tarjetaFlecha: {
-        // alignItems: '',
-        color: '#0096C7',
-        fontWeight: 'bold'
-    },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+
 });
 
 export default Config;
