@@ -50,19 +50,19 @@ const App = () => {
     <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="RegisterHours" component={RegisterHours} />
-        <Stack.Screen name="FilterHours" component={FilterHours} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Config" component={Config} />
-        {/* <Stack.Screen name="Notifications" component={Notifications} /> */}
-        <Stack.Screen name="Language" component={Language} />
-        <Stack.Screen name="Security" component={Security} />
-        <Stack.Screen name="Theme" component={Theme} />
-        <Stack.Screen name="Calendar" component={Calendar} />
-        <Stack.Screen name="Privacy" component={Privacy} />
-        <Stack.Screen name="ProfileConfig" component={ProfileConfig} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+        <Stack.Screen name="RegisterHours" component={RegisterHours} options={{ headerShown: false }}/>
+        <Stack.Screen name="FilterHours" component={FilterHours} options={{ headerShown: false }}/>
+        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }}/>
+        {/* <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/> */}
+        <Stack.Screen name="Language" component={Language} options={{ headerShown: false }}/>
+        <Stack.Screen name="Security" component={Security} options={{ headerShown: false }}/>
+        <Stack.Screen name="Theme" component={Theme} options={{ headerShown: false }}/>
+        <Stack.Screen name="Calendar" component={Calendar} options={{ headerShown: false }}/>
+        <Stack.Screen name="Privacy" component={Privacy} options={{ headerShown: false }}/>
+        <Stack.Screen name="ProfileConfig" component={ProfileConfig} options={{ headerShown: false }} />
         <Stack.Screen
           name="BottomBar"
           component={BottomBar}
@@ -75,29 +75,5 @@ const App = () => {
   );
 };
 
-// Definir los estilos
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
 
 export default App;

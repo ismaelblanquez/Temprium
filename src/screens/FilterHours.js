@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%'
+        // marginTop: '5%'
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '10%',
+        marginTop:'15%'
     },
     tituloContainer: {
         alignItems: 'center',

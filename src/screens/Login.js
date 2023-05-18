@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { existeUsuario, verificarUsuario, buscarUsuario } from '../DataBase/Conexion';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,7 +16,7 @@ const Login = ({ navigation }) => {
 
       const usuarioExiste = await verificarUsuario(email, password);
       if (usuarioExiste) {
-        console.log("La madre que me pario");
+        
         navigation.navigate('Home');
       }
     } catch (error) {
@@ -25,16 +25,16 @@ const Login = ({ navigation }) => {
   };
 
   const handleGuest = () => {
-    console.log('Iniciar sesión como invitado');
+    
     navigation.replace('Home');
   };
 
   const handleForgotPassword = () => {
-    console.log('Recuperar contraseña');
+    Alert.alert('Esta función no está implementada en esta fase del desarrollo')
   };
 
   const handleRegister = () => {
-    console.log('Registrarse');
+   
     navigation.navigate('Register');
   };
 

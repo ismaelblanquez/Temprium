@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,7 +12,7 @@ const Home = ({ navigation, route }) => {
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {
-        console.log(route.params);
+
         if (route.params) {
             //   const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com');
@@ -26,7 +26,7 @@ const Home = ({ navigation, route }) => {
             selectHoras(tipoHoras, email, categoria, fecha, fechafin, clase)
                 .then((results) => {
                     const todos = [];
-                    console.log("resulttttts" + results);
+
 
                     results.forEach((item) => {
                         todos.push(item);
@@ -50,7 +50,7 @@ const Home = ({ navigation, route }) => {
             getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
                 .then((results) => {
                     const todos = [];
-                    console.log("resulttttts" + results);
+
 
                     results.forEach((item) => {
                         todos.push(item);
@@ -78,7 +78,7 @@ const Home = ({ navigation, route }) => {
     }, []);
 
     const renderItem = ({ item }) => {
-        console.log("item: " + item);
+
         return (
             <View style={styles.tarjetaContainer}>
                 <View style={[styles.iconContainer, { backgroundColor: item.Tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
@@ -100,7 +100,7 @@ const Home = ({ navigation, route }) => {
                 </View>
 
                 <TouchableOpacity onPress={() => {
-                    console.log("prueba");
+
                     deleteHoras(item.Id_hor);
                     navigation.replace('Home');
                 }}>
@@ -133,11 +133,7 @@ const Home = ({ navigation, route }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity onPress={() => {
-                    console.log("prueba");
-
-
-                }}>
+                <TouchableOpacity onPress={() => {Alert.alert('Esta función no está implementada en esta fase del desarrollo') }}>
                     <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
             </View>
@@ -149,9 +145,9 @@ const Home = ({ navigation, route }) => {
             />
 
 
-            
-                <BottomBar navigation={navigation} />
-            
+
+            <BottomBar navigation={navigation} />
+
 
         </View>
     );
@@ -162,18 +158,18 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%',
+        // marginTop: '5%',
         // marginBottom: 50,
     },
     flatList: {
         marginBottom: 30, // Ajusta el valor según sea necesario
-      },
-      bottomBarContainer: {
+    },
+    bottomBarContainer: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
         marginBottom: 0,
-      },
+    },
     headerContainer: {
         backgroundColor: '#E1F5FE',
         borderRadius: 12,
@@ -182,6 +178,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '10%',
+        marginTop:'15%'
     },
     horasTotalesContainer: {
         alignItems: 'center',

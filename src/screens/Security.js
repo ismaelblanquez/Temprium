@@ -1,156 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updatePassword } from '../DataBase/Conexion';
-import * as SQLite from 'expo-sqlite';
+import React, { useState } from 'react';
+
 import {
-    View,
-    Text,
-    StyleSheet,
-    Button,
-    TextInput,
-    Switch,
-    Alert,
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  Switch,
+  TouchableOpacity,
+  Platform,
+  Alert,
 } from 'react-native';
 
-function Security() {
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [contrasenaAnterior, setContrasenaAnterior] = useState('');
-    const [contrasena, setContrasena] = useState('');
-    const [confirmarContrasena, setConfirmarContrasena] = useState('');
-    const [autenticacionDosFactores, setAutenticacionDosFactores] =
+function Seguridad() {
+  const [contrasena, setContrasena] = useState('');
+  const [contrasenaAnterior, setContrasenaAnterior] = useState('');
+  const [confirmarContrasena, setConfirmarContrasena] = useState('');
+  const [autenticacionDosFactores, setAutenticacionDosFactores] =
+    useState(false);
 
-        useState(false);
+  const handleChangeContrasena = (text) => {
+    setContrasena(text);
+  };
 
-    const [loggedIn, setLoggedIn] = useState(false);
+  const handleChangeContrasenaAnterior = (text) => {
+    setContrasenaAnterior(text);
+  };
 
+  const handleChangeConfirmarContrasena = (text) => {
+    setConfirmarContrasena(text);
+  };
 
-    useEffect(() => {
-        const checkLoginStatus = async () => {
-            const email = await AsyncStorage.getItem('email');
-            if (email) {
-                setLoggedIn(true);
-                setEmail(email);
-            } else {
-                setLoggedIn(false);
-            }
-        };
-        checkLoginStatus();
-    }, []);
+  const toggleAutenticacionDosFactores = () => {
+    setAutenticacionDosFactores(!autenticacionDosFactores);
+  };
 
-    const getEmail = async () => {
-        const email = await AsyncStorage.getItem('email');
-        setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-    }
-    const getPassword = async () => {
-        const password = await AsyncStorage.getItem('password');
-        setPassword(password); // Establecer un valor predeterminado si email es nulo o indefinido
-    }
+  const handleGuardarCambios = () => {
+    // Lógica para guardar los cambios de seguridad en la aplicación
+    // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
+    console.log('Contraseña actualizada:', contrasena);
+    console.log('Contraseña anterior:', contrasenaAnterior);
+    console.log('Confirmar contraseña:', confirmarContrasena);
+    console.log('Autenticación de dos factores:', autenticacionDosFactores);
+    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+  };
 
-    const handleChangeContrasena = (text) => {
-        setContrasena(text);
-    };
-
-
-    const handleChangeContrasenaAnterior = (text) => {
-        setContrasenaAnterior(text);
-    };
-
-    const handleChangeConfirmarContrasena = (text) => {
-        setConfirmarContrasena(text);
-    };
-
-    const toggleAutenticacionDosFactores = () => {
-        setAutenticacionDosFactores(!autenticacionDosFactores);
-    };
-
-    const handleGuardarCambios = () => {
-        // Lógica para guardar los cambios de seguridad en la aplicación
-
-        if ((password !== contrasenaAnterior) || contrasena !== confirmarContrasena) {
-            Alert.alert('La contraseña anterior no es correcta o las contraseñas no coinciden.');
-            return;
-        }
-        else {
-            // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
-            console.log('Contraseña actualizada:', contrasena);
-            console.log('Contraseña anterior:', contrasenaAnterior);
-            console.log('Confirmar contraseña:', confirmarContrasena);
-            console.log('Autenticación de dos factores:', autenticacionDosFactores);
-        }
-    };
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Seguridad</Text>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Contraseña anterior</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={contrasenaAnterior}
-                    onChangeText={handleChangeContrasenaAnterior}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Contraseña nueva</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={contrasena}
-                    onChangeText={handleChangeContrasena}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Confirmar contraseña</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={confirmarContrasena}
-                    onChangeText={handleChangeConfirmarContrasena}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Autenticación de dos factores</Text>
-                <Switch
-                    value={autenticacionDosFactores}
-                    onValueChange={toggleAutenticacionDosFactores}
-                />
-            </View>
-            <Button title="Guardar cambios" onPress={handleGuardarCambios} />
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.tituloContainer}>
+          <Text style={styles.titulo}>SEGURIDAD</Text>
         </View>
-    );
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña anterior"
+          secureTextEntry
+          value={contrasenaAnterior}
+          onChangeText={handleChangeContrasenaAnterior}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña nueva"
+          secureTextEntry
+          value={contrasena}
+          onChangeText={handleChangeContrasena}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirmar contraseña"
+          secureTextEntry
+          value={confirmarContrasena}
+          onChangeText={handleChangeConfirmarContrasena}
+        />
+        <View style={styles.optionContainer}>
+          {/* <Text style={styles.optionText}>Autenticación de dos factores</Text>
+          <Switch
+            trackColor={{ true: '#0096C7', false: '#E1F5FE' }}
+            value={autenticacionDosFactores}
+            onValueChange={toggleAutenticacionDosFactores}
+            thumbColor={autenticacionDosFactores ? '#E1F5FE' : '#0096C7'}
+          /> */}
+        </View>
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleGuardarCambios}>
+        <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 24,
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    optionContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    optionText: {
-        fontSize: 16,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        marginLeft: 16,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        paddingHorizontal: 8,
-    },
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  headerContainer: {
+    backgroundColor: '#E1F5FE',
+    borderRadius: 12,
+    borderWidth: 4,
+    borderColor: '#0096C7',
+    width: '80%',
+    marginLeft: '9%',
+    marginBottom: '10%',
+    marginTop:'15%'
+  },
+  tituloContainer: {
+    alignItems: 'center',
+    padding: '4%',
+  },
+  titulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0096C7',
+  },
+  inputContainer: {
+    marginBottom: 30,
+    width: '80%',
+    marginLeft: '9%',
+  },
+  input: {
+    height: 40,
+    borderWidth: 2,
+    borderRadius: 8,
+    borderColor: '#1A1A1A', //#1A1A1A
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    placeholderTextColor: "#BDBDBD",
+    color: '#1A1A1A',
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  optionText: {
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#0096C7',
+    alignItems: 'center',
+    padding: '3%',
+    width: '80%',
+    borderRadius: 8,
+    marginBottom: '15%',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
-export default Security;
+export default Seguridad;

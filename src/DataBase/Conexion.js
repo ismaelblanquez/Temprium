@@ -42,7 +42,6 @@ export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
         'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
         [parseInt(Usuario), Tipohoras, parseInt(Horas), parseInt(minutos), Categoria, Dia, Clase],
         (_, results) => {
-          console.log("BBDD Usuario " + Usuario + " Tipo horas " + Tipohoras + " horas: " + Horas + " minutos: " + minutos + " Categoria: " + Categoria + " dia: " + Dia + " clase: " + Clase);
           console.log('Horas añadidas correctamente:', results);
           resolve(results);
         },
@@ -64,9 +63,9 @@ export function getAllHoras(email) {
           const todos = [];
           for (let i = 0; i < results.rows.length; i++) {
             todos.push(results.rows.item(i));
-            console.log("resultados" + JSON.stringify(results.rows.item(i)));
+
           }
-          console.log("todos" + todos)
+
           resolve(todos);
         },
         (_, error) => {
@@ -92,48 +91,47 @@ export function selectHoras(
 ) {
   return new Promise((resolve, reject) => {
     let consulta = '';
-    let parametros = []; 
-     consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario ';
-    if (tipoHoras != ''){
-       consulta += 'AND HORAS.Tipohoras = ? ';
-       parametros.push(tipoHoras);
+    let parametros = [];
+    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario ';
+    if (tipoHoras != '') {
+      consulta += 'AND HORAS.Tipohoras = ? ';
+      parametros.push(tipoHoras);
     }
-    if (categoria != ''){
+    if (categoria != '') {
       consulta += 'AND HORAS.Categoria = ? ';
       parametros.push(categoria);
-   }
-   if (fechaInicio != ''){
-    consulta += 'AND HORAS.Dia = ? ';
-    parametros.push(fechaInicio);
- }
- if (clase != ''){
-  consulta += 'AND HORAS.Clase = ? ';
-  parametros.push(clase);
-}
-if (usuario != ''){
-  consulta += 'AND Usuarios.email = ? ';
-  parametros.push(usuario);
-}
-consulta += 'ORDER BY Id_hor DESC';
-console.log(consulta),
-        console.log(parametros),
-    db.transaction(tx => {
-      tx.executeSql(
-        consulta,
-        parametros,
-        (_, results) => {
-          const todos = [];
-          for (let i = 0; i < results.rows.length; i++) {
-            todos.push(results.rows.item(i));
-          }
-          console.log(todos);
-          resolve(todos);
-        },
-        err => {
-          reject(err);
-        },
-      );
-    });
+    }
+    if (fechaInicio != '') {
+      consulta += 'AND HORAS.Dia = ? ';
+      parametros.push(fechaInicio);
+    }
+    if (clase != '') {
+      consulta += 'AND HORAS.Clase = ? ';
+      parametros.push(clase);
+    }
+    if (usuario != '') {
+      consulta += 'AND Usuarios.email = ? ';
+      parametros.push(usuario);
+    }
+    consulta += 'ORDER BY Id_hor DESC';
+    
+      db.transaction(tx => {
+        tx.executeSql(
+          consulta,
+          parametros,
+          (_, results) => {
+            const todos = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              todos.push(results.rows.item(i));
+            }
+           
+            resolve(todos);
+          },
+          err => {
+            reject(err);
+          },
+        );
+      });
   });
 }
 
@@ -183,7 +181,7 @@ export function verificarUsuario(email, contrasena) {
           const numRows = results.rows.length;
           if (numRows > 0) {
             resolve(numRows > 0);
-            console.log("rows " + numRows);
+            
 
           } else {
             console.log("No hay datos");

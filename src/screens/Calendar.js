@@ -29,7 +29,7 @@ function AgendaApp({ navigation }) {
       setNewEventTitle('');
       setNewEventDescription('');
     } else {
-      console.log("error");
+      console.log("error añadiendo evento");
     }
   };
 

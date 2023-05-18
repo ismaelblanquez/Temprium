@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '10%',
+        marginTop:'15%'
     },
     tituloContainer: {
         alignItems: 'center',

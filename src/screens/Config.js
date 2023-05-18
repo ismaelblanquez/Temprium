@@ -8,11 +8,11 @@ const Config = ({ navigation }) => {
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
-        { id: 2, titulo: 'NOTIFICACIONES' },
-        { id: 3, titulo: 'PRIVACIDAD' },
+        // { id: 2, titulo: 'NOTIFICACIONES' },
+        // { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
-        { id: 5, titulo: 'IDIOMA' },
-        { id: 6, titulo: 'TEMAS' },
+        // { id: 5, titulo: 'IDIOMA' },
+        // { id: 6, titulo: 'TEMAS' },
     ];
 
     const handleItemPress = (item) => {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%'
+        // marginTop: '5%'
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '15%',
+        marginTop:'15%'
     },
     tituloContainer: {
         alignItems: 'center',

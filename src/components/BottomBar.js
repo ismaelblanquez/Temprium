@@ -5,31 +5,31 @@ import { Ionicons } from '@expo/vector-icons';
 const BottomBar = ({ navigation }) => {
   const goToHome = () => {
     // Acción al presionar el botón de Home
-    console.log('Botón Home presionado');
+    
     navigation.replace('Home');
   };
 
   const goToFilters = () => {
     // Acción al presionar el botón de filtros
-    console.log('Botón Filtros presionado');
+    
     navigation.navigate('FilterHours');
   };
 
   const goToTime = () => {
     // Acción al presionar el botón de tiempo
-    console.log('Botón Tiempo presionado');
+    
     navigation.navigate('RegisterHours');
   };
 
   const goToCalendar = () => {
     // Acción al presionar el botón de calendario
-    console.log('Botón Calendario presionado');
+    
     navigation.navigate('Calendar');
   };
 
   const goToSettings = () => {
     // Acción al presionar el botón de ajustes
-    console.log('Botón Ajustes presionado');
+   
     navigation.navigate('Config');
   };
 
