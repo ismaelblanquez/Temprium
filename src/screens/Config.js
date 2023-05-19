@@ -40,7 +40,7 @@ const Config = ({ navigation }) => {
                     break;
                 case 2:
                     //navigation.navigate('Notifications');
-                    //Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                     break;
                 case 3:
                     // navigation.navigate('privacy');
@@ -65,7 +65,7 @@ const Config = ({ navigation }) => {
                     break;
                 case 2:
                     //navigation.navigate('Notifications');
-                    //Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
                     break;
                 case 3:
                     // navigation.navigate('privacy');

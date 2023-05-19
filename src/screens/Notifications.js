@@ -39,6 +39,7 @@ function Notifications({ navigation }) {
         setNotificacionesHabilitadas(!notificacionesHabilitadas);
     };
 
+    
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Notificaciones</Text>
