@@ -10,7 +10,7 @@ import Register from './src/screens/Register';
 import BottomBar from './src/components/BottomBar';
 import FilterHours from './src/screens/FilterHours';
 import Config from './src/screens/Config';
-import Notifications from './screens/Notifications';
+import Notifications from './src/screens/Notifications';
 import Language from './src/screens/Language';
 import Privacy from './src/screens/Privacy';
 import Security from './src/screens/Security';
