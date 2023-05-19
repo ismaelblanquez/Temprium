@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { verificarContraseña, updateContraseña } from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   View,
@@ -12,12 +14,13 @@ import {
   Alert,
 } from 'react-native';
 
-function Seguridad() {
+  function Seguridad({navigation}) {
   const [contrasena, setContrasena] = useState('');
   const [contrasenaAnterior, setContrasenaAnterior] = useState('');
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
   const [autenticacionDosFactores, setAutenticacionDosFactores] =
     useState(false);
+    const [email, setEmail] = useState('');
 
   const handleChangeContrasena = (text) => {
     setContrasena(text);
@@ -35,14 +38,31 @@ function Seguridad() {
     setAutenticacionDosFactores(!autenticacionDosFactores);
   };
 
-  const handleGuardarCambios = () => {
+  const handleGuardarCambios = async() => {
     // Lógica para guardar los cambios de seguridad en la aplicación
     // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
     console.log('Contraseña actualizada:', contrasena);
     console.log('Contraseña anterior:', contrasenaAnterior);
     console.log('Confirmar contraseña:', confirmarContrasena);
     console.log('Autenticación de dos factores:', autenticacionDosFactores);
-    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+    const email = await AsyncStorage.getItem('email');
+    setEmail(email);
+    console.log(email);
+
+    const contraseñaExiste = await verificarContraseña(contrasenaAnterior);
+    console.log(contraseñaExiste)
+    if(contraseñaExiste)
+    {
+      if(contrasena == confirmarContrasena){
+          updateContraseña(contrasena,email)
+          .then( () => console.log('Contraseña cambiada'), navigation.replace('Login'))
+          .catch((error)=>console.log(error))
+      }else{
+        Alert.alert('La nueva contraseña no coincide')
+      }
+    }
+
+
   };
 
   return (

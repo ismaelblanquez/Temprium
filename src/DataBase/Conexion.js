@@ -304,6 +304,50 @@ export const deleteHoras = async (id) => {
   }
 };
 
+export function verificarContraseña(contrasena) {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Usuarios WHERE contrasena = ?',
+        [contrasena],
+        (_, results) => {
+          const numRows = results.rows.length;
+          if (numRows > 0) {
+            resolve(numRows > 0);
+            
+
+          } else {
+            console.log("No hay datos");
+          }
+        },
+        (_, error) => {
+          console.log(`Error verificando el usuario: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  });
+}
+
+export function updateContraseña(contrasena, email) {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE Usuarios SET contrasena = ? WHERE email = ?',
+        [contrasena,email],
+        (_, results) => {
+            console.log("Contraseña modificada");
+        },
+        (_, error) => {
+          console.log(`Error verificando el usuario: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  });
+}
+
+
 export default {
   getAllHoras,
   selectHoras,
@@ -315,4 +359,6 @@ export default {
   existeUsuario,
   updateHoras,
   deleteHoras,
+  verificarContraseña,
+  updateContraseña,
 };
