@@ -12,25 +12,25 @@ const BottomBar = ({ navigation }) => {
   const goToFilters = () => {
     // Acción al presionar el botón de filtros
     
-    navigation.navigate('FilterHours');
+    navigation.replace('FilterHours');
   };
 
   const goToTime = () => {
     // Acción al presionar el botón de tiempo
     
-    navigation.navigate('RegisterHours');
+    navigation.replace('RegisterHours');
   };
 
   const goToCalendar = () => {
     // Acción al presionar el botón de calendario
     
-    navigation.navigate('Calendar');
+    navigation.replace('Calendar');
   };
 
   const goToSettings = () => {
     // Acción al presionar el botón de ajustes
    
-    navigation.navigate('Config');
+    navigation.replace('Config');
   };
 
   return (

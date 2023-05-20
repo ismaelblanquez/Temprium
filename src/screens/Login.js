@@ -11,13 +11,13 @@ const Login = ({ navigation }) => {
     try {
       console.log('Email:', email);
       console.log('Password:', password);
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
+    
 
       const usuarioExiste = await verificarUsuario(email, password);
       if (usuarioExiste) {
-        
-        navigation.navigate('Home');
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('password', password);
+        navigation.replace('Home');
       }
     } catch (error) {
       console.log(`Error al buscar usuario: ${error.message}`);
@@ -41,11 +41,8 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
-      <TextInput
-        style={styles.title}
-        value='INICIO DE SESIÓN'
-        onChangeText={(title) => setEmail(title)}
-      />
+      <Text style={styles.title}>INICIO DE SESIÓN</Text>
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

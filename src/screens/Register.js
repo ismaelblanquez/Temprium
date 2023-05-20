@@ -36,11 +36,7 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
-      <TextInput
-        style={styles.title}
-        value='REGISTRO'
-        onChangeText={(title) => setEmail(title)}
-      />
+      <Text style={styles.title}>REGISTRO</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -64,6 +60,7 @@ const Register = ({ navigation }) => {
           secureTextEntry
           value={repPassword}
           onChangeText={(text) => setRepPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
