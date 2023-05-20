@@ -101,9 +101,12 @@ export function selectHoras(
       consulta += 'AND HORAS.Categoria = ? ';
       parametros.push(categoria);
     }
-    if (fechaInicio != '') {
+    if (fechafin = '') {
       consulta += 'AND HORAS.Dia = ? ';
       parametros.push(fechaInicio);
+    }else{
+      consulta += 'AND HORAS.Dia ? BETWEEN ? ';
+      parametros.push(fechaInicio,fechaFin);
     }
     if (clase != '') {
       consulta += 'AND HORAS.Clase = ? ';
