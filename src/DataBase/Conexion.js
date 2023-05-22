@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
+
 const db = SQLite.openDatabase('Temprium.db');
 
 db.transaction(tx => {
@@ -189,7 +190,7 @@ export function verificarUsuario(email, contrasena) {
             
 
           } else {
-            console.log("No hay datos");
+            resolve('');
           }
         },
         (_, error) => {
