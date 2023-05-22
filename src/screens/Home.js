@@ -22,7 +22,11 @@ const Home = ({ navigation, route }) => {
             console.log('Categoría:', categoria);
             console.log('Clase:', clase);
             console.log('Email:', email);
+<<<<<<< HEAD
             console.log('Fechafin',fechafin);
+=======
+            console.log('Fechafin:',fechafin)
+>>>>>>> Raul
 
             selectHoras(tipoHoras, email, categoria, fecha, fechafin, clase)
                 .then((results) => {

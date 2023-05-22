@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
+
 const db = SQLite.openDatabase('Temprium.db');
 
 db.transaction(tx => {
@@ -92,7 +93,7 @@ export function selectHoras(
   return new Promise((resolve, reject) => {
     let consulta = '';
     let parametros = [];
-    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario ';
+    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
     if (tipoHoras != '') {
       consulta += 'AND HORAS.Tipohoras = ? ';
       parametros.push(tipoHoras);
@@ -101,11 +102,15 @@ export function selectHoras(
       consulta += 'AND HORAS.Categoria = ? ';
       parametros.push(categoria);
     }
-    if (fechafin = '') {
+    if (fechaFin == '' && fechaInicio !='') {
       consulta += 'AND HORAS.Dia = ? ';
       parametros.push(fechaInicio);
     }else{
       consulta += 'AND HORAS.Dia ? BETWEEN ? ';
+      parametros.push(fechaInicio,fechaFin);
+    }
+    if (fechaFin  && fechaInicio ){
+      consulta += 'AND HORAS.Dia BETWEEN ? AND ? ';
       parametros.push(fechaInicio,fechaFin);
     }
     if (clase != '') {
@@ -117,7 +122,8 @@ export function selectHoras(
       parametros.push(usuario);
     }
     consulta += 'ORDER BY Id_hor DESC';
-    
+    console.log(consulta)
+    console.log(parametros)
       db.transaction(tx => {
         tx.executeSql(
           consulta,
@@ -187,7 +193,7 @@ export function verificarUsuario(email, contrasena) {
             
 
           } else {
-            console.log("No hay datos");
+            resolve('');
           }
         },
         (_, error) => {
@@ -307,6 +313,50 @@ export const deleteHoras = async (id) => {
   }
 };
 
+export function verificarContraseña(contrasena) {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Usuarios WHERE contrasena = ?',
+        [contrasena],
+        (_, results) => {
+          const numRows = results.rows.length;
+          if (numRows > 0) {
+            resolve(numRows > 0);
+            
+
+          } else {
+            console.log("No hay datos");
+          }
+        },
+        (_, error) => {
+          console.log(`Error verificando el usuario: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  });
+}
+
+export function updateContraseña(contrasena, email) {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE Usuarios SET contrasena = ? WHERE email = ?',
+        [contrasena,email],
+        (_, results) => {
+            console.log("Contraseña modificada");
+        },
+        (_, error) => {
+          console.log(`Error verificando el usuario: ${error}`);
+          reject(error);
+        }
+      );
+    });
+  });
+}
+
+
 export default {
   getAllHoras,
   selectHoras,
@@ -318,4 +368,6 @@ export default {
   existeUsuario,
   updateHoras,
   deleteHoras,
+  verificarContraseña,
+  updateContraseña,
 };

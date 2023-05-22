@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
 import 'setimmediate';
 
@@ -23,7 +23,7 @@ const Register = ({ navigation }) => {
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     } else {
       if (password != repPassword) {
-        console.log("Las contraseñas no coinciden");
+        Alert.alert("Las contraseñas no coinciden");
       } else {
         console.log("Error, uno de los campos contiene datos vacíos");
       }
