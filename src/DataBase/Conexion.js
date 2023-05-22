@@ -92,7 +92,7 @@ export function selectHoras(
   return new Promise((resolve, reject) => {
     let consulta = '';
     let parametros = [];
-    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario ';
+    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
     if (tipoHoras != '') {
       consulta += 'AND HORAS.Tipohoras = ? ';
       parametros.push(tipoHoras);
@@ -101,9 +101,13 @@ export function selectHoras(
       consulta += 'AND HORAS.Categoria = ? ';
       parametros.push(categoria);
     }
-    if (fechaInicio != '') {
+    if (fechaFin == '' && fechaInicio !='') {
       consulta += 'AND HORAS.Dia = ? ';
       parametros.push(fechaInicio);
+    }
+    if (fechaFin  && fechaInicio ){
+      consulta += 'AND HORAS.Dia BETWEEN ? AND ? ';
+      parametros.push(fechaInicio,fechaFin);
     }
     if (clase != '') {
       consulta += 'AND HORAS.Clase = ? ';
@@ -114,7 +118,8 @@ export function selectHoras(
       parametros.push(usuario);
     }
     consulta += 'ORDER BY Id_hor DESC';
-    
+    console.log(consulta)
+    console.log(parametros)
       db.transaction(tx => {
         tx.executeSql(
           consulta,

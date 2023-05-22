@@ -11,6 +11,8 @@ function Notifications({ navigation }) {
     const [notificacion3, setNotificacion3] = useState(false);
     const [notificacionesHabilitadas, setNotificacionesHabilitadas] = useState(false);
 
+    
+
     useEffect(() => {
         // Comprobar si las notificaciones están habilitadas en el dispositivo al cargar la pantalla
         PushNotification.getApplicationIconBadgeNumber((badgeCount) => {

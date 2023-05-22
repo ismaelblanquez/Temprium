@@ -22,6 +22,7 @@ const Home = ({ navigation, route }) => {
             console.log('Categoría:', categoria);
             console.log('Clase:', clase);
             console.log('Email:', email);
+            console.log('Fechafin:',fechafin)
 
             selectHoras(tipoHoras, email, categoria, fecha, fechafin, clase)
                 .then((results) => {
