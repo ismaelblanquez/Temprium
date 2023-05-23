@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
@@ -15,7 +15,7 @@ function AgendaApp({ navigation }) {
   
      
     registros.forEach((registro) => {
-      const { Dia, Tipohoras, Horas, minutos } = registro;
+      const { Dia, Tipohoras, Horas, minutos,Clase,Categoria } = registro;
       const fecha = Dia.substring(0, 10); // Obtén solo la fecha sin la hora
   
       if (!eventos[fecha]) {
@@ -28,6 +28,8 @@ function AgendaApp({ navigation }) {
         hours: registro.Horas,
         minutes: registro.minutos,
         tipoHoras: registro.Tipohoras,
+        Clase: registro.Clase,
+        categoria: registro.Categoria
       });
     });
   
@@ -49,6 +51,7 @@ function AgendaApp({ navigation }) {
           selectHoras('', email || 'dummy@nosession.com', '', fechaInvertida, '', '')
             .then((resultados) => {
               registros = resultados;
+              console.log(registros)
               const eventos = construirEventos(registros);
               setEventos(eventos);
               
@@ -97,16 +100,20 @@ function AgendaApp({ navigation }) {
       <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
     </View>
     {fechaSeleccionada && (
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.eventosContainer}>
         <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
         {eventosFechaSeleccionada.map((evento, index) => (
           <View key={index} style={styles.eventoContainer}>
-            <Text style={styles.eventoText}>{evento.tipoHoras}</Text>
+            <Text style={[styles.eventoText,{ color: evento.tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.tipoHoras}</Text>
             <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
             <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
+            <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
+            <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
           </View>
         ))}
       </View>
+      </ScrollView>
     )}
     <View style={styles.bottomBarContainer}>
       <BottomBar navigation={navigation} />
