@@ -40,11 +40,11 @@ const Config = ({ navigation }) => {
                     break;
                 case 2:
                     //navigation.navigate('Notifications');
-                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("En mantenimiento");
                     break;
                 case 3:
                     // navigation.navigate('privacy');
-                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("En mantenimiento");
                     break;
                 case 4:
                     navigation.navigate('Security');
@@ -65,11 +65,11 @@ const Config = ({ navigation }) => {
                     break;
                 case 2:
                     //navigation.navigate('Notifications');
-                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("En mantenimiento");
                     break;
                 case 3:
                     // navigation.navigate('privacy');
-                    Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
+                    Alert.alert("En mantenimiento");
                     break;
                 case 4:
                     //navigation.navigate('Security');
