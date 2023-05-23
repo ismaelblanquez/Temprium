@@ -134,7 +134,7 @@ const Home = ({ navigation, route }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity onPress={() => {Alert.alert('Esta función no está implementada en esta fase del desarrollo') }}>
+                <TouchableOpacity onPress={() => {Alert.alert('En mantenimiento') }}>
                     <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
             </View>
