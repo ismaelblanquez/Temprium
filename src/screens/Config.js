@@ -51,7 +51,7 @@ const Config = ({ navigation }) => {
                     navigation.navigate('Security');
                     break;
                 case 5:
-                    navigation.navigate('Extras');
+                    navigation.navigate('Extra');
                     break;
                 case 6:
                     navigation.navigate('Theme');
@@ -77,7 +77,7 @@ const Config = ({ navigation }) => {
                     Alert.alert("Esta funcion no esta implementada en este usuario");
                     break;
                 case 5:
-                    navigation.navigate('Extras');
+                    navigation.navigate('Extra');
                     break;
                 case 6:
                     navigation.navigate('Theme');

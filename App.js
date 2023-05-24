@@ -18,6 +18,7 @@ import Theme from './src/screens/Theme';
 import ProfileConfig from './src/screens/ProfileConfig';
 import Calendar from './src/screens/Calendar';
 import AuthContext from './src/services/AuthContext';
+import Extra from './src/screens/Extra';
 import 'setimmediate';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -62,6 +63,7 @@ const App = () => {
         <Stack.Screen name="Theme" component={Theme} options={{ headerShown: false }}/>
         <Stack.Screen name="Calendar" component={Calendar} options={{ headerShown: false }}/>
         <Stack.Screen name="Privacy" component={Privacy} options={{ headerShown: false }}/>
+        <Stack.Screen name="Extra" component={Extra} options={{ headerShown: false }}/>
         <Stack.Screen name="ProfileConfig" component={ProfileConfig} options={{ headerShown: false }} />
         <Stack.Screen
           name="BottomBar"

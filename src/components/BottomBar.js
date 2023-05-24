@@ -30,7 +30,7 @@ const BottomBar = ({ navigation }) => {
   const goToSettings = () => {
     // Acción al presionar el botón de ajustes
    
-    navigation.replace('Config');
+    navigation.navigate('Config');
   };
 
   return (
