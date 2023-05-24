@@ -9,52 +9,54 @@ function AgendaApp({ navigation }) {
   const [eventos, setEventos] = useState([]);
   const [email, setEmail] = useState('');
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
-  
+
   const construirEventos = (registros) => {
     const eventos = {};
-  
-     
+
     registros.forEach((registro) => {
-      const { Dia, Tipohoras, Horas, minutos,Clase,Categoria } = registro;
+      const { Dia, Tipohoras, Horas, minutos, Clase, categoria } = registro;
       const fecha = Dia.substring(0, 10); // Obtén solo la fecha sin la hora
-  
+
       if (!eventos[fecha]) {
         eventos[fecha] = [];
       }
-  
+
+      const dotColor = Tipohoras === 'No Lectivas' ? '#8E44AD' : '#12CDD4';
+
       eventos[fecha].push({
-        dotColor: 'blue',
-        selectedDotColor: 'orange',
+        dots: [
+          {
+            key: fecha + '-' + registro.Horas + '-' + registro.minutos,
+            color: dotColor,
+            selectedDotColor: 'orange',
+          },
+        ],
         hours: registro.Horas,
         minutes: registro.minutos,
-        tipoHoras: registro.Tipohoras,
+        TipoHoras: registro.Tipohoras,
         Clase: registro.Clase,
-        categoria: registro.Categoria
+        categoria: registro.Categoria,
       });
     });
-  
+
     return eventos;
   };
-  
-  
 
   useEffect(() => {
     const obtenerRegistros = async () => {
       try {
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com');
-  
+
         let registros = [];
-  
+
         if (fechaSeleccionada) {
           const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
           selectHoras('', email || 'dummy@nosession.com', '', fechaInvertida, '', '')
             .then((resultados) => {
               registros = resultados;
-              console.log(registros)
               const eventos = construirEventos(registros);
               setEventos(eventos);
-              
             })
             .catch((error) => {
               console.error('Error al obtener los registros:', error);
@@ -62,17 +64,14 @@ function AgendaApp({ navigation }) {
         } else {
           const eventos = construirEventos(registros);
           setEventos(eventos);
-          
         }
       } catch (error) {
         console.error('Error al obtener los registros:', error);
       }
     };
-  
+
     obtenerRegistros();
   }, [fechaSeleccionada]);
-  
-  
 
   const markedDates = Object.values(eventos).reduce((acc, eventosDia) => {
     eventosDia.forEach((evento) => {
@@ -84,64 +83,65 @@ function AgendaApp({ navigation }) {
     });
     return acc;
   }, {});
-  
-  
-  
+
   const handleDayPress = (day) => {
     setFechaSeleccionada(day.dateString);
   };
 
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
-  console.log(eventosFechaSeleccionada)
+
   return (
     <View style={styles.agendaContainer}>
-    <View style={styles.componente}>
-      <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
-    </View>
-    {fechaSeleccionada && (
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <View style={styles.eventosContainer}>
-        <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
-        {eventosFechaSeleccionada.map((evento, index) => (
-          <View key={index} style={styles.eventoContainer}>
-            <Text style={[styles.eventoText,{ color: evento.tipohoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.tipoHoras}</Text>
-            <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
-            <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
-            <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
-            <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
-          </View>
-        ))}
+      <View style={styles.componente}>
+        <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
       </View>
-      </ScrollView>
-    )}
-    <View style={styles.bottomBarContainer}>
-      <BottomBar navigation={navigation} />
+      {fechaSeleccionada && (
+        <View style={styles.scrollViewContainer}>
+          <ScrollView>
+            <View style={styles.eventosContainer}>
+              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
+              {eventosFechaSeleccionada.map((evento, index) => (
+                <View key={index} style={styles.eventoContainer}>
+                  <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
+                  <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
+                  <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
+                  <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
+                  <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      )}
+      <View style={styles.bottomBarContainer}>
+        <BottomBar navigation={navigation} />
+      </View>
     </View>
-  </View>
-  
   );
 }
 
 const styles = StyleSheet.create({
   agendaContainer: {
     flex: 1,
-    backgroundColor: '#FFF',
-     marginTop: 50,
+    backgroundColor: '#FFFFFF',
+  },
+  componente: {
+    marginTop: 30,
   },
   newEventContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
-  }, 
-   scrollView: {
-    flex: 1,
-    marginBottom: 50, // Aplica un margen inferior de 50 unidades
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+    marginBottom: 50,
   },
   bottomBarContainer: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-  },  
+  },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -153,6 +153,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 20,
+  },
+  iconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconNoLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  iconLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
   },
   addButton: {
     backgroundColor: '#0096C7',
@@ -209,6 +224,7 @@ const styles = StyleSheet.create({
   eventosContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
+    marginBottom: 30
   },
   eventosTitle: {
     fontSize: 18,
