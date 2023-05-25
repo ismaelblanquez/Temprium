@@ -74,11 +74,11 @@ const RegisterHoursScreen = ({ navigation }) => {
         </Picker>
       </View>
 
-      <View style={styles.componente}>
+      <View style={[styles.componente,{justifyContent:'center', alignContent:'center'}]}>
   <Text style={styles.label}>HORAS TRABAJADAS</Text>
-  <View style={[styles.pickerContainer, { marginBottom: 0 }]}>
+  <View style={[styles.pickerContainer, { marginBottom: 0 , justifyContent:'center'}]}>
     <Picker
-      style={[styles.picker, { width: '50%' }]}
+      style={[styles.picker, { width: '80%' }]}
       selectedValue={horas}
       onValueChange={(value) => setHoras(value)}
     >
@@ -90,9 +90,12 @@ const RegisterHoursScreen = ({ navigation }) => {
         />
       ))}
     </Picker>
-    <Text style={styles.hourMin}>h</Text>
+    <Text style={[styles.hourMin, {fontSize:20}]}> h   </Text>
+    </View>
+    <View style={[styles.pickerContainer, { marginBottom: 0 }]}>
+    {/* <Text style={[styles.hourMin, {fontSize:40, padding:10, justifyContent:'center', marginBottom:20}]}>:</Text> */}
     <Picker
-      style={[styles.picker, { width: '50%' }]}
+      style={[styles.picker, { width: '80%' }]}
       selectedValue={minutos}
       onValueChange={(value) => setMinutos(value)}
     >
@@ -104,7 +107,8 @@ const RegisterHoursScreen = ({ navigation }) => {
         />
       ))}
     </Picker>
-    <Text style={styles.hourMin}>min</Text>
+    {/* <Text style={styles.hourMin}>min</Text> */}
+    <Text style={[styles.hourMin, {fontSize:20}]}> min</Text>
   </View>
 </View>
 
