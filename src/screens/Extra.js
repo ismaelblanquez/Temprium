@@ -109,6 +109,20 @@ function Extra({ navigation }) {
               value={newEventDescription}
               onChangeText={(text) => setNewEventDescription(text)}
             />
+            <TextInput
+              style={styles.newEventInput}
+              placeholder="Hora (0-23)"
+              keyboardType="numeric"
+              value={reminderHours}
+              onChangeText={setReminderHours}
+           />
+           <TextInput
+              style={styles.newEventInput}
+              placeholder="Minutos (0-59)"
+              keyboardType="numeric"
+              value={reminderMinutes}
+              onChangeText={setReminderMinutes}
+           />
             <TouchableOpacity style={styles.addButton} onPress={addEvent}>
               <Text style={styles.addButtonText}>Agregar evento</Text>
             </TouchableOpacity>
