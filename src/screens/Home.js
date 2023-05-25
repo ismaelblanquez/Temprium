@@ -24,7 +24,7 @@ const Home = ({ navigation, route }) => {
             console.log('Categoría:', categoria);
             console.log('Clase:', clase);
             console.log('Email:', email);
-            console.log('Fechafin:',fechafin)
+            console.log('Fechafin:', fechafin)
 
             selectHoras(tipoHoras, email, categoria, fecha, fechafin, clase)
                 .then((results) => {
@@ -48,7 +48,7 @@ const Home = ({ navigation, route }) => {
                 });
 
         } else {
-               const email = await AsyncStorage.getItem('email');
+            const email = await AsyncStorage.getItem('email');
             setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
             getAllHoras(email || 'dummy@nosession.com') // Llamar getAllHoras dentro de getEmail
                 .then((results) => {
@@ -75,12 +75,12 @@ const Home = ({ navigation, route }) => {
         }
     };
 
-    let generatePdf = async () =>{
+    let generatePdf = async () => {
         const minutosTotales = data.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
         const horasTotales = Math.floor(minutosTotales / 60);
         const minutosRestantes = minutosTotales % 60;
         const tiempoTotal = `${horasTotales}h ${minutosRestantes}m`;
-      
+
         const html = `
   <html>
     <head>
@@ -140,8 +140,8 @@ const Home = ({ navigation, route }) => {
   </html>
 `;
 
-        const file  = await printToFileAsync({
-            html:html,
+        const file = await printToFileAsync({
+            html: html,
             base64: false
         });
         await shareAsync(file.uri);
@@ -153,7 +153,7 @@ const Home = ({ navigation, route }) => {
         navigation.navigate('Graficos');
     };
 
-    
+
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
@@ -228,7 +228,8 @@ const Home = ({ navigation, route }) => {
 
 
 
-            <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} selectedTab="Home" />
+
 
 
         </View>
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginLeft: '9%',
         marginBottom: '10%',
-        marginTop:'15%'
+        marginTop: '15%'
     },
     horasTotalesContainer: {
         alignItems: 'center',

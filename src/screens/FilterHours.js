@@ -176,7 +176,7 @@ const FilterHoursScreen = ({ navigation }) => {
 
 
         </ScrollView>
-            <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} selectedTab="FilterHours" />
         </View>
     );
 };

@@ -115,7 +115,7 @@ function AgendaApp({ navigation }) {
         </View>
       )}
       <View style={styles.bottomBarContainer}>
-        <BottomBar navigation={navigation} />
+        <BottomBar navigation={navigation} selectedTab="Calendar"/>
       </View>
     </View>
   );

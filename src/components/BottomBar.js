@@ -2,53 +2,44 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const BottomBar = ({ navigation }) => {
-  const goToHome = () => {
-    // Acción al presionar el botón de Home
-    
-    navigation.replace('Home');
-  };
+const BottomBar = ({ navigation, selectedTab }) => {
 
-  const goToFilters = () => {
-    // Acción al presionar el botón de filtros
-    
-    navigation.replace('FilterHours');
-  };
-
-  const goToTime = () => {
-    // Acción al presionar el botón de tiempo
-    
-    navigation.replace('RegisterHours');
-  };
-
-  const goToCalendar = () => {
-    // Acción al presionar el botón de calendario
-    
-    navigation.replace('Calendar');
-  };
-
-  const goToSettings = () => {
-    // Acción al presionar el botón de ajustes
-   
-    navigation.navigate('Config');
+  console.log(selectedTab);
+  const handleTabPress = (selectedTab) => {
+    navigation.replace(selectedTab);
   };
 
   return (
     <View style={styles.bottomBar}>
-      <TouchableOpacity style={styles.navButton} onPress={goToHome}>
-        <Ionicons name="home-outline" size={24} color="black" />
+      <TouchableOpacity
+        style={[styles.navButton, selectedTab === 'Home' && styles.highlightedButton]}
+        onPress={() => handleTabPress('Home')}
+      >
+        <Ionicons name="home-outline" size={selectedTab === 'Home' ? 30 : 24} color={selectedTab === 'Home' ? 'white' : 'black'} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={goToFilters}>
-        <Ionicons name="funnel-outline" size={24} color="black" />
+      <TouchableOpacity
+        style={[styles.navButton, selectedTab === 'FilterHours' && styles.highlightedButton]}
+        onPress={() => handleTabPress('FilterHours')}
+      >
+        <Ionicons name="funnel-outline" size={selectedTab === 'FilterHours' ? 30 : 24} color={selectedTab === 'FilterHours' ? '#FFFFFF' : 'black'} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.highlightedButton} onPress={goToTime}>
-        <Ionicons name="time-outline" size={24} color="white" />
+      <TouchableOpacity
+        style={[styles.navButton, selectedTab === 'RegisterHours' && styles.highlightedButton]}
+        onPress={() => handleTabPress('RegisterHours')}
+      >
+        <Ionicons name="time-outline" size={selectedTab === 'RegisterHours' ? 30 : 24} color={selectedTab === 'RegisterHours' ? '#FFFFFF' : 'black'} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={goToCalendar}>
-        <Ionicons name="calendar-outline" size={24} color="black" />
+      <TouchableOpacity
+        style={[styles.navButton, selectedTab === 'Calendar' && styles.highlightedButton]}
+        onPress={() => handleTabPress('Calendar')}
+      >
+        <Ionicons name="calendar-outline" size={selectedTab === 'Calendar' ? 30 : 24} color={selectedTab === 'Calendar' ? '#FFFFFF' : 'black'} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={goToSettings}>
-        <Ionicons name="settings-outline" size={24} color="black" />
+      <TouchableOpacity
+        style={[styles.navButton, selectedTab === 'Config' && styles.highlightedButton]}
+        onPress={() => handleTabPress('Config')}
+      >
+        <Ionicons name="settings-outline" size={selectedTab === 'Config' ? 30 : 24} color={selectedTab === 'Config' ? '#FFFFFF' : 'black'} />
       </TouchableOpacity>
     </View>
   );
@@ -63,13 +54,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    // position: fixed,
     bottom: 0,
     left: 0,
     right: 0,
     position: 'absolute',
-    // bottom: 0,
-    // width: '100%',
   },
   navButton: {
     justifyContent: 'center',
@@ -77,13 +65,11 @@ const styles = StyleSheet.create({
   },
   highlightedButton: {
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: '#0096C7',
     borderRadius: 100,
-    height: 30,
-    width: 30,
-    // padding: 8,
-    // paddingLeft: 9.5,
+    height: 40,
+    width: 40,
   },
 });
 

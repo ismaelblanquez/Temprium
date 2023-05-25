@@ -110,7 +110,7 @@ const Config = ({ navigation }) => {
                 />
             </View>
 
-            <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 };

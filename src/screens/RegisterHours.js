@@ -174,7 +174,7 @@ const RegisterHoursScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
-    <BottomBar navigation={navigation} />
+    <BottomBar navigation={navigation} selectedTab="RegisterHours" />
     </View>
   );
 };
