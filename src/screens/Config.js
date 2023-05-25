@@ -28,6 +28,7 @@ const Config = ({ navigation }) => {
         { id: 2, titulo: 'NOTIFICACIONES' },
         { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
+        { id: 5, titulo: 'EXTRAS' },
         // { id: 5, titulo: 'IDIOMA' },
         // { id: 6, titulo: 'TEMAS' },
     ];
@@ -50,7 +51,7 @@ const Config = ({ navigation }) => {
                     navigation.navigate('Security');
                     break;
                 case 5:
-                    navigation.navigate('Language');
+                    navigation.navigate('Extra');
                     break;
                 case 6:
                     navigation.navigate('Theme');
@@ -76,7 +77,7 @@ const Config = ({ navigation }) => {
                     Alert.alert("Esta funcion no esta implementada en este usuario");
                     break;
                 case 5:
-                    navigation.navigate('Language');
+                    navigation.navigate('Extra');
                     break;
                 case 6:
                     navigation.navigate('Theme');

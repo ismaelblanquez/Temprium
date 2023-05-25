@@ -73,6 +73,12 @@ const Home = ({ navigation, route }) => {
         }
     };
 
+
+    const handleGraficosPress = () => {
+        navigation.navigate('Graficos');
+    };
+
+    
     useEffect(() => {
         console.log("EMAIL:::" + email)
         getEmail();
