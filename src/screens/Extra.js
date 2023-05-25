@@ -2,11 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 function Extra({ navigation }) {
   const [events, setEvents] = useState([]);
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventDescription, setNewEventDescription] = useState('');
+  const [reminderHours, setReminderHours] = useState('');
+  const [reminderMinutes, setReminderMinutes] = useState('');
 
   useEffect(() => {
     // Cargar eventos guardados al iniciar la app
@@ -22,14 +33,40 @@ function Extra({ navigation }) {
     AsyncStorage.setItem('events', JSON.stringify(events));
   }, [events]);
 
-  const addEvent = () => {
+  const addEvent = async () => {
     const newEvent = { title: newEventTitle, description: newEventDescription };
     if (newEventTitle !== '') {
       setEvents([...events, newEvent]);
       setNewEventTitle('');
       setNewEventDescription('');
+      setReminderHours('');
+      setReminderMinutes('');
+  
+      const currentDate = new Date();
+      const reminderDate = new Date(currentDate);
+  
+      // Set the reminder time based on user input
+      reminderDate.setHours(parseInt(reminderHours, 10));
+      reminderDate.setMinutes(parseInt(reminderMinutes, 10));
+      reminderDate.setSeconds(0);
+  
+      if (reminderDate < currentDate) {
+        // If the reminder time is in the past, schedule it for the next day
+        reminderDate.setDate(reminderDate.getDate() + 1);
+      }
+  
+      const timeDifference = reminderDate.getTime() - currentDate.getTime();
+  
+      // Schedule the notification to appear after the specified delay
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Recordatorio',
+          body: `Recuerda que tienes: ${newEvent.title}`,
+        },
+        trigger: { seconds: Math.floor(timeDifference / 1000) },
+      });
     } else {
-      console.log("error añadiendo evento");
+      console.log('Error adding event');
     }
   };
 
@@ -72,6 +109,20 @@ function Extra({ navigation }) {
               value={newEventDescription}
               onChangeText={(text) => setNewEventDescription(text)}
             />
+            <TextInput
+              style={styles.newEventInput}
+              placeholder="Hora (0-23)"
+              keyboardType="numeric"
+              value={reminderHours}
+              onChangeText={setReminderHours}
+           />
+           <TextInput
+              style={styles.newEventInput}
+              placeholder="Minutos (0-59)"
+              keyboardType="numeric"
+              value={reminderMinutes}
+              onChangeText={setReminderMinutes}
+           />
             <TouchableOpacity style={styles.addButton} onPress={addEvent}>
               <Text style={styles.addButtonText}>Agregar evento</Text>
             </TouchableOpacity>
