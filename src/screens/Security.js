@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { verificarContraseña, updateContraseña } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import BottomBar from '../components/BottomBar';
 import {
   View,
   Text,
@@ -111,6 +111,7 @@ import {
       <TouchableOpacity style={styles.button} onPress={handleGuardarCambios}>
         <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
       </TouchableOpacity>
+      <BottomBar navigation={navigation} selectedTab="Config" />
     </View>
   );
 }

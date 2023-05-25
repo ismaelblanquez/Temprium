@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import BottomBar from '../components/BottomBar';
 function ProfileConfig({ navigation }) {
     const [email, setEmail] = useState('');
 
@@ -44,6 +44,7 @@ function ProfileConfig({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
                 <Text style={styles.buttonText}>CERRAR SESIÓN</Text>
             </TouchableOpacity>
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 }

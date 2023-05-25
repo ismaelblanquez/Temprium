@@ -1,6 +1,6 @@
     import React, { useState } from 'react';
     import { View, Text, StyleSheet, Button, Switch } from 'react-native';
-
+    import BottomBar from '../components/BottomBar';
     function Theme() {
         const [temaOscuro, setTemaOscuro] = useState(false); // Valor inicial del tema
 
@@ -26,6 +26,7 @@
                     />
                 </View>
                 <Button title="Guardar cambios" onPress={handleGuardarCambios} />
+                <BottomBar navigation={navigation} selectedTab="Config" />
             </View>
         );
     }
