@@ -17,6 +17,7 @@ import Security from './src/screens/Security';
 import Theme from './src/screens/Theme';
 import ProfileConfig from './src/screens/ProfileConfig';
 import Calendar from './src/screens/Calendar';
+import DailyTasks from './src/screens/DailyTasks';
 import AuthContext from './src/services/AuthContext';
 import Extra from './src/screens/Extra';
 import 'setimmediate';
@@ -57,6 +58,7 @@ const App = () => {
         <Stack.Screen name="FilterHours" component={FilterHours} options={{ headerShown: false }}/>
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
         <Stack.Screen name="Config" component={Config} options={{ headerShown: false }}/>
+        <Stack.Screen name="DailyTasks" component={DailyTasks} options={{ headerShown: false }}/>
         {/*<Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/>*/}
         <Stack.Screen name="Language" component={Language} options={{ headerShown: false }}/>
         <Stack.Screen name="Security" component={Security} options={{ headerShown: false }}/>

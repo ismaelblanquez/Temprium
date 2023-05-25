@@ -1,229 +1,167 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState,useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
 
-function Extra({ navigation }) {
-  const [events, setEvents] = useState([]);
-  const [newEventTitle, setNewEventTitle] = useState('');
-  const [newEventDescription, setNewEventDescription] = useState('');
-  const [reminderHours, setReminderHours] = useState('');
-  const [reminderMinutes, setReminderMinutes] = useState('');
 
-  useEffect(() => {
-    // Cargar eventos guardados al iniciar la app
-    AsyncStorage.getItem('events').then((storedEvents) => {
-      if (storedEvents !== null) {
-        setEvents(JSON.parse(storedEvents));
-      }
-    });
-  }, []);
+const Extra = ({ navigation }) => {
+    const [email, setEmail] = useState('');
+    useEffect(() => {
+        const getEmail = async () => {
+          try {
+            const storedEmail = await AsyncStorage.getItem('email');
+            setEmail(storedEmail);
+          } catch (error) {
+            console.log('Error al obtener el correo electrónico:', error);
+          }
+        };
+    
+        getEmail();
+      }, []);
 
-  useEffect(() => {
-    // Guardar eventos al actualizar la lista
-    AsyncStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+      console.log(email);
+      
 
-  const addEvent = async () => {
-    const newEvent = { title: newEventTitle, description: newEventDescription };
-    if (newEventTitle !== '') {
-      setEvents([...events, newEvent]);
-      setNewEventTitle('');
-      setNewEventDescription('');
-      setReminderHours('');
-      setReminderMinutes('');
-  
-      const currentDate = new Date();
-      const reminderDate = new Date(currentDate);
-  
-      // Set the reminder time based on user input
-      reminderDate.setHours(parseInt(reminderHours, 10));
-      reminderDate.setMinutes(parseInt(reminderMinutes, 10));
-      reminderDate.setSeconds(0);
-  
-      if (reminderDate < currentDate) {
-        // If the reminder time is in the past, schedule it for the next day
-        reminderDate.setDate(reminderDate.getDate() + 1);
-      }
-  
-      const timeDifference = reminderDate.getTime() - currentDate.getTime();
-  
-      // Schedule the notification to appear after the specified delay
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: 'Recordatorio',
-          body: `Recuerda que tienes: ${newEvent.title}`,
-        },
-        trigger: { seconds: Math.floor(timeDifference / 1000) },
-      });
-    } else {
-      console.log('Error adding event');
-    }
-  };
+    const data = [
+        { id: 1, titulo: 'TAREAS DIARIAS' },
+        // { id: 2, titulo: 'NOTIFICACIONES' },
+        // { id: 3, titulo: 'PRIVACIDAD' },
+        // { id: 4, titulo: 'SEGURIDAD' },
+        // { id: 5, titulo: 'EXTRAS' },
+        // { id: 5, titulo: 'IDIOMA' },
+        // { id: 6, titulo: 'TEMAS' },
+    ];
 
-  const deleteEvent = (index) => {
-    const newEvents = [...events];
-    newEvents.splice(index, 1);
-    setEvents(newEvents);
-  };
-
-  const todayEvents = events.filter((event) => {
-    const eventDate = new Date();
-    const eventTitle = event.title.toLowerCase();
-    const eventDescription = event.description.toLowerCase();
-    const today = new Date().toISOString().substr(0, 10);
+    const handleItemPress = (item) => {
+        if(email){
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('DailyTasks');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    navigation.navigate('Security');
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('DailyTasks');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    //navigation.navigate('Security');
+                    Alert.alert("Esta funcion no esta implementada en este usuario");
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     return (
-      eventDate.toISOString().substr(0, 10) === today ||
-      eventTitle.includes(today) ||
-      eventDescription.includes(today)
-    );
-  });
+        <View style={styles.container}>
+            <View style={styles.headerContainer}>
+                <View style={styles.tituloContainer}>
+                    <Text style={styles.titulo}>EXTRAS</Text>
+                </View>
+            </View>
 
-  const screenHeight = Dimensions.get('window').height;
+            <View style={styles.container}>
+                <FlatList
+                    data={data}
+                    keyExtractor={item => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={styles.tarjetaContainer} onPress={() => handleItemPress(item)}>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.tarjetaTitulo}>{item.titulo}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
 
-  return (
-    <View style={styles.agendaContainer}>
-      <View style={{ flex: 1 }}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.newEventContainer}>
-            <Text style={styles.sectionTitle}>Agregar evento:</Text>
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Título"
-              value={newEventTitle}
-              onChangeText={(text) => setNewEventTitle(text)}
-            />
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Descripción"
-              value={newEventDescription}
-              onChangeText={(text) => setNewEventDescription(text)}
-            />
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Hora (0-23)"
-              keyboardType="numeric"
-              value={reminderHours}
-              onChangeText={setReminderHours}
-           />
-           <TextInput
-              style={styles.newEventInput}
-              placeholder="Minutos (0-59)"
-              keyboardType="numeric"
-              value={reminderMinutes}
-              onChangeText={setReminderMinutes}
-           />
-            <TouchableOpacity style={styles.addButton} onPress={addEvent}>
-              <Text style={styles.addButtonText}>Agregar evento</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.sectionTitle}>Eventos de hoy:</Text>
-          {todayEvents.length > 0 ? (
-            todayEvents.map((event, index) => (
-              <View style={styles.eventContainer} key={index}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-                  <Text style={styles.deleteButtonText}>Eliminar</Text>
-                </TouchableOpacity>
-              </View>
-            ))
-          ) : (
-            <Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
-          )}
-        </ScrollView>
-        <View style={styles.bottomBarContainer}>
-          <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} />
         </View>
-      </View>
-      </View>
-  
-  );
-}
-
+    );
+};
 const styles = StyleSheet.create({
-  agendaContainer: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    // marginBottom: 50,
-  },
-  newEventContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  }, 
-   scrollView: {
-    flex: 1,
-    marginBottom: 50, // Aplica un margen inferior de 50 unidades
-  },
-  bottomBarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-  },  
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 20,
-    marginTop: 30,
-  },
-  newEventInput: {
-    backgroundColor: '#F2F2F2',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  addButton: {
-    backgroundColor: '#0096C7',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-  noEventsText: {
-    paddingHorizontal: 20,
-    marginTop: 20,
-    fontStyle: 'italic',
-  },
-  eventContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D1D1D1',
-  },
-  eventTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  eventDescription: {
-    marginTop: 5,
-  },
-  deleteButton: {
-    backgroundColor: '#FF4444',
-    borderRadius: 10,
-    padding: 5,
-    marginTop: 10,
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-  },
-  deleteButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#FFFFFF',
+        // marginTop: '5%'
+    },
+    headerContainer: {
+        backgroundColor: '#E1F5FE',
+        borderRadius: 12,
+        borderWidth: 4,
+        borderColor: '#0096C7',
+        width: '80%',
+        marginLeft: '9%',
+        marginBottom: '15%',
+        marginTop:'15%'
+    },
+    tituloContainer: {
+        alignItems: 'center',
+        padding: '4%'
+    },
+    titulo: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#0096C7',
+    },
+    tarjetaContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: '4%',
+        marginRight: '4%',
+        marginBottom: 15,
+        borderBottomWidth: 2,
+        borderBottomColor: '#0096C7',
+    },
+    infoContainer: {
+        flexDirection: 'row',
+       
+        flex: 1,
+        marginLeft: '4%',
+        marginBottom: '4%',
+    },
+    tarjetaTitulo: {
+        fontSize: 16,
+        fontWeight: 'normal',
+        color: '#0096C7',
+    },
+
 });
 
 export default Extra;
