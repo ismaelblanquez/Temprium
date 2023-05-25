@@ -111,14 +111,14 @@ function Extra({ navigation }) {
             />
             <TextInput
               style={styles.newEventInput}
-              placeholder="Hora recordatorio (0-23)"
+              placeholder="Hora (0-23)"
               keyboardType="numeric"
               value={reminderHours}
               onChangeText={setReminderHours}
            />
            <TextInput
               style={styles.newEventInput}
-              placeholder="Minutos recordatorio (0-59)"
+              placeholder="Minutos (0-59)"
               keyboardType="numeric"
               value={reminderMinutes}
               onChangeText={setReminderMinutes}
