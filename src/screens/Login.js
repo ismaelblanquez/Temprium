@@ -18,6 +18,8 @@ const Login = ({ navigation }) => {
         await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('password', password);
         navigation.replace('Home');
+      }else{
+        Alert.alert('El usuario no existe')
       }
     } catch (error) {
       console.log(`Error al buscar usuario: ${error.message}`);

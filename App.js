@@ -10,7 +10,7 @@ import Register from './src/screens/Register';
 import BottomBar from './src/components/BottomBar';
 import FilterHours from './src/screens/FilterHours';
 import Config from './src/screens/Config';
-// import Notifications from './screens/Notifications';
+//import Notifications from './src/screens/Notifications';
 import Language from './src/screens/Language';
 import Privacy from './src/screens/Privacy';
 import Security from './src/screens/Security';
@@ -18,6 +18,7 @@ import Theme from './src/screens/Theme';
 import ProfileConfig from './src/screens/ProfileConfig';
 import Calendar from './src/screens/Calendar';
 import AuthContext from './src/services/AuthContext';
+import Extra from './src/screens/Extra';
 import 'setimmediate';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -56,12 +57,13 @@ const App = () => {
         <Stack.Screen name="FilterHours" component={FilterHours} options={{ headerShown: false }}/>
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
         <Stack.Screen name="Config" component={Config} options={{ headerShown: false }}/>
-        {/* <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/> */}
+        {/*<Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/>*/}
         <Stack.Screen name="Language" component={Language} options={{ headerShown: false }}/>
         <Stack.Screen name="Security" component={Security} options={{ headerShown: false }}/>
         <Stack.Screen name="Theme" component={Theme} options={{ headerShown: false }}/>
         <Stack.Screen name="Calendar" component={Calendar} options={{ headerShown: false }}/>
         <Stack.Screen name="Privacy" component={Privacy} options={{ headerShown: false }}/>
+        <Stack.Screen name="Extra" component={Extra} options={{ headerShown: false }}/>
         <Stack.Screen name="ProfileConfig" component={ProfileConfig} options={{ headerShown: false }} />
         <Stack.Screen
           name="BottomBar"

@@ -13,6 +13,7 @@ const FilterHoursScreen = ({ navigation }) => {
     const [categoria, setCategoria] = useState('');
     const [clase, setClase] = useState('');
     const [email, setEmail] = useState('');
+    const [fechafin, setFechafin] = useState('');
     const getEmail = async () => {
         const email = await AsyncStorage.getItem('email');
         setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
@@ -24,6 +25,7 @@ const FilterHoursScreen = ({ navigation }) => {
     });
 
     const fechaInvertida = fecha.split('-').reverse().join('-');
+    const fechafinInvertida =  fechafin.split('-').reverse().join('-');
 
     const guardarHoras = () => {
         // Lógica para guardar las horas en base de datos o enviar a servidor
@@ -32,13 +34,39 @@ const FilterHoursScreen = ({ navigation }) => {
         console.log('Fecha:', fechaInvertida);
         console.log('Categoría:', categoria);
         console.log('Clase:', clase);
+        console.log('FechaFin', fechafinInvertida)
         navigation.replace('Home', {
             tipoHoras: tipoHoras,
             fecha: fechaInvertida,
             categoria: categoria,
-            clase: clase
+            clase: clase,
+            fechafin:fechafinInvertida
         });
     };
+
+    const getMarkedDates = () => {
+        const markedDates = {};
+    
+        if (fecha) {
+            markedDates[fecha] = { selected: true, selectedColor: '#0096C7' };
+        }
+    
+        if (fechafin) {
+            markedDates[fechafin] = { selected: true, selectedColor: '#0096C7' };
+    
+            const currentDate = new Date(fecha);
+            while (currentDate <= new Date(fechafin)) {
+                const dateString = currentDate.toISOString().split('T')[0];
+                if (!markedDates[dateString]) {
+                    markedDates[dateString] = { selected: true, selectedColor: '#0096C7' };
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        }
+    
+        return markedDates;
+    };
+    
 
     return (
         <View style={styles.container}>
@@ -63,9 +91,22 @@ const FilterHoursScreen = ({ navigation }) => {
             <View style={styles.componente}>
                 <Text style={styles.label}>FECHA</Text>
                 <Calendar
-                    onDayPress={(day) => setFecha(day.dateString)}
-                    markedDates={{ [fecha]: { selected: true, selectedColor: '#0096C7' } }}
-                />
+    onDayPress={(day) => {
+        if (!fecha || (fecha && fechafin)) {
+            setFecha(day.dateString);
+            setFechafin('');
+        } else if (fecha && !fechafin) {
+            if (new Date(day.dateString) >= new Date(fecha)) {
+                setFechafin(day.dateString);
+            } else {
+                setFechafin(fecha);
+                setFecha(day.dateString);
+            }
+        }
+    }}
+    markedDates={getMarkedDates()}
+/>
+
             </View>
 
             <View style={styles.componente}>
@@ -106,8 +147,24 @@ const FilterHoursScreen = ({ navigation }) => {
                     selectedValue={clase}
                     onValueChange={(value) => setClase(value)}>
                     <Picker.Item label="Todas" value="" />
+                    <Picker.Item label="1SA" value="1SA" />
+                    <Picker.Item label="2SA" value="2SA" />
+                    <Picker.Item label="1SV" value="1SV" />
+                    <Picker.Item label="2SV" value="2SV" />
+                    <Picker.Item label="1SC" value="1SC" />
+                    <Picker.Item label="2SC" value="2SC" />
                     <Picker.Item label="1SI" value="1SI" />
                     <Picker.Item label="2SI" value="2SI" />
+                    <Picker.Item label="1SW" value="1SW" />
+                    <Picker.Item label="2SW" value="2SW" />
+                    <Picker.Item label="1SE" value="1SE" />
+                    <Picker.Item label="2SE" value="2SE" />
+                    <Picker.Item label="1SR" value="1SR" />
+                    <Picker.Item label="2SR" value="2SR" />
+                    <Picker.Item label="1SM" value="1SM" />
+                    <Picker.Item label="2SM" value="2SM" />
+                    <Picker.Item label="1ST" value="1ST" />
+                    <Picker.Item label="2ST" value="2ST" />
                 </Picker>
             </View>
             <View style={styles.buttonContainer}>
@@ -133,10 +190,11 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
-        borderRadius: 12,
-        borderWidth: 4,
+        // borderRadius: 8,
+        // borderWidth: 2,
         borderColor: '#0096C7',
         width: '80%',
+        
         marginLeft: '9%',
         marginBottom: '10%',
         marginTop:'15%'
@@ -149,8 +207,9 @@ const styles = StyleSheet.create({
         flexGrow: 1,
       },
     titulo: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
+        // textDecorationLine: 'underline',
         color: '#0096C7',
     },
     componente: {

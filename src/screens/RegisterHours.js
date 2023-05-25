@@ -144,8 +144,24 @@ const RegisterHoursScreen = ({ navigation }) => {
           selectedValue={clase}
           onValueChange={(value) => setClase(value)}
         >
+          <Picker.Item label="1SA" value="1SA" />
+          <Picker.Item label="2SA" value="2SA" />
+          <Picker.Item label="1SV" value="1SV" />
+          <Picker.Item label="2SV" value="2SV" />
+          <Picker.Item label="1SC" value="1SC" />
+          <Picker.Item label="2SC" value="2SC" />
           <Picker.Item label="1SI" value="1SI" />
           <Picker.Item label="2SI" value="2SI" />
+          <Picker.Item label="1SW" value="1SW" />
+          <Picker.Item label="2SW" value="2SW" />
+          <Picker.Item label="1SE" value="1SE" />
+          <Picker.Item label="2SE" value="2SE" />
+          <Picker.Item label="1SR" value="1SR" />
+          <Picker.Item label="2SR" value="2SR" />
+          <Picker.Item label="1SM" value="1SM" />
+          <Picker.Item label="2SM" value="2SM" />
+          <Picker.Item label="1ST" value="1ST" />
+          <Picker.Item label="2ST" value="2ST" />
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
@@ -168,8 +184,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
-    borderRadius: 12,
-    borderWidth: 4,
+    // borderRadius: 12,
+    // borderWidth: 4,
     borderColor: '#0096C7',
     width: '80%',
     marginLeft: '9%',
@@ -181,7 +197,7 @@ const styles = StyleSheet.create({
     padding: '4%'
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#0096C7',
   },

@@ -1,44 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const Config = ({ navigation }) => {
+    const [email, setEmail] = useState('');
+    useEffect(() => {
+        const getEmail = async () => {
+          try {
+            const storedEmail = await AsyncStorage.getItem('email');
+            setEmail(storedEmail);
+          } catch (error) {
+            console.log('Error al obtener el correo electrónico:', error);
+          }
+        };
+    
+        getEmail();
+      }, []);
+
+      console.log(email);
+      
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
         { id: 2, titulo: 'NOTIFICACIONES' },
         { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
+        { id: 5, titulo: 'EXTRAS' },
         // { id: 5, titulo: 'IDIOMA' },
         // { id: 6, titulo: 'TEMAS' },
     ];
 
     const handleItemPress = (item) => {
-        switch (item.id) {
-            case 1:
-                navigation.navigate('ProfileConfig');
-                break;
-            case 2:
-                // navigation.navigate('Notifications');
-                Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
-                break;
-            case 3:
-                // navigation.navigate('privacy');
-                Alert.alert("Esta funcion no esta implementada en esta fase del desarrollo");
-                break;
-            case 4:
-                navigation.navigate('Security');
-                break;
-            case 5:
-                navigation.navigate('Language');
-                break;
-            case 6:
-                navigation.navigate('Theme');
-                break;
-            default:
-                break;
+        if(email){
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('ProfileConfig');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    navigation.navigate('Security');
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('ProfileConfig');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    //navigation.navigate('Security');
+                    Alert.alert("Esta funcion no esta implementada en este usuario");
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
         }
     };
 

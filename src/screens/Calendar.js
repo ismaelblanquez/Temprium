@@ -1,125 +1,147 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
+import { selectHoras } from '../DataBase/Conexion';
+import { Calendar } from 'react-native-calendars';
 
 function AgendaApp({ navigation }) {
-  const [events, setEvents] = useState([]);
-  const [newEventTitle, setNewEventTitle] = useState('');
-  const [newEventDescription, setNewEventDescription] = useState('');
+  const [eventos, setEventos] = useState([]);
+  const [email, setEmail] = useState('');
+  const [fechaSeleccionada, setFechaSeleccionada] = useState('');
 
-  useEffect(() => {
-    // Cargar eventos guardados al iniciar la app
-    AsyncStorage.getItem('events').then((storedEvents) => {
-      if (storedEvents !== null) {
-        setEvents(JSON.parse(storedEvents));
+  const construirEventos = (registros) => {
+    const eventos = {};
+
+    registros.forEach((registro) => {
+      const { Dia, Tipohoras, Horas, minutos, Clase, categoria } = registro;
+      const fecha = Dia.substring(0, 10); // Obtén solo la fecha sin la hora
+
+      if (!eventos[fecha]) {
+        eventos[fecha] = [];
       }
+
+      const dotColor = Tipohoras === 'No Lectivas' ? '#8E44AD' : '#12CDD4';
+
+      eventos[fecha].push({
+        dots: [
+          {
+            key: fecha + '-' + registro.Horas + '-' + registro.minutos,
+            color: dotColor,
+            selectedDotColor: 'orange',
+          },
+        ],
+        hours: registro.Horas,
+        minutes: registro.minutos,
+        TipoHoras: registro.Tipohoras,
+        Clase: registro.Clase,
+        categoria: registro.Categoria,
+      });
     });
-  }, []);
+
+    return eventos;
+  };
 
   useEffect(() => {
-    // Guardar eventos al actualizar la lista
-    AsyncStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+    const obtenerRegistros = async () => {
+      try {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email || 'dummy@nosession.com');
 
-  const addEvent = () => {
-    const newEvent = { title: newEventTitle, description: newEventDescription };
-    if (newEventTitle !== '') {
-      setEvents([...events, newEvent]);
-      setNewEventTitle('');
-      setNewEventDescription('');
-    } else {
-      console.log("error añadiendo evento");
-    }
+        let registros = [];
+
+        if (fechaSeleccionada) {
+          const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
+          selectHoras('', email || 'dummy@nosession.com', '', fechaInvertida, '', '')
+            .then((resultados) => {
+              registros = resultados;
+              const eventos = construirEventos(registros);
+              setEventos(eventos);
+            })
+            .catch((error) => {
+              console.error('Error al obtener los registros:', error);
+            });
+        } else {
+          const eventos = construirEventos(registros);
+          setEventos(eventos);
+        }
+      } catch (error) {
+        console.error('Error al obtener los registros:', error);
+      }
+    };
+
+    obtenerRegistros();
+  }, [fechaSeleccionada]);
+
+  const markedDates = Object.values(eventos).reduce((acc, eventosDia) => {
+    eventosDia.forEach((evento) => {
+      const fecha = evento.fecha;
+      if (!acc[fecha]) {
+        acc[fecha] = { dots: [] };
+      }
+      acc[fecha].dots.push(evento);
+    });
+    return acc;
+  }, {});
+
+  const handleDayPress = (day) => {
+    setFechaSeleccionada(day.dateString);
   };
 
-  const deleteEvent = (index) => {
-    const newEvents = [...events];
-    newEvents.splice(index, 1);
-    setEvents(newEvents);
-  };
-
-  const todayEvents = events.filter((event) => {
-    const eventDate = new Date();
-    const eventTitle = event.title.toLowerCase();
-    const eventDescription = event.description.toLowerCase();
-    const today = new Date().toISOString().substr(0, 10);
-
-    return (
-      eventDate.toISOString().substr(0, 10) === today ||
-      eventTitle.includes(today) ||
-      eventDescription.includes(today)
-    );
-  });
-
-  const screenHeight = Dimensions.get('window').height;
+  const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
+  const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
   return (
     <View style={styles.agendaContainer}>
-      <View style={{ flex: 1 }}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.newEventContainer}>
-            <Text style={styles.sectionTitle}>Agregar evento:</Text>
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Título"
-              value={newEventTitle}
-              onChangeText={(text) => setNewEventTitle(text)}
-            />
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Descripción"
-              value={newEventDescription}
-              onChangeText={(text) => setNewEventDescription(text)}
-            />
-            <TouchableOpacity style={styles.addButton} onPress={addEvent}>
-              <Text style={styles.addButtonText}>Agregar evento</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.sectionTitle}>Eventos de hoy:</Text>
-          {todayEvents.length > 0 ? (
-            todayEvents.map((event, index) => (
-              <View style={styles.eventContainer} key={index}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-                  <Text style={styles.deleteButtonText}>Eliminar</Text>
-                </TouchableOpacity>
-              </View>
-            ))
-          ) : (
-            <Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
-          )}
-        </ScrollView>
-        <View style={styles.bottomBarContainer}>
-          <BottomBar navigation={navigation} />
+      <View style={styles.componente}>
+        <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
+      </View>
+      {fechaSeleccionada && (
+        <View style={styles.scrollViewContainer}>
+          <ScrollView>
+            <View style={styles.eventosContainer}>
+              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
+              {eventosFechaSeleccionada.map((evento, index) => (
+                <View key={index} style={styles.eventoContainer}>
+                  <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
+                  <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
+                  <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
+                  <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
+                  <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
         </View>
+      )}
+      <View style={styles.bottomBarContainer}>
+        <BottomBar navigation={navigation} />
       </View>
-      </View>
-  
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   agendaContainer: {
     flex: 1,
-    backgroundColor: '#FFF',
-    // marginBottom: 50,
+    backgroundColor: '#FFFFFF',
+  },
+  componente: {
+    marginTop: 30,
   },
   newEventContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
-  }, 
-   scrollView: {
-    flex: 1,
-    marginBottom: 50, // Aplica un margen inferior de 50 unidades
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+    marginBottom: 50,
   },
   bottomBarContainer: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-  },  
+  },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -131,6 +153,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 20,
+  },
+  iconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconNoLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  iconLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
   },
   addButton: {
     backgroundColor: '#0096C7',
@@ -172,6 +209,27 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: '#FFF',
     fontWeight: 'bold',
+  },
+  eventoText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  eventoContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D1D1D1',
+    marginBottom: 10,
+  },
+  eventosContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    marginBottom: 30
+  },
+  eventosTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
 
