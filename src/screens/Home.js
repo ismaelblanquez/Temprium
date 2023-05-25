@@ -106,7 +106,7 @@ const Home = ({ navigation, route }) => {
       </style>
     </head>
     <body>
-      <h1>Horas</h1>
+      <h1>Horas Realizadas</h1>
       <table>
         <thead>
           <tr>

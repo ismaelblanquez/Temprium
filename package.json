@@ -34,7 +34,8 @@
     "react-native-web": "~0.18.10",
     "setimmediate": "^1.0.5",
     "expo-print": "~12.2.1",
-    "expo-sharing": "~11.2.2"
+    "expo-sharing": "~11.2.2",
+    "expo-notifications": "~0.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
