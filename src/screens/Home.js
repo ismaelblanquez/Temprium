@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from
 import BottomBar from '../components/BottomBar';
 import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { printToFileAsync } from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 // Componente de la pantalla Home
 const Home = ({ navigation, route }) => {
