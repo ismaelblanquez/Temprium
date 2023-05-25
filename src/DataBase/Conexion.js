@@ -105,9 +105,6 @@ export function selectHoras(
     if (fechaFin == '' && fechaInicio !='') {
       consulta += 'AND HORAS.Dia = ? ';
       parametros.push(fechaInicio);
-    }else{
-      consulta += 'AND HORAS.Dia ? BETWEEN ? ';
-      parametros.push(fechaInicio,fechaFin);
     }
     if (fechaFin  && fechaInicio ){
       consulta += 'AND HORAS.Dia BETWEEN ? AND ? ';
