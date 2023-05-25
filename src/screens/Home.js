@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from
 import BottomBar from '../components/BottomBar';
 import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { printToFileAsync } from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 // Componente de la pantalla Home
 const Home = ({ navigation, route }) => {
@@ -67,6 +69,79 @@ const Home = ({ navigation, route }) => {
                 });
         }
     };
+
+    let generatePdf = async () =>{
+        const minutosTotales = data.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
+        const horasTotales = Math.floor(minutosTotales / 60);
+        const minutosRestantes = minutosTotales % 60;
+        const tiempoTotal = `${horasTotales}h ${minutosRestantes}m`;
+      
+        const html = `
+  <html>
+    <head>
+      <style>
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+        th {
+          background-color: #0096C7;
+          color: #FFFFFF;
+        }
+        tbody tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+        tfoot {
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Horas Realizadas</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo de Horas</th>
+            <th>Horas</th>
+            <th>Minutos</th>
+            <th>Categoría</th>
+            <th>Fecha</th>
+            <th>Clase</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map((item) => `
+            <tr>
+              <td>${item.Tipohoras}</td>
+              <td>${item.Horas}</td>
+              <td>${item.minutos}</td>
+              <td>${item.Categoria}</td>
+              <td>${item.Dia}</td>
+              <td>${item.Clase}</td>
+            </tr>
+          `).join('')}
+          <tr>
+            <td colspan="6" align="right"><strong>Total:</strong> ${tiempoTotal}</td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+  </html>
+`;
+
+        const file  = await printToFileAsync({
+            html:html,
+            base64: false
+        });
+        await shareAsync(file.uri);
+    };
+
 
 
     const handleGraficosPress = () => {
@@ -135,7 +210,7 @@ const Home = ({ navigation, route }) => {
             </View>
             <View style={styles.alinearBoton}>
                 <Text style={styles.recienteTitulo}>RECIENTE</Text>
-                <TouchableOpacity onPress={() => {Alert.alert('En mantenimiento') }}>
+                <TouchableOpacity onPress={generatePdf}>
                     <Image style={styles.pdfButton} source={require('../assets/images/share.png')} />
                 </TouchableOpacity>
             </View>
