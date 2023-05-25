@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
+
 const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('Lectivas');
   const [horas, setHoras] = useState('1');
@@ -40,106 +41,103 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Clase:', clase);
     console.log('Día:', diaActual);
     console.log('Email', email);
-    
+
     getIdUsuario(email, (id) => {
-      console.log('IIIIIIDDDDD', id)
+      console.log('IIIIIIDDDDD', id);
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
           // const idHoras = results.insertId;
           console.log(results.rows);
-          console.log(`Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`);
+          console.log(
+            `Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`
+          );
           navigation.replace('Home');
         })
-        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
+        .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
   };
 
   return (
     <View style={styles.container}>
-    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <View style={styles.headerContainer}>
-        <View style={styles.tituloContainer}>
-          <Text style={styles.titulo}>AÑADIR HORAS</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.headerContainer}>
+          <View style={styles.tituloContainer}>
+            <Text style={styles.titulo}>AÑADIR HORAS</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.componente}>
-        <Text style={styles.label}>TIPO DE HORAS</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={tipoHoras}
-          onValueChange={(value) => setTipoHoras(value)}
-        >
-          <Picker.Item label="Lectivas" value="Lectivas" />
-          <Picker.Item label="No Lectivas" value="No Lectivas" />
-        </Picker>
-      </View>
+        <View style={styles.componente}>
+          <Text style={styles.label}>TIPO DE HORAS</Text>
+          <Picker
+            style={styles.picker}
+            selectedValue={tipoHoras}
+            onValueChange={(value) => setTipoHoras(value)}
+          >
+            <Picker.Item label="Lectivas" value="Lectivas" />
+            <Picker.Item label="No Lectivas" value="No Lectivas" />
+          </Picker>
+        </View>
 
-      <View style={[styles.componente,{justifyContent:'center', alignContent:'center'}]}>
-  <Text style={styles.label}>HORAS TRABAJADAS</Text>
-  <View style={[styles.pickerContainer, { marginBottom: 0 , justifyContent:'center'}]}>
-    <Picker
-      style={[styles.picker, { width: '80%' }]}
-      selectedValue={horas}
-      onValueChange={(value) => setHoras(value)}
-    >
-      {[...Array(12)].map((_, index) => (
-        <Picker.Item
-          key={index}
-          label={String(index)}
-          value={String(index)}
-        />
-      ))}
-    </Picker>
-    <Text style={[styles.hourMin, {fontSize:20}]}> h   </Text>
-    </View>
-    <View style={[styles.pickerContainer, { marginBottom: 0 }]}>
-    {/* <Text style={[styles.hourMin, {fontSize:40, padding:10, justifyContent:'center', marginBottom:20}]}>:</Text> */}
-    <Picker
-      style={[styles.picker, { width: '80%' }]}
-      selectedValue={minutos}
-      onValueChange={(value) => setMinutos(value)}
-    >
-      {[...Array(12)].map((_, index) => (
-        <Picker.Item
-          key={index}
-          label={String(index * 5)}
-          value={String(index * 5)}
-        />
-      ))}
-    </Picker>
-    {/* <Text style={styles.hourMin}>min</Text> */}
-    <Text style={[styles.hourMin, {fontSize:20}]}> min</Text>
-  </View>
-</View>
+        <View style={[styles.componente, { justifyContent: 'center', alignContent: 'center' }]}>
+          <Text style={styles.label}>HORAS TRABAJADAS</Text>
+          <View style={[styles.pickerContainer, { justifyContent: 'center' }]}>
+            <Picker
+              style={[styles.picker, { width: '80%' }]}
+              selectedValue={horas}
+              onValueChange={(value) => setHoras(value)}
+            >
+              {[...Array(12)].map((_, index) => (
+                <Picker.Item key={index} label={String(index)} value={String(index)} />
+              ))}
+            </Picker>
+            <Text style={[styles.hourMin, { fontSize: 20 }]}> h </Text>
+          </View>
+          <View style={[styles.pickerContainer, {justifyContent: 'center' }]}>
+            <Picker
+              style={[styles.picker, { width: '80%' }]}
+              selectedValue={minutos}
+              onValueChange={(value) => setMinutos(value)}
+            >
+              {[...Array(12)].map((_, index) => (
+                <Picker.Item
+                  key={index}
+                  label={String(index * 5)}
+                  value={String(index * 5)}
+                />
+              ))}
+            </Picker>
+            
+          <Text style={[styles.hourMin, { fontSize: 20 }]}> min</Text>
+          </View>
+        </View>
 
-      <View style={styles.componente}>
-        <Text style={styles.label}>CATEGORÍAS</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={categoria}
-          onValueChange={(value) => setCategoria(value)}
-        >
-          <Picker.Item label="Ninguna" value=" " />
-          <Picker.Item label="Impartir clases" value="Impartir clases" />
-          <Picker.Item label="Preparar clases" value="Preparar clases" />
-          <Picker.Item label="Corregir" value="Corregir" />
-          <Picker.Item label="Retos" value="Retos" />
-          <Picker.Item
-            label="Reuniones de Departamento"
-            value="Reuniones de Departamento"
-          />
-          <Picker.Item
-            label="Reuniones de Equipos Educativos"
-            value="Reuniones de Equipos Educativos"
-          />
-          <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />
-          <Picker.Item label="Atención a Padres" value="Atención a Padres" />
-          <Picker.Item
-            label="Atención personal a alumnos"
-            value="Atención personal a alumnos"
-          />
-        </Picker>
-      </View>
+        <View style={styles.componente}>
+          <Text style={styles.label}>CATEGORÍAS</Text>
+          <Picker
+            style={styles.picker}
+            selectedValue={categoria}
+            onValueChange={(value) => setCategoria(value)}
+          >
+            <Picker.Item label="Ninguna" value=" " />
+            <Picker.Item label="Impartir clases" value="Impartir clases" />
+            <Picker.Item label="Preparar clases" value="Preparar clases" />
+            <Picker.Item label="Corregir" value="Corregir" />
+            <Picker.Item label="Retos" value="Retos" />
+            <Picker.Item
+              label="Reuniones de Departamento"
+              value="Reuniones de Departamento"
+            />
+            <Picker.Item
+              label="Reuniones de Equipos Educativos"
+              value="Reuniones de Equipos Educativos"
+            />
+            <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />
+            <Picker.Item label="Atención a Padres" value="Atención a Padres" />
+            <Picker.Item
+              label="Atención personal a alumnos"
+              value="Atención personal a alumnos"
+            />
+          </Picker>
+        </View>
 
       <View style={styles.componente}>
         <Text style={styles.label}>CLASE</Text>
@@ -184,21 +182,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
-    // marginTop: '5%'
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
-    // borderRadius: 12,
-    // borderWidth: 4,
-    borderColor: '#0096C7',
     width: '80%',
     marginLeft: '9%',
     marginBottom: '10%',
-    marginTop:'15%'
+    marginTop: '15%',
   },
   tituloContainer: {
     alignItems: 'center',
-    padding: '4%'
+    padding: '4%',
   },
   titulo: {
     fontSize: 30,
@@ -212,7 +206,6 @@ const styles = StyleSheet.create({
     width: '80%',
     marginLeft: '9%',
     marginBottom: '10%',
-    
   },
   label: {
     fontSize: 16,
@@ -229,7 +222,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 4,
     marginBottom: '10%',
-    
   },
   pickerContainer: {
     flexDirection: 'row',
@@ -240,8 +232,8 @@ const styles = StyleSheet.create({
   },
   hourMin: {
     fontSize: 16,
-    alignSelf: 'center',
-    color: '#0096C7'
+    // alignSelf: 'center',
+    color: '#0096C7',
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -253,7 +245,7 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 8,
     marginBottom: '15%',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   buttonText: {
     color: '#FFFFFF',
