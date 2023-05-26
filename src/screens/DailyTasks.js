@@ -111,14 +111,14 @@ function DailyTasks({ navigation }) {
             />
             <TextInput
               style={styles.newEventInput}
-              placeholder="Hora (0-23)"
+              placeholder="Hora Recordatorio (0-23)"
               keyboardType="numeric"
               value={reminderHours}
               onChangeText={setReminderHours}
            />
            <TextInput
               style={styles.newEventInput}
-              placeholder="Minutos (0-59)"
+              placeholder="Minutos Recordatorio (0-59)"
               keyboardType="numeric"
               value={reminderMinutes}
               onChangeText={setReminderMinutes}
