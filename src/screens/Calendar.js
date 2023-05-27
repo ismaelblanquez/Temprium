@@ -3,7 +3,29 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Novimbre',
+    'Diciembre'
+  ],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+  today: "Hoy"
+};
+
+LocaleConfig.defaultLocale = 'es';
 
 function AgendaApp({ navigation }) {
   const [eventos, setEventos] = useState([]);
@@ -87,6 +109,7 @@ function AgendaApp({ navigation }) {
   const handleDayPress = (day) => {
     setFechaSeleccionada(day.dateString);
   };
+
 
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];

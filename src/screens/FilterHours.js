@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, DatePickerAndroid, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { selectHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {Picker} from '@react-native-picker/picker';
+
+
+LocaleConfig.locales['es'] = {
+    monthNames: [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Novimbre',
+      'Diciembre'
+    ],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    today: "Hoy"
+  };
+  
+  LocaleConfig.defaultLocale = 'es';
 
 const FilterHoursScreen = ({ navigation }) => {
     const [tipoHoras, setTipoHoras] = useState('');
