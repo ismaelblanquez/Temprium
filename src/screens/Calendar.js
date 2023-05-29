@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
 LocaleConfig.locales['es'] = {
   monthNames: [
@@ -27,7 +28,7 @@ LocaleConfig.locales['es'] = {
 
 LocaleConfig.defaultLocale = 'es';
 
-function AgendaApp({ navigation }) {
+function CalendarScreen({ navigation }) {
   const [eventos, setEventos] = useState([]);
   const [email, setEmail] = useState('');
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flexGrow: 1,
-    marginBottom: 50,
+    marginBottom: 400,
   },
   bottomBarContainer: {
     position: 'absolute',
@@ -270,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AgendaApp;
+export default CalendarScreen;
