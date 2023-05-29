@@ -85,22 +85,23 @@ const FilterHoursScreen = ({ navigation }) => {
     }
 
     
-  // Resaltar los días sábado y domingo
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
-  const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
+ // Resaltar los días sábado y domingo
+ const today = new Date();
+ const currentYear = today.getFullYear();
+ const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
+ const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
 
-  const currentDate = new Date(startDate);
-  while (currentDate <= endDate) {
-    const dateString = currentDate.toISOString().split('T')[0];
-    const dayOfWeek = currentDate.getDay();
+ const currentDate = new Date(startDate);
+ while (currentDate <= endDate) {
+   const dateString = currentDate.toISOString().split('T')[0];
+   const dayOfWeek = currentDate.getDay();
 
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
-      }
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
+   if (dayOfWeek === 0 || dayOfWeek === 6) {
+     markedDates[dateString] = { selected: true, selectedColor: '#FE8484' };
+   }
+
+   currentDate.setDate(currentDate.getDate() + 1);
+ }
     return markedDates;
   };
 
