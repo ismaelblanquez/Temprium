@@ -41,22 +41,22 @@ function DailyTasks({ navigation }) {
       setNewEventDescription('');
       setReminderHours('');
       setReminderMinutes('');
-  
+
       const currentDate = new Date();
       const reminderDate = new Date(currentDate);
-  
+
       // Set the reminder time based on user input
       reminderDate.setHours(parseInt(reminderHours, 10));
       reminderDate.setMinutes(parseInt(reminderMinutes, 10));
       reminderDate.setSeconds(0);
-  
+
       if (reminderDate < currentDate) {
         // If the reminder time is in the past, schedule it for the next day
         reminderDate.setDate(reminderDate.getDate() + 1);
       }
-  
+
       const timeDifference = reminderDate.getTime() - currentDate.getTime();
-  
+
       // Schedule the notification to appear after the specified delay
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -115,14 +115,14 @@ function DailyTasks({ navigation }) {
               keyboardType="numeric"
               value={reminderHours}
               onChangeText={setReminderHours}
-           />
-           <TextInput
+            />
+            <TextInput
               style={styles.newEventInput}
               placeholder="Minutos Recordatorio (0-59)"
               keyboardType="numeric"
               value={reminderMinutes}
               onChangeText={setReminderMinutes}
-           />
+            />
             <TouchableOpacity style={styles.addButton} onPress={addEvent}>
               <Text style={styles.addButtonText}>Agregar evento</Text>
             </TouchableOpacity>
@@ -144,11 +144,11 @@ function DailyTasks({ navigation }) {
           )}
         </ScrollView>
         <View style={styles.bottomBarContainer}>
-          <BottomBar navigation={navigation} />
+          <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
       </View>
-      </View>
-  
+    </View>
+
   );
 }
 
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   newEventContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
-  }, 
-   scrollView: {
+  },
+  scrollView: {
     flex: 1,
     marginBottom: 50, // Aplica un margen inferior de 50 unidades
   },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-  },  
+  },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',

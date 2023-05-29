@@ -110,7 +110,7 @@ const Extra = ({ navigation }) => {
                 />
             </View>
 
-            <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 };
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
-        borderRadius: 12,
-        borderWidth: 4,
+        // borderRadius: 12,
+        // borderWidth: 4,
         borderColor: '#0096C7',
         width: '80%',
         marginLeft: '9%',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         padding: '4%'
     },
     titulo: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         color: '#0096C7',
     },

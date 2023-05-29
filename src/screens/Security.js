@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { verificarContraseña, updateContraseña } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import BottomBar from '../components/BottomBar';
 import {
   View,
   Text,
@@ -111,6 +111,7 @@ import {
       <TouchableOpacity style={styles.button} onPress={handleGuardarCambios}>
         <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
       </TouchableOpacity>
+      <BottomBar navigation={navigation} selectedTab="Config" />
     </View>
   );
 }
@@ -123,8 +124,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
-    borderRadius: 12,
-    borderWidth: 4,
+    // borderRadius: 12,
+    // borderWidth: 4,
     borderColor: '#0096C7',
     width: '80%',
     marginLeft: '9%',
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     padding: '4%',
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#0096C7',
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     marginLeft: '9%',
   },
   input: {
-    height: 40,
+    height: 50,
     borderWidth: 2,
     borderRadius: 8,
     borderColor: '#1A1A1A', //#1A1A1A
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: '3%',
     width: '80%',
+    height: 50,
     borderRadius: 8,
     marginBottom: '15%',
     alignSelf: 'center',

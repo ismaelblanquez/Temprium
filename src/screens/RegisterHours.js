@@ -77,9 +77,9 @@ const RegisterHoursScreen = ({ navigation }) => {
           </Picker>
         </View>
 
-        <View style={[styles.componente, { justifyContent: 'center', alignContent: 'center' }]}>
+        <View style={[styles.componente, { }]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
-          <View style={[styles.pickerContainer, { justifyContent: 'center' }]}>
+          <View style={[styles.pickerContainer, {  }]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={horas}
@@ -89,9 +89,10 @@ const RegisterHoursScreen = ({ navigation }) => {
                 <Picker.Item key={index} label={String(index)} value={String(index)} />
               ))}
             </Picker>
-            <Text style={[styles.hourMin, { fontSize: 20 }]}> h </Text>
+            <Text style={[styles.hourMin, { fontSize: 20 }]}> </Text>
           </View>
-          <View style={[styles.pickerContainer, {justifyContent: 'center' }]}>
+          <Text style={styles.label}>MINUTOS TRABAJADOS</Text>
+          <View style={[styles.pickerContainer, { }]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={minutos}
@@ -105,8 +106,8 @@ const RegisterHoursScreen = ({ navigation }) => {
                 />
               ))}
             </Picker>
-            
-          <Text style={[styles.hourMin, { fontSize: 20 }]}> min</Text>
+
+            <Text style={[styles.hourMin, { fontSize: 20 }]}></Text>
           </View>
         </View>
 
@@ -166,13 +167,14 @@ const RegisterHoursScreen = ({ navigation }) => {
             <Picker.Item label="2ST" value="2ST" />
           </Picker>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={guardarHoras}>
-            <Text style={styles.buttonText}>GUARDAR</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <BottomBar navigation={navigation} />
+        <View style={styles.spacer} /> 
+        </ScrollView>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={guardarHoras}>
+          <Text style={styles.buttonText}>GUARDAR</Text>
+        </TouchableOpacity>
+      </View>
+      <BottomBar navigation={navigation} selectedTab="RegisterHours" />
     </View>
   );
 };
@@ -182,6 +184,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
+    // marginBottom:50,
+  },
+  scrollViewContainer: {
+    // flexGrow: 1,
+    // paddingBottom: 100, // Espacio para el botón de guardar
+    // marginBottom: 500,
+  },
+  spacer: {
+    // height: '100%', // Llena todo el espacio disponible
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
@@ -226,7 +237,8 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    // marginBottom: 16,
+    // marginTop:10,
     width: '70%',
     justifyContent: 'center',
   },
@@ -238,14 +250,22 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
   },
+ 
   button: {
     backgroundColor: '#0096C7',
     alignItems: 'center',
     padding: '5%',
     width: '80%',
     borderRadius: 8,
+    // position: 'absolute',
     marginBottom: '15%',
+    
     alignSelf: 'center',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    // marginBottom: 5, // Espacio entre el botón y el contenido
+    // marginTop:50,
   },
   buttonText: {
     color: '#FFFFFF',

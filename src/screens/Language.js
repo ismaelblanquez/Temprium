@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, Picker } from 'react-native';
-
+import BottomBar from '../components/BottomBar';
 function Language() {
     const [idioma, setIdioma] = useState('es'); // Valor inicial del idioma
 
@@ -31,6 +31,7 @@ function Language() {
                 </Picker>
             </View>
             <Button title="Guardar cambios" onPress={handleGuardarCambios} />
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 }
