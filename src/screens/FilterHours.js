@@ -99,8 +99,7 @@ const FilterHoursScreen = ({ navigation }) => {
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
       }
-
-
+      
     currentDate.setDate(currentDate.getDate() + 1);
   }
     return markedDates;
