@@ -191,84 +191,93 @@ const FilterHoursScreen = ({ navigation }) => {
             <Picker.Item label="1ST" value="1ST" />
             <Picker.Item label="2ST" value="2ST" />
           </Picker>
+          </View>
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={guardarHoras}>
+                    <Text style={styles.buttonText}>GUARDAR</Text>
+                </TouchableOpacity>
+            </View>
+            <BottomBar navigation={navigation} selectedTab="FilterHours" />
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={guardarHoras}>
-            <Text style={styles.buttonText}>GUARDAR</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <BottomBar navigation={navigation} />
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
+      flex: 1,
+      padding: 16,
+      backgroundColor: '#FFFFFF',
   },
   headerContainer: {
-    backgroundColor: '#E1F5FE',
-    width: '80%',
-    marginLeft: '9%',
-    marginBottom: '10%',
-    marginTop: '15%',
+      backgroundColor: '#E1F5FE',
+      width: '80%',
+      marginLeft: '9%',
+      marginBottom: '10%',
+      marginTop: '15%'
   },
   tituloContainer: {
-    alignItems: 'center',
-    padding: '4%',
+      alignItems: 'center',
+      padding: '4%'
   },
   scrollViewContainer: {
-    flexGrow: 1,
+      flexGrow: 1,
   },
   titulo: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#0096C7',
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: '#0096C7',
   },
   componente: {
-    borderColor: '#0096C7',
-    borderWidth: 2,
-    alignItems: 'center',
-    width: '80%',
-    marginLeft: '9%',
-    marginBottom: '10%',
+      borderColor: '#0096C7',
+      borderWidth: 2,
+      alignItems: 'center',
+      width: '80%',
+      marginLeft: '9%',
+      marginBottom: '10%',
   },
   label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#0096C7',
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: '#0096C7',
   },
   picker: {
-    backgroundColor: '#0096C7',
-    borderWidth: 1,
-    borderColor: '#0096C7',
-    color: '#FFFFFF',
-    width: '60%',
-    height: 40,
-    borderRadius: 4,
-    marginBottom: '8%',
+      backgroundColor: '#0096C7',
+      borderWidth: 1,
+      borderColor: '#0096C7',
+      color: '#FFFFFF',
+      width: '60%',
+      height: 40,
+      borderRadius: 4,
+      marginBottom: '8%',
   },
   button: {
-    backgroundColor: '#0096C7',
-    alignItems: 'center',
-    padding: '5%',
-    width: '80%',
-    borderRadius: 8,
-    marginBottom: '15%',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+      backgroundColor: '#0096C7',
+      alignItems: 'center',
+      padding: '5%',
+      width: '80%',
+      borderRadius: 8,
+      marginBottom: '15%',
+      alignSelf: 'center'
   },
   buttonContainer: {
-    width: '100%',
-    alignItems: 'center',
+      alignItems: 'center',
+      // marginBottom: 5, // Espacio entre el botón y el contenido
+      // marginTop: 50,
+  },
+  scrollViewContainer: {
+      flexGrow: 1,
+      // paddingBottom: 100, // Espacio para el botón de guardar
+      // marginBottom: 500,
+  },
+  spacer: {
+      // height: '100%', // Llena todo el espacio disponible
+  },
+  buttonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: 'bold',
   },
 });
 
