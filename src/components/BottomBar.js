@@ -27,7 +27,7 @@ const BottomBar = ({ navigation, selectedTab }) => {
         style={[styles.navButton, selectedTab === 'RegisterHours' && styles.highlightedButton]}
         onPress={() => handleTabPress('RegisterHours')}
       >
-        <Ionicons name="time-outline" size={selectedTab === 'RegisterHours' ? 30 : 24} color={selectedTab === 'RegisterHours' ? '#FFFFFF' : 'black'} />
+        <Ionicons name="time-outline" size={selectedTab === 'RegisterHours' ? 30 : 28} color={selectedTab === 'RegisterHours' ? '#FFFFFF' : 'black'} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.navButton, selectedTab === 'Calendar' && styles.highlightedButton]}
@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   navButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   highlightedButton: {
     justifyContent: 'center',
-    // alignItems: 'center',
+    alignItems: 'center',
     backgroundColor: '#0096C7',
-    borderRadius: 100,
+    borderRadius: 80,
     height: 40,
     width: 40,
   },

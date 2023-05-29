@@ -224,13 +224,13 @@ export const buscarUsuario = async (email) => {
   }
 };
 
-export const updateUsu = async (email, nuevoemail, nuevacontrasena) => {
+export const updateUsu = async (email, nuevacontrasena) => {
   try {
     const results = await new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          'UPDATE Usuarios SET email = ?, contrasena = ? WHERE email = ?',
-          [nuevoemail, nuevacontrasena, email],
+          'UPDATE Usuarios SET  contrasena = ? WHERE email = ?',
+          [ nuevacontrasena, email],
           resolve,
           reject
         );

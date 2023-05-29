@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         alignItems: 'center',
-        marginBottom: 5, // Espacio entre el botón y el contenido
-        marginTop: 5,
+        // marginBottom: 5, // Espacio entre el botón y el contenido
+        // marginTop: 50,
     },
     scrollViewContainer: {
         flexGrow: 1,

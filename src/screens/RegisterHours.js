@@ -77,9 +77,9 @@ const RegisterHoursScreen = ({ navigation }) => {
           </Picker>
         </View>
 
-        <View style={[styles.componente, { justifyContent: 'center', alignContent: 'center' }]}>
+        <View style={[styles.componente, { }]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
-          <View style={[styles.pickerContainer, { justifyContent: 'center' }]}>
+          <View style={[styles.pickerContainer, {  }]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={horas}
@@ -89,9 +89,10 @@ const RegisterHoursScreen = ({ navigation }) => {
                 <Picker.Item key={index} label={String(index)} value={String(index)} />
               ))}
             </Picker>
-            <Text style={[styles.hourMin, { fontSize: 20 }]}> h </Text>
+            <Text style={[styles.hourMin, { fontSize: 20 }]}> </Text>
           </View>
-          <View style={[styles.pickerContainer, { justifyContent: 'center' }]}>
+          <Text style={styles.label}>MINUTOS TRABAJADOS</Text>
+          <View style={[styles.pickerContainer, { }]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={minutos}
@@ -106,7 +107,7 @@ const RegisterHoursScreen = ({ navigation }) => {
               ))}
             </Picker>
 
-            <Text style={[styles.hourMin, { fontSize: 20 }]}> m</Text>
+            <Text style={[styles.hourMin, { fontSize: 20 }]}></Text>
           </View>
         </View>
 
@@ -186,12 +187,12 @@ const styles = StyleSheet.create({
     // marginBottom:50,
   },
   scrollViewContainer: {
-    flexGrow: 1,
-    paddingBottom: 100, // Espacio para el botón de guardar
-    marginBottom: 500,
+    // flexGrow: 1,
+    // paddingBottom: 100, // Espacio para el botón de guardar
+    // marginBottom: 500,
   },
   spacer: {
-    height: '100%', // Llena todo el espacio disponible
+    // height: '100%', // Llena todo el espacio disponible
   },
   headerContainer: {
     backgroundColor: '#E1F5FE',
@@ -236,7 +237,8 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    // marginBottom: 16,
+    // marginTop:10,
     width: '70%',
     justifyContent: 'center',
   },
@@ -262,8 +264,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    marginBottom: 5, // Espacio entre el botón y el contenido
-    marginTop:5,
+    // marginBottom: 5, // Espacio entre el botón y el contenido
+    // marginTop:50,
   },
   buttonText: {
     color: '#FFFFFF',

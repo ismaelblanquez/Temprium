@@ -91,16 +91,40 @@ function AgendaApp({ navigation }) {
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
+  // Nombres de los meses en español
+  const monthNames = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+
+  // Nombres de los días de la semana en español
+  const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.componente}>
-        <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
+        <Calendar
+          markedDates={markedDates}
+          onDayPress={handleDayPress}
+          monthNames={monthNames}
+          dayNames={dayNames}
+        />
       </View>
       {fechaSeleccionada && (
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
+              <Text style={styles.eventosTitle}>Horas realizadas en {fechaSeleccionada}</Text>
               {eventosFechaSeleccionada.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
                   <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
@@ -115,7 +139,7 @@ function AgendaApp({ navigation }) {
         </View>
       )}
       <View style={styles.bottomBarContainer}>
-        <BottomBar navigation={navigation} selectedTab="Calendar"/>
+        <BottomBar navigation={navigation} selectedTab="Calendar" />
       </View>
     </View>
   );
@@ -130,8 +154,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   newEventContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
+    // marginTop: 20,
+    // paddingHorizontal: 20,
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -145,7 +169,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     marginTop: 30,
   },
   newEventInput: {
