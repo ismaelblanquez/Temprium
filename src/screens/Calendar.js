@@ -110,9 +110,23 @@ function AgendaApp({ navigation }) {
     setFechaSeleccionada(day.dateString);
   };
 
-
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      markedDates[dateString] = { selected: true, selectedColor: '#FE8484' };
+    }
+  }
 
   return (
     <View style={styles.agendaContainer}>
