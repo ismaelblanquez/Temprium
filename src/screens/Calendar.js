@@ -21,7 +21,7 @@ LocaleConfig.locales['es'] = {
     'Diciembre'
   ],
   dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
   today: "Hoy"
 };
 
@@ -124,7 +124,7 @@ function AgendaApp({ navigation }) {
     const dayOfWeek = date.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      markedDates[dateString] = { selected: true, selectedColor: '#FE8484' };
+      markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
     }
   }
 
