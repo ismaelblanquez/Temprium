@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { existeUsuario, verificarUsuario, buscarUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,19 +6,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState('false');
+
+
 
   const handleLogin = async () => {
     try {
       console.log('Email:', email);
       console.log('Password:', password);
-    
+
 
       const usuarioExiste = await verificarUsuario(email, password);
       if (usuarioExiste) {
         await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('password', password);
+        await AsyncStorage.setItem('isLoggedIn', 'true')
         navigation.replace('Home');
-      }else{
+      } else {
         Alert.alert('El usuario no existe')
       }
     } catch (error) {
@@ -26,17 +30,31 @@ const Login = ({ navigation }) => {
     }
   };
 
-  const handleGuest = () => {
-    
+  const handleGuest = async() => {
+    await AsyncStorage.setItem('isLoggedIn', 'true')
     navigation.replace('Home');
   };
 
   const handleForgotPassword = () => {
-    Alert.alert('Esta función no está implementada en esta fase del desarrollo')
+    // Alert.alert('Esta función no está implementada en esta fase del desarrollo')
+    navigation.navigate('ForgotPassword');
   };
 
-  const handleRegister = () => {
+  useEffect(() => {
+    checkLoginStatus();
    
+  }, []);
+  const checkLoginStatus = async () => {
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    
+    if (isLoggedIn === 'true') {
+      navigation.navigate('Home');
+    }
+  };
+
+
+  const handleRegister = () => {
+
     navigation.navigate('Register');
   };
 
@@ -48,7 +66,7 @@ const Login = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Correo electrónico"
+          placeholder="Usuario"
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
@@ -95,16 +113,17 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     marginTop: 30,
-    marginBottom: 25,
-    fontSize: 25,
+    marginBottom: 40,
+    fontSize: 35,
     color: '#1A1A1A',
   },
   inputContainer: {
     marginBottom: 20,
     width: '80%',
+    // height: '10%',
   },
   input: {
-    height: 40,
+    height: 50,
     borderWidth: 2,
     borderRadius: 8,
     borderColor: '#1A1A1A',
@@ -114,6 +133,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordButton: {
     alignSelf: 'center',
+    // marginTop: '10%',
   },
   forgotPasswordText: {
     color: '#1A1A1A',
@@ -125,6 +145,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     marginTop: 10,
+    height: 50,
+    textAlign: 'center',
+    justifyContent: 'center',
     marginBottom: 10,
   },
   loginButtonText: {
@@ -136,6 +159,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 8,
+    height: 50,
+    textAlign: 'center',
+    justifyContent: 'center',
     marginBottom: 10,
   },
   guestButtonText: {
@@ -143,17 +169,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   registerContainer: {
-    paddingVertical: 20,
+    paddingVertical: 50,
+    justifyContent: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
+    
   },
   registerText: {
     marginTop: 30,
     alignItems: 'center',
+    // justifyContent:'center',
     color: '#1A1A1A',
     fontSize: 12,
   },
   registerLink: {
+    
     color: '#0096C7',
     fontWeight: 'bold',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 12,
   },
 });

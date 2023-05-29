@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { db, addUsuario } from '../DataBase/Conexion';
+import { db, addUsuario, updateUsu } from '../DataBase/Conexion';
 import 'setimmediate';
 
 
 
-const Register = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
@@ -18,7 +18,7 @@ const Register = ({ navigation }) => {
     console.log('Password:', password);
     console.log('Repetir password:', repPassword);
     if ((email != '' && password != '') && (password == repPassword)) {
-      addUsuario(email, password)
+      updateUsu(email, password)
         .then(() => console.log('Usuario registrado'), navigation.replace('Login'))
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     } else {
@@ -36,7 +36,7 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
-      <Text style={styles.title}>REGISTRO</Text>
+      <Text style={styles.title}>OLVIDASTE TU CONTRASEÑA</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default Register;
+export default ForgotPassword;

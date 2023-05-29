@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 import { PushNotificationIOS } from 'react-native';
 import PushNotification from 'react-native-push-notification';
-
+import BottomBar from '../components/BottomBar';
 
 
 function Notifications({ navigation }) {
@@ -73,6 +73,7 @@ function Notifications({ navigation }) {
                     onValueChange={toggleNotificacionesHabilitadas}
                 />
             </View>
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 }
