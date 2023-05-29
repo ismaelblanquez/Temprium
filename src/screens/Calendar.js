@@ -3,7 +3,29 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Novimbre',
+    'Diciembre'
+  ],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  today: "Hoy"
+};
+
+LocaleConfig.defaultLocale = 'es';
 
 function AgendaApp({ navigation }) {
   const [eventos, setEventos] = useState([]);
@@ -91,40 +113,31 @@ function AgendaApp({ navigation }) {
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
-  // Nombres de los meses en español
-  const monthNames = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-  // Nombres de los días de la semana en español
-  const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      markedDates[dateString] = { selected: true, selectedTextColor: 'red', selectedColor: 'white' };
+    }
+  }
 
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.componente}>
-        <Calendar
-          markedDates={markedDates}
-          onDayPress={handleDayPress}
-          monthNames={monthNames}
-          dayNames={dayNames}
-        />
+        <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
       </View>
       {fechaSeleccionada && (
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Horas realizadas en {fechaSeleccionada}</Text>
+              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
               {eventosFechaSeleccionada.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
                   <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
@@ -139,7 +152,7 @@ function AgendaApp({ navigation }) {
         </View>
       )}
       <View style={styles.bottomBarContainer}>
-        <BottomBar navigation={navigation} selectedTab="Calendar" />
+        <BottomBar navigation={navigation} />
       </View>
     </View>
   );
@@ -154,8 +167,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   newEventContainer: {
-    // marginTop: 20,
-    // paddingHorizontal: 20,
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    // paddingHorizontal: 20,
+    paddingHorizontal: 20,
     marginTop: 30,
   },
   newEventInput: {
