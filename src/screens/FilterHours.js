@@ -96,15 +96,10 @@ const FilterHoursScreen = ({ navigation }) => {
     const dateString = currentDate.toISOString().split('T')[0];
     const dayOfWeek = currentDate.getDay();
 
-<<<<<<< HEAD
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      markedDates[dateString] = { selected: true, selectedColor: '#FE8484' };
-=======
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
       }
->>>>>>> ee0cb257dea0ef3298225b3f6cd0ee1d9ed0ba59
-    }
+
 
     currentDate.setDate(currentDate.getDate() + 1);
   }
