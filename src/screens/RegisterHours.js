@@ -144,7 +144,7 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}
           >
-            <Picker.Item label="Otros" value=" " />
+            <Picker.Item label="Otros" value="Otros" />
             <Picker.Item label="Impartir clases" value="Impartir clases" />{/*lectiva*/}
             <Picker.Item label="Preparar clases" value="Preparar clases" />{/*lectiva y no lectiva*/}
             <Picker.Item label="Corregir" value="Corregir" />{/*lectiva y no lectiva*/}

@@ -141,7 +141,7 @@ export function selectHoras(
   });
 }
 
-export function getIdUsuario(usuario, callback) {
+export function getIdUsuario(usuario, callback, errorCallback) {
   db.transaction(tx => {
     tx.executeSql(
       'SELECT Id_usu FROM USUARIOS WHERE email=?',
@@ -151,7 +151,7 @@ export function getIdUsuario(usuario, callback) {
           const id = results.rows.item(0).Id_usu;
           callback(id);
         } else {
-          console.log('No se encontraron resultados');
+          errorCallback();
         }
       },
       error => {
@@ -160,6 +160,7 @@ export function getIdUsuario(usuario, callback) {
     );
   });
 }
+
 
 export function getUsuemail(db, usuario, callback) {
   db.transaction((tx) => {

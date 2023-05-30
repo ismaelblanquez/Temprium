@@ -143,7 +143,7 @@ function CalendarScreen({ navigation }) {
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Registro de horas para {fechaSeleccionada}</Text>
+              <Text style={styles.eventosTitle}>Registro de horas para {fechaInvertida}</Text>
               {eventosFechaSeleccionada?.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
                   <Text style={[styles.eventoText, { color: evento?.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
