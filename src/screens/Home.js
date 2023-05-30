@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
-        borderRadius: 12,
-        borderWidth: 4,
+        // borderRadius: 12,
+        // borderWidth: 4,
         borderColor: '#0096C7',
         width: '80%',
         marginLeft: '9%',
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     horasTotalesTitulo: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#0096C7',
     },
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
         // backgroundColor:'black'
     },
     horasTotalesNumero: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
         color: '#0096C7',
     },

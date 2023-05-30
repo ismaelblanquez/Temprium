@@ -164,6 +164,7 @@ const FilterHoursScreen = ({ navigation }) => {
             <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />
             <Picker.Item label="Atención a Padres" value="Atención a Padres" />
             <Picker.Item label="Atención personal a alumnos" value="Atención personal a alumnos" />
+            <Picker.Item label="Otros" value="Otros" />
           </Picker>
         </View>
 
