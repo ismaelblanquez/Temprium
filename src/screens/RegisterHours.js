@@ -31,9 +31,10 @@ const RegisterHoursScreen = ({ navigation }) => {
 
   useEffect(() => {
     getEmail();
+    MantenerDatos();
   }, []);
 
-  const guardarHoras = () => {
+  const guardarHoras = async () => {
     console.log('Tipo de Horas:', tipoHoras);
     console.log('Horas Trabajadas:', horas);
     console.log('Minutos Trabajados:', minutos);
@@ -55,6 +56,31 @@ const RegisterHoursScreen = ({ navigation }) => {
         })
         .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
+
+    await AsyncStorage.setItem('tipoHoras',tipoHoras);
+    await AsyncStorage.setItem('categoria',categoria);
+    await AsyncStorage.setItem('clase',clase);
+    
+    
+  };
+
+  const MantenerDatos= async () => {
+    try {
+      const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
+      if (tipoHorasStored !== null) {
+        setTipoHoras(tipoHorasStored);
+      }
+      const categoriaStored = await AsyncStorage.getItem('categoria');
+      if (categoriaStored !== null) {
+        setCategoria(categoriaStored);
+      }
+      const claseStored = await AsyncStorage.getItem('clase');
+      if (claseStored !== null) {
+        setClase(claseStored);
+      }
+    } catch (error) {
+      console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
+    }
   };
 
   return (
@@ -119,24 +145,24 @@ const RegisterHoursScreen = ({ navigation }) => {
             onValueChange={(value) => setCategoria(value)}
           >
             <Picker.Item label="Ninguna" value=" " />
-            <Picker.Item label="Impartir clases" value="Impartir clases" />
-            <Picker.Item label="Preparar clases" value="Preparar clases" />
-            <Picker.Item label="Corregir" value="Corregir" />
-            <Picker.Item label="Retos" value="Retos" />
+            <Picker.Item label="Impartir clases" value="Impartir clases" />{/*lectiva*/}
+            <Picker.Item label="Preparar clases" value="Preparar clases" />{/*lectiva y no lectiva*/}
+            <Picker.Item label="Corregir" value="Corregir" />{/*lectiva y no lectiva*/}
+            <Picker.Item label="Retos" value="Retos" />{/*lectiva*/}
             <Picker.Item
               label="Reuniones de Departamento"
               value="Reuniones de Departamento"
-            />
+            />{/*no lectiva?*/}
             <Picker.Item
               label="Reuniones de Equipos Educativos"
               value="Reuniones de Equipos Educativos"
-            />
-            <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />
-            <Picker.Item label="Atención a Padres" value="Atención a Padres" />
+            />{/*no lectiva*/}
+            <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />{/*lectiva?*/}
+            <Picker.Item label="Atención a Padres" value="Atención a Padres" />{/*lectiva?*/}
             <Picker.Item
               label="Atención personal a alumnos"
               value="Atención personal a alumnos"
-            />
+            />{/*lectiva y no lectiva*/}
           </Picker>
         </View>
 

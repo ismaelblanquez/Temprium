@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { db, addUsuario, updateUsu } from '../DataBase/Conexion';
+import { db, addUsuario, updateUsu, getIdUsuario } from '../DataBase/Conexion';
 import 'setimmediate';
 
 
@@ -17,17 +17,30 @@ const ForgotPassword = ({ navigation }) => {
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Repetir password:', repPassword);
-    if ((email != '' && password != '') && (password == repPassword)) {
-      updateUsu(email, password)
-        .then(() => console.log('Usuario registrado'), navigation.replace('Login'))
-        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
-    } else {
-      if (password != repPassword) {
-        Alert.alert("Las contraseñas no coinciden");
-      } else {
-        Alert.alert("Error, uno de los campos contiene datos vacíos");
+    getIdUsuario(email, (id) => {
+      if(id){
+        if (email !== '' && password !== '' && password === repPassword) {
+          updateUsu(email, password)
+            .then(() => {
+              console.log('Usuario registrado');
+              navigation.replace('Login');
+            })
+            .catch((error) =>
+              console.log(`Error al registrar usuario: ${error.message}`)
+            );
+        }else {
+          if (password !== repPassword) {
+            Alert.alert('Las contraseñas no coinciden');
+          } else {
+            Alert.alert('Error, uno de los campos contiene datos vacíos');
+          }
+        }
       }
-    }
+    }, () => {
+      Alert.alert('Usuario no existe');
+    });
+    
+
     // navigation.navigate("Home");
   };
 
