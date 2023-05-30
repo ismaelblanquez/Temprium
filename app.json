@@ -15,24 +15,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "Temprium"
     },
     "android": {
+      "useNextNotificationsApi": true,
+      "permissions":["NOTIFICATIONS"],
       "adaptiveIcon": {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         "foregroundImage": "./src/assets/adaptive-icon.png",
-=======
-        "foregroundImage": "./src/assets/images/logo2.png",
->>>>>>> Stashed changes
-=======
-        "foregroundImage": "./src/assets/images/logo2.png",
->>>>>>> Stashed changes
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "83d5e0e1-00d7-4e9c-a453-bbe74e69eb50"
+      }
     }
   }
 }

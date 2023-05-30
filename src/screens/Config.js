@@ -1,42 +1,90 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const Config = ({ navigation }) => {
+    const [email, setEmail] = useState('');
+    useEffect(() => {
+        const getEmail = async () => {
+          try {
+            const storedEmail = await AsyncStorage.getItem('email');
+            setEmail(storedEmail);
+          } catch (error) {
+            console.log('Error al obtener el correo electrónico:', error);
+          }
+        };
+    
+        getEmail();
+      }, []);
+
+      console.log(email);
+      
 
     const data = [
         { id: 1, titulo: 'CONFIGURACIÓN DE PERFIL' },
         { id: 2, titulo: 'NOTIFICACIONES' },
         { id: 3, titulo: 'PRIVACIDAD' },
         { id: 4, titulo: 'SEGURIDAD' },
-        { id: 5, titulo: 'IDIOMA' },
-        { id: 6, titulo: 'TEMAS' },
+        { id: 5, titulo: 'EXTRAS' },
+        // { id: 5, titulo: 'IDIOMA' },
+        // { id: 6, titulo: 'TEMAS' },
     ];
 
     const handleItemPress = (item) => {
-        switch (item.id) {
-            case 1:
-                navigation.navigate('ProfileConfig');
-                break;
-            case 2:
-                navigation.navigate('Notifications');
-                break;
-            case 3:
-                navigation.navigate('privacy');
-                break;
-            case 4:
-                navigation.navigate('Security');
-                break;
-            case 5:
-                navigation.navigate('Language');
-                break;
-            case 6:
-                navigation.navigate('Theme');
-                break;
-            default:
-                break;
+        if(email){
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('ProfileConfig');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    navigation.navigate('Security');
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            switch (item.id) {
+                case 1:
+                    navigation.navigate('ProfileConfig');
+                    break;
+                case 2:
+                    //navigation.navigate('Notifications');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 3:
+                    // navigation.navigate('privacy');
+                    Alert.alert("En mantenimiento");
+                    break;
+                case 4:
+                    //navigation.navigate('Security');
+                    Alert.alert("Esta funcion no esta implementada en este usuario");
+                    break;
+                case 5:
+                    navigation.navigate('Extra');
+                    break;
+                case 6:
+                    navigation.navigate('Theme');
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -62,7 +110,7 @@ const Config = ({ navigation }) => {
                 />
             </View>
 
-            <BottomBar navigation={navigation} />
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 };
@@ -71,23 +119,24 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#FFFFFF',
-        marginTop: '5%'
+        // marginTop: '5%'
     },
     headerContainer: {
         backgroundColor: '#E1F5FE',
-        borderRadius: 12,
-        borderWidth: 4,
+        // borderRadius: 12,
+        // borderWidth: 4,
         borderColor: '#0096C7',
         width: '80%',
         marginLeft: '9%',
         marginBottom: '15%',
+        marginTop:'15%'
     },
     tituloContainer: {
         alignItems: 'center',
         padding: '4%'
     },
     titulo: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         color: '#0096C7',
     },
@@ -102,7 +151,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         flexDirection: 'row',
-        alignItems: 'start',
+       
         flex: 1,
         marginLeft: '4%',
         marginBottom: '4%',
@@ -112,28 +161,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         color: '#0096C7',
     },
-    tarjetaFlecha: {
-        // alignItems: '',
-        color: '#0096C7',
-        fontWeight: 'bold'
-    },
-    botoneraContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderTopWidth: 1,
-        borderTopColor: '#CCCCCC',
-        paddingVertical: 8,
-    },
-    botoneraButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    botoneraButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-    },
+
 });
 
 export default Config;

@@ -1,180 +1,274 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
+import { selectHoras } from '../DataBase/Conexion';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
-function AgendaApp({ navigation }) {
-  const [events, setEvents] = useState([]);
-  const [newEventTitle, setNewEventTitle] = useState('');
-  const [newEventDescription, setNewEventDescription] = useState('');
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Novimbre',
+    'Diciembre'
+  ],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  today: "Hoy"
+};
 
-  useEffect(() => {
-    // Cargar eventos guardados al iniciar la app
-    AsyncStorage.getItem('events').then((storedEvents) => {
-      if (storedEvents !== null) {
-        setEvents(JSON.parse(storedEvents));
+LocaleConfig.defaultLocale = 'es';
+
+function CalendarScreen({ navigation }) {
+  const [eventos, setEventos] = useState([]);
+  const [email, setEmail] = useState('');
+  const [fechaSeleccionada, setFechaSeleccionada] = useState('');
+
+  const construirEventos = (registros) => {
+    const eventos = {};
+
+    registros.forEach((registro) => {
+      const { Dia, Tipohoras, Horas, minutos, Clase, categoria } = registro;
+      const fecha = Dia.substring(0, 10); // Obtén solo la fecha sin la hora
+
+      if (!eventos[fecha]) {
+        eventos[fecha] = [];
       }
+
+      const dotColor = Tipohoras === 'No Lectivas' ? '#8E44AD' : '#12CDD4';
+
+      eventos[fecha].push({
+        dots: [
+          {
+            key: fecha + '-' + registro.Horas + '-' + registro.minutos,
+            color: dotColor,
+            selectedDotColor: 'orange',
+          },
+        ],
+        hours: registro.Horas,
+        minutes: registro.minutos,
+        TipoHoras: registro.Tipohoras,
+        Clase: registro.Clase,
+        categoria: registro.Categoria,
+      });
     });
-  }, []);
+
+    return eventos;
+  };
 
   useEffect(() => {
-    // Guardar eventos al actualizar la lista
-    AsyncStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+    const obtenerRegistros = async () => {
+      try {
+        const email = await AsyncStorage.getItem('email');
+        setEmail(email || 'dummy@nosession.com');
 
-  const addEvent = () => {
-    const newEvent = { title: newEventTitle, description: newEventDescription };
-    if (newEventTitle != '') {
-      setEvents([...events, newEvent]);
-      setNewEventTitle('');
-      setNewEventDescription('');
-    }
-    else {
-      console.log("error");
-    }
+        let registros = [];
+
+        if (fechaSeleccionada) {
+          const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
+          selectHoras('', email || 'dummy@nosession.com', '', fechaInvertida, '', '')
+            .then((resultados) => {
+              registros = resultados;
+              const eventos = construirEventos(registros);
+              setEventos(eventos);
+            })
+            .catch((error) => {
+              console.error('Error al obtener los registros:', error);
+            });
+        } else {
+          const eventos = construirEventos(registros);
+          setEventos(eventos);
+        }
+      } catch (error) {
+        console.error('Error al obtener los registros:', error);
+      }
+    };
+
+    obtenerRegistros();
+  }, [fechaSeleccionada]);
+
+  const markedDates = Object.values(eventos).reduce((acc, eventosDia) => {
+    eventosDia.forEach((evento) => {
+      const fecha = evento.fecha;
+      if (!acc[fecha]) {
+        acc[fecha] = { dots: [] };
+      }
+      acc[fecha].dots.push(evento);
+    });
+    return acc;
+  }, {});
+
+  const handleDayPress = (day) => {
+    setFechaSeleccionada(day.dateString);
   };
 
-  const deleteEvent = (index) => {
-    const newEvents = [...events];
-    newEvents.splice(index, 1);
-    setEvents(newEvents);
-  };
+  const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
+  const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
-  const todayEvents = events.filter((event) => {
-    const eventDate = new Date();
-    const eventTitle = event.title.toLowerCase();
-    const eventDescription = event.description.toLowerCase();
-    const today = new Date().toISOString().substr(0, 10);
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    return (
-      eventDate.toISOString().substr(0, 10) === today ||
-      eventTitle.includes(today) ||
-      eventDescription.includes(today)
-    );
-  });
+  for (let day = 1; day <= totalDaysInMonth; day++) {
+    const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
 
-  const screenHeight = Dimensions.get('window').height;
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
+    }
+  }
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.agendaContainer}>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{ height: screenHeight - 200 }}>
-          <View style={styles.newEventContainer}>
-            <Text style={styles.sectionTitle}>Agregar evento:</Text>
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Título"
-              value={newEventTitle}
-              onChangeText={(text) => setNewEventTitle(text)}
-            />
-            <TextInput
-              style={styles.newEventInput}
-              placeholder="Descripción"
-              value={newEventDescription}
-              onChangeText={(text) => setNewEventDescription(text)}
-            />
-            <TouchableOpacity style={styles.addButton} onPress={addEvent}>
-              <Text style={styles.addButtonText}>Agregar evento</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.sectionTitle}>Eventos de hoy:</Text>
-          {todayEvents.length > 0 ? (
-            todayEvents.map((event, index) => (
-              <View style={styles.eventContainer} key={index}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-<Text style={styles.deleteButtonText}>Eliminar</Text>
-</TouchableOpacity>
-</View>
-))
-) : (
-<Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
-)}
-      {/* <Text style={styles.sectionTitle}>Todos los eventos:</Text>
-      {events.length > 0 ? (
-        events.map((event, index) => (
-          <View style={styles.eventContainer} key={index}>
-            <Text style={styles.eventTitle}>{event.title}</Text>
-            <Text style={styles.eventDescription}>{event.description}</Text>
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-              <Text style={styles.deleteButtonText}>Eliminar</Text>
-            </TouchableOpacity>
-          </View>
-        ))
-      ) : (
-        <Text style={styles.noEventsText}>No hay eventos registrados.</Text>
-      )} */}
+    <View style={styles.agendaContainer}>
+      <View style={styles.componente}>
+        <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
+      </View>
+      {fechaSeleccionada && (
+        <View style={styles.scrollViewContainer}>
+          <ScrollView>
+            <View style={styles.eventosContainer}>
+              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
+              {eventosFechaSeleccionada.map((evento, index) => (
+                <View key={index} style={styles.eventoContainer}>
+                  <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
+                  <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
+                  <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
+                  <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
+                  <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      )}
+      <View style={styles.bottomBarContainer}>
+      <BottomBar navigation={navigation} selectedTab="Calendar" />
+      </View>
     </View>
-  </ScrollView>
-  <BottomBar navigation={navigation} />
-</KeyboardAvoidingView>);
+  );
 }
 
 const styles = StyleSheet.create({
-agendaContainer: {
-flex: 1,
-backgroundColor: '#FFF',
-marginBottom:50,
-},
-newEventContainer: {
-marginTop: 20,
-paddingHorizontal: 20,
-},
-sectionTitle: {
-fontSize: 24,
-fontWeight: 'bold',
-paddingHorizontal: 20,
-marginTop: 30,
-},
-newEventInput: {
-backgroundColor: '#F2F2F2',
-borderRadius: 10,
-padding: 10,
-marginTop: 20,
-},
-addButton: {
-backgroundColor: '#0096C7',
-borderRadius: 10,
-padding: 10,
-marginTop: 20,
-alignItems: 'center',
-},
-addButtonText: {
-color: '#FFF',
-fontWeight: 'bold',
-},
-noEventsText: {
-paddingHorizontal: 20,
-marginTop: 20,
-fontStyle: 'italic',
-},
-eventContainer: {
-paddingHorizontal: 20,
-paddingVertical: 10,
-borderBottomWidth: 1,
-borderBottomColor: '#D1D1D1',
-},
-eventTitle: {
-fontWeight: 'bold',
-fontSize: 16,
-},
-eventDescription: {
-marginTop: 5,
-},
-deleteButton: {
-backgroundColor: '#FF4444',
-borderRadius: 10,
-padding: 5,
-marginTop: 10,
-alignItems: 'center',
-alignSelf: 'flex-start',
-},
-deleteButtonText: {
-color: '#FFF',
-fontWeight: 'bold',
-},
+  agendaContainer: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  componente: {
+    marginTop: 30,
+  },
+  newEventContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+    marginBottom: 400,
+  },
+  bottomBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingHorizontal: 20,
+    marginTop: 30,
+  },
+  newEventInput: {
+    backgroundColor: '#F2F2F2',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+  },
+  iconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconNoLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  iconLectiva: {
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  addButton: {
+    backgroundColor: '#0096C7',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  noEventsText: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    fontStyle: 'italic',
+  },
+  eventContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D1D1D1',
+  },
+  eventTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  eventDescription: {
+    marginTop: 5,
+  },
+  deleteButton: {
+    backgroundColor: '#FF4444',
+    borderRadius: 10,
+    padding: 5,
+    marginTop: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  deleteButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  eventoText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  eventoContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D1D1D1',
+    marginBottom: 10,
+  },
+  eventosContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    marginBottom: 30
+  },
+  eventosTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
 });
 
-export default AgendaApp;
+export default CalendarScreen;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 import { PushNotificationIOS } from 'react-native';
 import PushNotification from 'react-native-push-notification';
-
+import BottomBar from '../components/BottomBar';
 
 
 function Notifications({ navigation }) {
@@ -10,6 +10,8 @@ function Notifications({ navigation }) {
     const [notificacion2, setNotificacion2] = useState(false);
     const [notificacion3, setNotificacion3] = useState(false);
     const [notificacionesHabilitadas, setNotificacionesHabilitadas] = useState(false);
+
+    
 
     useEffect(() => {
         // Comprobar si las notificaciones están habilitadas en el dispositivo al cargar la pantalla
@@ -39,6 +41,7 @@ function Notifications({ navigation }) {
         setNotificacionesHabilitadas(!notificacionesHabilitadas);
     };
 
+    
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Notificaciones</Text>
@@ -70,6 +73,7 @@ function Notifications({ navigation }) {
                     onValueChange={toggleNotificacionesHabilitadas}
                 />
             </View>
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 }

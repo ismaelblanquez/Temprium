@@ -1,4 +1,4 @@
-import React,{ useContext, useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,9 +25,9 @@ const Register = ({ navigation }) => {
         .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
     } else {
       if (password != repPassword) {
-        console.log("Las contraseñas no coinciden");
+        Alert.alert("Las contraseñas no coinciden");
       } else {
-        console.log("Error, uno de los campos contiene datos vacíos");
+        Alert.alert("Error, uno de los campos contiene datos vacíos");
       }
     }
     // navigation.navigate("Home");
@@ -38,18 +38,15 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
-      <TextInput
-        style={styles.title}
-        value='REGISTRO'
-        onChangeText={(title) => setEmail(title)}
-      />
+      <Text style={styles.title}>REGISTRO</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Correo electrónico"
+          placeholder="Usuario"
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -57,6 +54,7 @@ const Register = ({ navigation }) => {
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -64,6 +62,7 @@ const Register = ({ navigation }) => {
           secureTextEntry
           value={repPassword}
           onChangeText={(text) => setRepPassword(text)}
+          placeholderTextColor = '#BDBDBD'
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
   title: { //registro
     marginTop: 40,
     marginBottom: 40,
-    fontSize: 25,
+    fontSize: 35,
     color: '#1A1A1A',
     textAlign: 'center'
   },
@@ -95,13 +94,13 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   input: {
-    height: 40,
+   
     borderWidth: 2,
     borderRadius: 8,
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
-    placeholderTextColor: '#BDBDBD',
+    height: 50,
     color: '#1A1A1A'
   },
   loginButton: {
@@ -109,6 +108,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 90,
     paddingVertical: 10,
     borderRadius: 8,
+    height: 50,
+    textAlign:'center',
+    justifyContent: 'center',
     marginTop: 40,
   },
   loginButtonText: {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
-
+import BottomBar from '../components/BottomBar';
 function Privacy() {
     const [compartirInfo, setCompartirInfo] = useState(true);
     const [hacerPublica, setHacerPublica] = useState(false);
@@ -31,6 +31,7 @@ function Privacy() {
                     disabled={!compartirInfo}
                 />
             </View>
+            <BottomBar navigation={navigation} selectedTab="Config" />
         </View>
     );
 }
