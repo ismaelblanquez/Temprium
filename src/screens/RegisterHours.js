@@ -10,7 +10,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   const [tipoHoras, setTipoHoras] = useState('Lectivas');
   const [horas, setHoras] = useState('1');
   const [minutos, setMinutos] = useState('0');
-  const [categoria, setCategoria] = useState('Ninguna');
+  const [categoria, setCategoria] = useState('Otros');
   const [clase, setClase] = useState('1SI');
   const fechaActual = new Date();
   const dia = fechaActual.getDate().toString().padStart(2, '0');
@@ -118,7 +118,7 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}
           >
-            <Picker.Item label="Ninguna" value=" " />
+            <Picker.Item label="Otros" value=" " />
             <Picker.Item label="Impartir clases" value="Impartir clases" />
             <Picker.Item label="Preparar clases" value="Preparar clases" />
             <Picker.Item label="Corregir" value="Corregir" />

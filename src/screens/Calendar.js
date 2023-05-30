@@ -18,7 +18,7 @@ LocaleConfig.locales['es'] = {
     'Agosto',
     'Septiembre',
     'Octubre',
-    'Novimbre',
+    'Noviembre',
     'Diciembre'
   ],
   dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -125,7 +125,7 @@ function CalendarScreen({ navigation }) {
     const dayOfWeek = date.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
+      markedDates[dateString] = { selected: true, selectedTextColor: 'red', selectedColor: 'white' };
     }
   }
 
@@ -134,26 +134,44 @@ function CalendarScreen({ navigation }) {
       <View style={styles.componente}>
         <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
       </View>
+      {!fechaSeleccionada && (
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.bottomText}>Selecciona un día para ver las horas registradas</Text>
+        </View>
+      )}
       {fechaSeleccionada && (
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
-              {eventosFechaSeleccionada.map((evento, index) => (
+              <Text style={styles.eventosTitle}>Registro de horas para {fechaSeleccionada}</Text>
+              {eventosFechaSeleccionada?.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
-                  <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
-                  <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
-                  <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
-                  <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
-                  <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
+                  <Text style={[styles.eventoText, { color: evento?.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
+                    {evento?.TipoHoras}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Horas:</Text> {evento?.hours}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Minutos:</Text> {evento?.minutes}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Clase:</Text> {evento?.Clase}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Categoria: </Text> {evento?.categoria}
+                  </Text>
                 </View>
               ))}
+              {eventosFechaSeleccionada?.length === 0 && (
+                <Text style={styles.noEventsText}>No hay horas registradas en este día</Text>
+              )}
             </View>
           </ScrollView>
         </View>
       )}
       <View style={styles.bottomBarContainer}>
-      <BottomBar navigation={navigation} selectedTab="Calendar" />
+        <BottomBar navigation={navigation} selectedTab="Calendar" />
       </View>
     </View>
   );
@@ -174,6 +192,14 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
     marginBottom: 400,
+  },
+  bottomTextContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    alignItems: 'center',
+  },
+  bottomText: {
+    fontStyle: 'italic',
   },
   bottomBarContainer: {
     position: 'absolute',
@@ -250,6 +276,7 @@ const styles = StyleSheet.create({
   },
   eventoText: {
     fontSize: 16,
+    // fontWeight: 'bold',
     marginBottom: 5,
   },
   eventoContainer: {
