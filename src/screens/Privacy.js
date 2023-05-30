@@ -1,61 +1,29 @@
-import React, { useState } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
-import BottomBar from '../components/BottomBar';
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+
 function Privacy() {
-    const [compartirInfo, setCompartirInfo] = useState(true);
-    const [hacerPublica, setHacerPublica] = useState(false);
+  const [privacyPolicyText, setPrivacyPolicyText] = useState('');
 
-    const toggleCompartirInfo = () => {
-        setCompartirInfo(!compartirInfo);
+  useEffect(() => {
+    // Lee el contenido del archivo "privacidad.txt"
+    const readPrivacyPolicy = async () => {
+      try {
+        const privacyPolicy = await require('../utils/Privacy.txt');
+        console.log(privacyPolicy);
+        // setPrivacyPolicyText(privacyPolicy);
+      } catch (error) {
+        console.error('Error al leer el archivo de privacidad:', error);
+      }
     };
 
-    const toggleHacerPublica = () => {
-        setHacerPublica(!hacerPublica);
-    };
+    readPrivacyPolicy();
+  }, []);
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Privacidad</Text>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Compartir mi información con otros</Text>
-                <Switch
-                    value={compartirInfo}
-                    onValueChange={toggleCompartirInfo}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Hacer mi información pública</Text>
-                <Switch
-                    value={hacerPublica}
-                    onValueChange={toggleHacerPublica}
-                    disabled={!compartirInfo}
-                />
-            </View>
-            <BottomBar navigation={navigation} selectedTab="Config" />
-        </View>
-    );
+  return (
+    <View>
+      <Text>{privacyPolicyText}</Text>
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 24,
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    optionContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    optionText: {
-        fontSize: 16,
-    },
-});
 
 export default Privacy;

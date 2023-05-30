@@ -44,8 +44,8 @@ const Config = ({ navigation }) => {
                     Alert.alert("En mantenimiento");
                     break;
                 case 3:
-                    // navigation.navigate('privacy');
-                    Alert.alert("En mantenimiento");
+                    navigation.navigate('Privacy');
+                    // Alert.alert("En mantenimiento");
                     break;
                 case 4:
                     navigation.navigate('Security');
@@ -69,8 +69,8 @@ const Config = ({ navigation }) => {
                     Alert.alert("En mantenimiento");
                     break;
                 case 3:
-                    // navigation.navigate('privacy');
-                    Alert.alert("En mantenimiento");
+                    navigation.navigate('Privacy');
+                    // Alert.alert("En mantenimiento");
                     break;
                 case 4:
                     //navigation.navigate('Security');
