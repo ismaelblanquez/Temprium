@@ -57,14 +57,14 @@ const RegisterHoursScreen = ({ navigation }) => {
         .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
 
-    await AsyncStorage.setItem('tipoHoras',tipoHoras);
-    await AsyncStorage.setItem('categoria',categoria);
-    await AsyncStorage.setItem('clase',clase);
-    
-    
+    await AsyncStorage.setItem('tipoHoras', tipoHoras);
+    await AsyncStorage.setItem('categoria', categoria);
+    await AsyncStorage.setItem('clase', clase);
+
+
   };
 
-  const MantenerDatos= async () => {
+  const MantenerDatos = async () => {
     try {
       const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
       if (tipoHorasStored !== null) {
@@ -103,9 +103,9 @@ const RegisterHoursScreen = ({ navigation }) => {
           </Picker>
         </View>
 
-        <View style={[styles.componente, { }]}>
+        <View style={[styles.componente, {}]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
-          <View style={[styles.pickerContainer, {  }]}>
+          <View style={[styles.pickerContainer, {}]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={horas}
@@ -118,7 +118,7 @@ const RegisterHoursScreen = ({ navigation }) => {
             <Text style={[styles.hourMin, { fontSize: 20 }]}> </Text>
           </View>
           <Text style={styles.label}>MINUTOS TRABAJADOS</Text>
-          <View style={[styles.pickerContainer, { }]}>
+          <View style={[styles.pickerContainer, {}]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={minutos}
@@ -193,8 +193,8 @@ const RegisterHoursScreen = ({ navigation }) => {
             <Picker.Item label="2ST" value="2ST" />
           </Picker>
         </View>
-        <View style={styles.spacer} /> 
-        </ScrollView>
+        <View style={styles.spacer} />
+      </ScrollView>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={guardarHoras}>
           <Text style={styles.buttonText}>GUARDAR</Text>
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
   },
- 
+
   button: {
     backgroundColor: '#0096C7',
     alignItems: 'center',
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     // position: 'absolute',
     marginBottom: '15%',
-    
+
     alignSelf: 'center',
   },
   buttonContainer: {
