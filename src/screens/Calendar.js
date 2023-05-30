@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+
 
 LocaleConfig.locales['es'] = {
   monthNames: [
