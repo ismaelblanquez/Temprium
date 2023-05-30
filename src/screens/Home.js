@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
+import { getAllHoras, deleteHoras, selectHoras, getCategorias } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -72,6 +72,7 @@ const Home = ({ navigation, route }) => {
                     console.log(error);
                     setLoading(false);
                 });
+                console.log(getCategorias());
         }
     };
 

@@ -15,6 +15,27 @@ db.transaction(tx => {
     'INSERT INTO Usuarios (email, contrasena) VALUES (?, ?)',
     ["dummy@nosession.com", "92r8hfv2n9fuvy<9v8h"]
   );
+  tx.executeSql(
+    'CREATE TABLE IF NOT EXISTS TipoHoras (Id_tHoras INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)'
+  );
+  tx.executeSql(
+    'CREATE TABLE IF NOT EXISTS Categorias (Id_Categorias INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)'
+  );
+  tx.executeSql(
+    'CREATE TABLE IF NOT EXISTS Clases (Id_Clases INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)'
+  );
+  tx.executeSql(
+    'INSERT INTO TipoHoras (nombre) VALUES (?), (?)',
+    ["Lectivas", "No lectivas"]
+  );
+  tx.executeSql(
+    'INSERT INTO Categorias (nombre) VALUES (?), (?), (?), (?), (?), (?), (?), (?), (?)',
+    ['Otros', 'Impartir clases', 'Preparar clases', 'Corregir', 'Retos', 'Reuniones de Departamento', 'Reuniones de Equipos Educativos', 'Reuniones de Padres', 'Atención a Padres', 'Atención personal a alumnos']
+  );
+  tx.executeSql(
+    'INSERT INTO Clases (nombre) VALUES (?), (?), (?), (?), (?), (?), (?), (?), (?),(?), (?), (?), (?), (?), (?), (?), (?), (?)',
+    ['1SA', '2SA', '1SV', '2SV', '1SC', '2SC', '1SI', '2SI', '1SW', '2SW','1SE','2SE','1SR','2SR','1SM','2SM','1ST','2ST']
+  );
 });
 
 export function addUsuario(email, contrasena) {
@@ -79,6 +100,78 @@ export function getAllHoras(email) {
   })
 }
 
+
+export function getTipoHoras() {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT nombre FROM TipoHoras',
+        [],
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+
+          }
+
+          resolve(todos);
+        },
+        (_, error) => {
+          console.log(`Error getting todos: ${error}`);
+          reject(error)
+        },
+      );
+    });
+  })
+}
+
+export function getCategorias() {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT nombre FROM Categorias',
+        [],
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+
+          }
+
+          resolve(todos);
+        },
+        (_, error) => {
+          console.log(`Error getting todos: ${error}`);
+          reject(error)
+        },
+      );
+    });
+  })
+}
+
+export function getClases() {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT nombre FROM Clases',
+        [],
+        (_, results) => {
+          const todos = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            todos.push(results.rows.item(i));
+
+          }
+
+          resolve(todos);
+        },
+        (_, error) => {
+          console.log(`Error getting todos: ${error}`);
+          reject(error)
+        },
+      );
+    });
+  })
+}
 
 
 
