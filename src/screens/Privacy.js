@@ -32,7 +32,7 @@ Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquie
 Te recomendamos que revises periódicamente esta Política de Privacidad para estar al tanto de cualquier cambio. 
 
 El uso continuado de nuestra aplicación después de la publicación de cualquier cambio en esta Política de Privacidad implicará tu aceptación de dichos cambios.
-Si tienes alguna pregunta o inquietud acerca de nuestra Política de Privacidad, por favor contáctanos a través de los siguientes datos de contacto:\n\n
+Si tienes alguna pregunta o inquietud acerca de nuestra Política de Privacidad, por favor contáctanos a través de los siguientes datos de contacto:\n
 Temprium\ntemprium.soporte@gmail.com\n
 Fecha de entrada en vigencia: 30/05/2023
 `;
@@ -40,7 +40,7 @@ Fecha de entrada en vigencia: 30/05/2023
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={[styles.title, {fontSize:30}]}>Política de Privacidad</Text>
+            <Text style={[styles.title, { fontSize: 30 }]}>Política de Privacidad</Text>
             <Text style={styles.privacyText}>{privacidadText}</Text>
             <Text style={styles.title}>Recopilación y Uso de Información</Text>
             <Text style={styles.privacyText}>{privacidadText2}</Text>
@@ -65,14 +65,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         // marginBottom: 10,
-        color:'#0096C7',
+        color: '#0096C7',
         marginTop: 10,
-        
+
     },
     privacyText: {
         fontSize: 16,
         lineHeight: 24,
-        marginBottom:20,
+        marginBottom: 20,
     },
 });
 
