@@ -23,7 +23,7 @@ LocaleConfig.locales['es'] = {
     'Diciembre',
   ],
   dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
   today: 'Hoy',
 };
 
@@ -84,22 +84,24 @@ const FilterHoursScreen = ({ navigation }) => {
       }
     }
 
-    // Resaltar los días sábado y domingo
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1;
-    const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+    
+ // Resaltar los días sábado y domingo
+ const today = new Date();
+ const currentYear = today.getFullYear();
+ const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
+ const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
 
-    for (let day = 1; day <= totalDaysInMonth; day++) {
-      const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      const date = new Date(dateString);
-      const dayOfWeek = date.getDay();
+ const currentDate = new Date(startDate);
+ while (currentDate <= endDate) {
+   const dateString = currentDate.toISOString().split('T')[0];
+   const dayOfWeek = currentDate.getDay();
 
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
-      }
-    }
+   if (dayOfWeek === 0 || dayOfWeek === 6) {
+     markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
+   }
 
+   currentDate.setDate(currentDate.getDate() + 1);
+ }
     return markedDates;
   };
 
@@ -126,7 +128,6 @@ const FilterHoursScreen = ({ navigation }) => {
         <View style={styles.componente}>
           <Text style={styles.label}>FECHA</Text>
           <Calendar
-          
             onDayPress={(day) => {
               if (!fecha || (fecha && fechafin)) {
                 setFecha(day.dateString);
@@ -151,7 +152,6 @@ const FilterHoursScreen = ({ navigation }) => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}>
             <Picker.Item label="Todas" value="" />
-           
             <Picker.Item label="Impartir clases" value="Impartir clases" />
             <Picker.Item label="Preparar clases" value="Preparar clases" />
             <Picker.Item label="Corregir" value="Corregir" />
