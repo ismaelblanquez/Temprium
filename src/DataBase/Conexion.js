@@ -118,7 +118,6 @@ export function getCategorias(){
         for (let i = 0; i < results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos)
         resolve(todos);
       },
       (_,error)=>{
@@ -140,7 +139,6 @@ export function getTipoHoras(){
         for (let i = 0; i < results.rows.length; i++){
             todos.push(results.rows.item(i))
         }
-        console.log(todos)
         resolve(todos);
       },
       (_,error)=>{
@@ -162,7 +160,6 @@ export function getClases(){
         for (let i = 0; i <results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos);
         resolve(todos);
     },
     (_,error)=>{
