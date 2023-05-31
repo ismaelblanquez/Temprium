@@ -3,6 +3,8 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('Temprium.db');
 
+
+
 db.transaction(tx => {
   tx.executeSql(
     'CREATE TABLE IF NOT EXISTS Usuarios (Id_usu INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, contrasena TEXT NOT NULL)'
@@ -15,6 +17,34 @@ db.transaction(tx => {
     ["dummy@nosession.com", "92r8hfv2n9fuvy<9v8h"]
   );
 });
+
+db.transaction(tx => {
+  tx.executeSql('CREATE TABLE IF NOT EXISTS Categorias (Id_Categorias INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Categorias (nombre) VALUES (?),(?),(?),(?),(?),(?),(?),(?),(?),(?)',
+  ["Otros","Impartir Clases","Preparas Clases","Corregir","Retos","Reuniones de Departamento","Reuniones de Equipos Educativos","Reuniones de Padres","Atencion a Padres","Atencion Personal a Alumnos"]);
+});
+
+db.transaction(tx=>{
+  tx.executeSql('CREATE TABLE IF NOT EXISTS TipoHoras (Id_tHoras INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO TipoHoras (nombre) VALUES (?),(?)',
+  ["Lectivas","No Lectivas"]);
+})
+
+db.transaction(tx=>{
+  tx.executeSql('CREATE TABLE IF NOT EXISTS Clases (Id_Clases INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Clases (nombre) VALUES (?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?)',
+  ["1SA","2SA","1SV","2SV","1SC","2SC","1SI","2SI","1SW","2SW","1SE","2SE","1SR","2SR","1SM","2SM","1ST","2ST"])
+});
+
 
 export function addUsuario(email, contrasena) {
   return new Promise((resolve, reject) => {
@@ -78,9 +108,70 @@ export function getAllHoras(email) {
   })
 }
 
+export function getCategorias(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Categorias',
+      [],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos)
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+    })
+    })
+  })
+}
 
 
+export function getTipoHoras(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM TipoHoras',
+      [],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+            todos.push(results.rows.item(i))
+        }
+        console.log(todos)
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+      })
+    })
+  })
+}
 
+
+export function getClases(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Clases',
+      [],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i <results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+    },
+    (_,error)=>{
+      console.log(`Error getting todos ${error}`);
+      reject(error)
+    })
+  })
+})
+}
 
 export function selectHoras(
   tipoHoras,
