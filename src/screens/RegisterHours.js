@@ -35,9 +35,10 @@ const RegisterHoursScreen = ({ navigation }) => {
   useEffect(() => {
     getEmail();
     obtenerDatos();
+    MantenerDatos();
   }, []);
 
-  const guardarHoras = () => {
+  const guardarHoras = async () => {
     console.log('Tipo de Horas:', tipoHoras);
     console.log('Horas Trabajadas:', horas);
     console.log('Minutos Trabajados:', minutos);
@@ -59,6 +60,10 @@ const RegisterHoursScreen = ({ navigation }) => {
         })
         .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
+    
+     await AsyncStorage.setItem('tipoHoras',tipoHoras);
+     await AsyncStorage.setItem('categoria',categoria);
+     await AsyncStorage.setItem('clase',clase);
   };
 
   const obtenerDatos = async () =>{
@@ -75,6 +80,28 @@ const RegisterHoursScreen = ({ navigation }) => {
   }
 
   
+const MantenerDatos= async () => {
+  try {
+    const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
+    console.log(tipoHorasStored);
+    if (tipoHorasStored !== null) {
+      setTipoHoras(tipoHorasStored);
+    }
+    const categoriaStored = await AsyncStorage.getItem('categoria');
+    console.log(categoriaStored);
+    if (categoriaStored !== null) {
+      setCategoria(categoriaStored);
+    }
+    const claseStored = await AsyncStorage.getItem('clase');
+    console.log(claseStored);
+    if (claseStored !== null) {
+      setClase(claseStored);
+    }
+  } catch (error) {
+    console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
+  }
+};
+
 
 
   return (
