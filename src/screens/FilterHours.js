@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { selectHoras } from '../DataBase/Conexion';
+import { getCategoriasFiltro, getClasesFiltro, getTipoHorasFiltro } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Picker } from '@react-native-picker/picker';
@@ -36,6 +36,9 @@ const FilterHoursScreen = ({ navigation }) => {
   const [clase, setClase] = useState('');
   const [email, setEmail] = useState('');
   const [fechafin, setFechafin] = useState('');
+  const [selectedTipoHora, setSelectedTipoHora] = useState([]);
+  const [selectedCategoria, setSelectedCategoria] = useState([]);
+  const [selectedClase, setSelectedClase] = useState([]);
 
   const getEmail = async () => {
     const email = await AsyncStorage.getItem('email');
@@ -44,6 +47,7 @@ const FilterHoursScreen = ({ navigation }) => {
 
   useEffect(() => {
     getEmail();
+    obtenerDatos();
   }, []);
 
   const fechaInvertida = fecha.split('-').reverse().join('-');
@@ -103,6 +107,19 @@ const FilterHoursScreen = ({ navigation }) => {
     return markedDates;
   };
 
+  const obtenerDatos = async () =>{
+    try{
+      const categoriasDB = await getCategoriasFiltro();
+      setSelectedCategoria(categoriasDB);
+      const clasesDB = await getClasesFiltro();
+      setSelectedClase(clasesDB);
+      const TipoHorasDB = await getTipoHorasFiltro();
+      setSelectedTipoHora(TipoHorasDB);
+    }catch(error){
+       console.log(`Error obtencion de datos de la base de datos: ${error}`)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -117,9 +134,7 @@ const FilterHoursScreen = ({ navigation }) => {
             style={styles.picker}
             selectedValue={tipoHoras}
             onValueChange={(value) => setTipoHoras(value)}>
-            <Picker.Item label="Todas" value="" />
-            <Picker.Item label="Lectivas" value="Lectivas" />
-            <Picker.Item label="No Lectivas" value="No Lectivas" />
+            {selectedTipoHora.map((tipoHora)=>(<Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre === "Todas" ? '' : tipoHora.nombre} label={tipoHora.nombre}/>))}
           </Picker>
         </View>
 
@@ -149,19 +164,7 @@ const FilterHoursScreen = ({ navigation }) => {
             style={styles.picker}
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}>
-            <Picker.Item label="Todas" value="" />
-            <Picker.Item label="Impartir clases" value="Impartir clases" />
-            <Picker.Item label="Preparar clases" value="Preparar clases" />
-            <Picker.Item label="Corregir" value="Corregir" />
-            <Picker.Item label="Retos" value="Retos" />
-            <Picker.Item label="Reuniones de Departamento" value="Reuniones de Departamento" />
-            <Picker.Item
-              label="Reuniones de Equipos Educativos"
-              value="Reuniones de Equipos Educativos"
-            />
-            <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />
-            <Picker.Item label="Atención a Padres" value="Atención a Padres" />
-            <Picker.Item label="Atención personal a alumnos" value="Atención personal a alumnos" />
+            {selectedCategoria.map((cat)=>(<Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre === "Todas" ? '' : cat.nombre} />))}
           </Picker>
         </View>
 
@@ -171,25 +174,7 @@ const FilterHoursScreen = ({ navigation }) => {
             style={styles.picker}
             selectedValue={clase}
             onValueChange={(value) => setClase(value)}>
-            <Picker.Item label="Todas" value="" />
-            <Picker.Item label="1SA" value="1SA" />
-            <Picker.Item label="2SA" value="2SA" />
-            <Picker.Item label="1SV" value="1SV" />
-            <Picker.Item label="2SV" value="2SV" />
-            <Picker.Item label="1SC" value="1SC" />
-            <Picker.Item label="2SC" value="2SC" />
-            <Picker.Item label="1SI" value="1SI" />
-            <Picker.Item label="2SI" value="2SI" />
-            <Picker.Item label="1SW" value="1SW" />
-            <Picker.Item label="2SW" value="2SW" />
-            <Picker.Item label="1SE" value="1SE" />
-            <Picker.Item label="2SE" value="2SE" />
-            <Picker.Item label="1SR" value="1SR" />
-            <Picker.Item label="2SR" value="2SR" />
-            <Picker.Item label="1SM" value="1SM" />
-            <Picker.Item label="2SM" value="2SM" />
-            <Picker.Item label="1ST" value="1ST" />
-            <Picker.Item label="2ST" value="2ST" />
+            {selectedClase.map((cla)=>(<Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre === "Todas" ? '' : cla.nombre} />))}
           </Picker>
           </View>
             </ScrollView>

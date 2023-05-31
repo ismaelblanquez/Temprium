@@ -45,6 +45,19 @@ db.transaction(tx=>{
   ["1SA","2SA","1SV","2SV","1SC","2SC","1SI","2SI","1SW","2SW","1SE","2SE","1SR","2SR","1SM","2SM","1ST","2ST"])
 });
 
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO TipoHoras (nombre) VALUES (?)',
+  ["Todas"]);
+})
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Clases (nombre) VALUES (?)',
+  ["Todas"]);
+})
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Categorias (nombre) VALUES (?)',
+  ["Todas"]);
+})
+
 
 export function addUsuario(email, contrasena) {
   return new Promise((resolve, reject) => {
@@ -111,13 +124,34 @@ export function getAllHoras(email) {
 export function getCategorias(){
   return new Promise((resolve,reject)=>{
     db.transaction(tx=>{
-      tx.executeSql('SELECT * FROM Categorias',
-      [],
+      tx.executeSql('SELECT * FROM Categorias WHERE nombre != ?',
+      ["Todas"],
       (_,results)=>{
         const todos = [];
         for (let i = 0; i < results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+    })
+    })
+  })
+}
+export function getCategoriasFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Categorias ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
         resolve(todos);
       },
       (_,error)=>{
@@ -132,13 +166,35 @@ export function getCategorias(){
 export function getTipoHoras(){
   return new Promise((resolve,reject)=>{
     db.transaction(tx=>{
-      tx.executeSql('SELECT * FROM TipoHoras',
-      [],
+      tx.executeSql('SELECT * FROM TipoHoras WHERE nombre != ?',
+      ["Todas"],
       (_,results)=>{
         const todos = [];
         for (let i = 0; i < results.rows.length; i++){
             todos.push(results.rows.item(i))
         }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+      })
+    })
+  })
+}
+
+export function getTipoHorasFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM TipoHoras ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+            todos.push(results.rows.item(i))
+        }
+        console.log(todos);
         resolve(todos);
       },
       (_,error)=>{
@@ -153,13 +209,35 @@ export function getTipoHoras(){
 export function getClases(){
   return new Promise((resolve,reject)=>{
     db.transaction(tx=>{
-      tx.executeSql('SELECT * FROM Clases',
-      [],
+      tx.executeSql('SELECT * FROM Clases WHERE nombre != ?',
+      ["Todas"],
       (_,results)=>{
         const todos = [];
         for (let i = 0; i <results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
+        console.log(todos);
+        resolve(todos);
+    },
+    (_,error)=>{
+      console.log(`Error getting todos ${error}`);
+      reject(error)
+    })
+  })
+})
+}
+
+export function getClasesFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Clases ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i <results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
         resolve(todos);
     },
     (_,error)=>{
