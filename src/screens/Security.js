@@ -66,44 +66,53 @@ import {
   };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Seguridad</Text>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Contraseña anterior</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={contrasenaAnterior}
-                    onChangeText={handleChangeContrasenaAnterior}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Contraseña nueva</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={contrasena}
-                    onChangeText={handleChangeContrasena}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Confirmar contraseña</Text>
-                <TextInput
-                    style={styles.input}
-                    secureTextEntry
-                    value={confirmarContrasena}
-                    onChangeText={handleChangeConfirmarContrasena}
-                />
-            </View>
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Autenticación de dos factores</Text>
-                <Switch
-                    value={autenticacionDosFactores}
-                    onValueChange={toggleAutenticacionDosFactores}
-                />
-            </View>
-            <Button title="Guardar cambios" onPress={handleGuardarCambios} />
+      <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.tituloContainer}>
+          <Text style={styles.titulo}>SEGURIDAD</Text>
         </View>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña anterior"
+          secureTextEntry
+          value={contrasenaAnterior}
+          onChangeText={handleChangeContrasenaAnterior}
+          placeholderTextColor = '#BDBDBD'
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña nueva"
+          secureTextEntry
+          value={contrasena}
+          onChangeText={handleChangeContrasena}
+          placeholderTextColor = '#BDBDBD'
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirmar contraseña"
+          secureTextEntry
+          value={confirmarContrasena}
+          onChangeText={handleChangeConfirmarContrasena}
+          placeholderTextColor = '#BDBDBD'
+        />
+        <View style={styles.optionContainer}>
+          {/* <Text style={styles.optionText}>Autenticación de dos factores</Text>
+          <Switch
+            trackColor={{ true: '#0096C7', false: '#E1F5FE' }}
+            value={autenticacionDosFactores}
+            onValueChange={toggleAutenticacionDosFactores}
+            thumbColor={autenticacionDosFactores ? '#E1F5FE' : '#0096C7'}
+          /> */}
+        </View>
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleGuardarCambios}>
+        <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
+      </TouchableOpacity>
+      <BottomBar navigation={navigation} selectedTab="Config" />
+    </View>
     );
 }
 

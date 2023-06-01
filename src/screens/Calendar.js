@@ -113,19 +113,22 @@ function CalendarScreen({ navigation }) {
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
+  // Resaltar los días sábado y domingo
   const today = new Date();
   const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-  const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+  const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
+  const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
 
-  for (let day = 1; day <= totalDaysInMonth; day++) {
-    const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    const date = new Date(dateString);
-    const dayOfWeek = date.getDay();
+  const currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    const dateString = currentDate.toISOString().split('T')[0];
+    const dayOfWeek = currentDate.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
+      markedDates[dateString] = { selected: true, selectedTextColor: 'red', selectedColor: 'white' };
     }
+
+    currentDate.setDate(currentDate.getDate() + 1);
   }
 
   return (
@@ -133,26 +136,44 @@ function CalendarScreen({ navigation }) {
       <View style={styles.componente}>
         <Calendar markedDates={markedDates} onDayPress={handleDayPress} />
       </View>
+      {!fechaSeleccionada && (
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.bottomText}>Selecciona un día para ver las horas registradas</Text>
+        </View>
+      )}
       {fechaSeleccionada && (
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Eventos para {fechaSeleccionada}</Text>
-              {eventosFechaSeleccionada.map((evento, index) => (
+              <Text style={styles.eventosTitle}>Registro de horas para {fechaSeleccionada}</Text>
+              {eventosFechaSeleccionada?.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
-                  <Text style={[styles.eventoText, { color: evento.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>{evento.TipoHoras}</Text>
-                  <Text style={styles.eventoText}>Horas: {evento.hours}</Text>
-                  <Text style={styles.eventoText}>Minutos: {evento.minutes}</Text>
-                  <Text style={styles.eventoText}>Clase: {evento.Clase}</Text>
-                  <Text style={styles.eventoText}>Categoria: {evento.categoria}</Text>
+                  <Text style={[styles.eventoText, { color: evento?.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
+                    {evento?.TipoHoras}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Horas:</Text> {evento?.hours}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Minutos:</Text> {evento?.minutes}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Clase:</Text> {evento?.Clase}
+                  </Text>
+                  <Text style={styles.eventoText}>
+                    <Text style={{ fontWeight: 'bold' }}>Categoria: </Text> {evento?.categoria}
+                  </Text>
                 </View>
               ))}
+              {eventosFechaSeleccionada?.length === 0 && (
+                <Text style={styles.noEventsText}>No hay horas registradas en este día</Text>
+              )}
             </View>
           </ScrollView>
         </View>
       )}
       <View style={styles.bottomBarContainer}>
-      <BottomBar navigation={navigation} selectedTab="Calendar" />
+        <BottomBar navigation={navigation} selectedTab="Calendar" />
       </View>
     </View>
   );
@@ -173,6 +194,14 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
     marginBottom: 400,
+  },
+  bottomTextContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    alignItems: 'center',
+  },
+  bottomText: {
+    fontStyle: 'italic',
   },
   bottomBarContainer: {
     position: 'absolute',
@@ -249,6 +278,7 @@ const styles = StyleSheet.create({
   },
   eventoText: {
     fontSize: 16,
+    // fontWeight: 'bold',
     marginBottom: 5,
   },
   eventoContainer: {

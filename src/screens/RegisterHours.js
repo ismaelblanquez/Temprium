@@ -16,7 +16,7 @@ const RegisterHoursScreen = ({ navigation }) => {
   const dia = fechaActual.getDate().toString().padStart(2, '0');
   const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
   const anio = fechaActual.getFullYear();
-  const diaActual = `${dia}-${mes}-${anio}`;
+  const diaActual = `${anio}-${mes}-${dia}`;
   const [selectedTipoHora, setSelectedTipoHora] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState([]);
   const [selectedClase, setSelectedClase] = useState([]);
@@ -47,6 +47,10 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Día:', diaActual);
     console.log('Email', email);
 
+    await AsyncStorage.setItem('tipoHoras',tipoHoras);
+    await AsyncStorage.setItem('categoria',categoria);
+    await AsyncStorage.setItem('clase',clase);
+
     getIdUsuario(email, (id) => {
       console.log('IIIIIIDDDDD', id);
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
@@ -60,10 +64,6 @@ const RegisterHoursScreen = ({ navigation }) => {
         })
         .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
-    
-     await AsyncStorage.setItem('tipoHoras',tipoHoras);
-     await AsyncStorage.setItem('categoria',categoria);
-     await AsyncStorage.setItem('clase',clase);
   };
 
   const obtenerDatos = async () =>{
@@ -83,17 +83,17 @@ const RegisterHoursScreen = ({ navigation }) => {
 const MantenerDatos= async () => {
   try {
     const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
-    console.log(tipoHorasStored);
+    console.log('Tipo hora',tipoHorasStored);
     if (tipoHorasStored !== null) {
       setTipoHoras(tipoHorasStored);
     }
     const categoriaStored = await AsyncStorage.getItem('categoria');
-    console.log(categoriaStored);
+    console.log('categoria ',categoriaStored);
     if (categoriaStored !== null) {
       setCategoria(categoriaStored);
     }
     const claseStored = await AsyncStorage.getItem('clase');
-    console.log(claseStored);
+    console.log('clase ',claseStored);
     if (claseStored !== null) {
       setClase(claseStored);
     }

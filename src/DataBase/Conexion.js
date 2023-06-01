@@ -101,7 +101,7 @@ export function getAllHoras(email) {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =? ORDER BY Id_hor DESC',
+        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,strftime("%d-%m-%Y", Dia) AS Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =? ORDER BY Id_hor DESC',
         [email],
         (_, results) => {
           const todos = [];
@@ -259,7 +259,7 @@ export function selectHoras(
   return new Promise((resolve, reject) => {
     let consulta = '';
     let parametros = [];
-    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
+    consulta = 'SELECT *,strftime("%d-%m-%Y", Dia) AS Dia FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
     if (tipoHoras != '') {
       consulta += 'AND HORAS.Tipohoras = ? ';
       parametros.push(tipoHoras);
@@ -519,6 +519,7 @@ export function updateContraseña(contrasena, email) {
     });
   });
 }
+
 
 
 export default {

@@ -50,21 +50,24 @@ const FilterHoursScreen = ({ navigation }) => {
     obtenerDatos();
   }, []);
 
-  const fechaInvertida = fecha.split('-').reverse().join('-');
-  const fechafinInvertida = fechafin.split('-').reverse().join('-');
+
+  //const fechaInvertida = fecha.split('-').reverse().join('-');
+  //const fechafinInvertida = fechafin.split('-').reverse().join('-');
 
   const guardarHoras = () => {
     console.log('Tipo de Horas:', tipoHoras);
-    console.log('Fecha:', fechaInvertida);
+    console.log('Fecha:', fecha);
     console.log('Categoría:', categoria);
     console.log('Clase:', clase);
-    console.log('FechaFin', fechafinInvertida);
+    console.log('FechaFin', fechafin);
+    
+    
     navigation.replace('Home', {
       tipoHoras: tipoHoras,
-      fecha: fechaInvertida,
+      fecha: fecha,
       categoria: categoria,
       clase: clase,
-      fechafin: fechafinInvertida,
+      fechafin: fechafin,
     });
   };
 
@@ -89,21 +92,22 @@ const FilterHoursScreen = ({ navigation }) => {
     }
 
     // Resaltar los días sábado y domingo
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1;
-    const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+ const today = new Date();
+ const currentYear = today.getFullYear();
+ const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
+ const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
 
-    for (let day = 1; day <= totalDaysInMonth; day++) {
-      const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      const date = new Date(dateString);
-      const dayOfWeek = date.getDay();
+ const currentDate = new Date(startDate);
+ while (currentDate <= endDate) {
+   const dateString = currentDate.toISOString().split('T')[0];
+   const dayOfWeek = currentDate.getDay();
 
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
-      }
-    }
+   if (dayOfWeek === 0 || dayOfWeek === 6) {
+     markedDates[dateString] = { selected: true, selectedTextColor: 'red' , selectedColor: 'white' };
+   }
 
+   currentDate.setDate(currentDate.getDate() + 1);
+ }
     return markedDates;
   };
 
