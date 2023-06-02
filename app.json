@@ -22,7 +22,7 @@
       "useNextNotificationsApi": true,
       "permissions":["NOTIFICATIONS"],
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/logo.png",
         "backgroundColor": "#ffffff"
       }
     },
