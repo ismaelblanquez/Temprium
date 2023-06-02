@@ -48,8 +48,7 @@ const RegisterHoursScreen = ({ navigation }) => {
     console.log('Email', email);
 
     await AsyncStorage.setItem('tipoHoras',tipoHoras);
-    await AsyncStorage.setItem('categoria',categoria);
-    await AsyncStorage.setItem('clase',clase);
+  
 
     getIdUsuario(email, (id) => {
       console.log('IIIIIIDDDDD', id);
