@@ -103,7 +103,8 @@ function CalendarScreen({ navigation }) {
       acc[fecha].dots.push(evento);
     });
     return acc;
-  }, {});
+  }, {[fechaSeleccionada]: {selected: true, selectedColor: '#0096C7'}});
+
 
   const handleDayPress = (day) => {
     setFechaSeleccionada(day.dateString);
@@ -144,7 +145,8 @@ function CalendarScreen({ navigation }) {
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Registro de horas para {fechaInvertida}</Text>
+              <Text style={styles.eventosTitle}> Registro de horas para{' '}
+                   <Text style={{ color: '#0096C7' }}>{fechaInvertida}</Text></Text>
               {eventosFechaSeleccionada?.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
                   <Text style={[styles.eventoText, { color: evento?.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>
