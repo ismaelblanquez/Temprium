@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { db, addUsuario, updateUsu } from '../DataBase/Conexion';
+import { db, addUsuario, updateUsu, getIdUsuario } from '../DataBase/Conexion';
 import 'setimmediate';
 
 
