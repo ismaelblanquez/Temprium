@@ -45,7 +45,6 @@ const ForgotPassword = ({ navigation }) => {
   };
 
 
-
   return (
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />

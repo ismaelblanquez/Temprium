@@ -3,6 +3,8 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('Temprium.db');
 
+
+
 db.transaction(tx => {
   tx.executeSql(
     'CREATE TABLE IF NOT EXISTS Usuarios (Id_usu INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, contrasena TEXT NOT NULL)'
@@ -15,6 +17,47 @@ db.transaction(tx => {
     ["dummy@nosession.com", "92r8hfv2n9fuvy<9v8h"]
   );
 });
+
+db.transaction(tx => {
+  tx.executeSql('CREATE TABLE IF NOT EXISTS Categorias (Id_Categorias INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Categorias (nombre) VALUES (?),(?),(?),(?),(?),(?),(?),(?),(?),(?)',
+  ["Otros","Impartir Clases","Preparas Clases","Corregir","Retos","Reuniones de Departamento","Reuniones de Equipos Educativos","Reuniones de Padres","Atencion a Padres","Atencion Personal a Alumnos"]);
+});
+
+db.transaction(tx=>{
+  tx.executeSql('CREATE TABLE IF NOT EXISTS TipoHoras (Id_tHoras INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO TipoHoras (nombre) VALUES (?),(?)',
+  ["Lectivas","No Lectivas"]);
+})
+
+db.transaction(tx=>{
+  tx.executeSql('CREATE TABLE IF NOT EXISTS Clases (Id_Clases INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL UNIQUE)');
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Clases (nombre) VALUES (?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?)',
+  ["1SA","2SA","1SV","2SV","1SC","2SC","1SI","2SI","1SW","2SW","1SE","2SE","1SR","2SR","1SM","2SM","1ST","2ST"])
+});
+
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO TipoHoras (nombre) VALUES (?)',
+  ["Todas"]);
+})
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Clases (nombre) VALUES (?)',
+  ["Todas"]);
+})
+db.transaction(tx=>{
+  tx.executeSql('INSERT INTO Categorias (nombre) VALUES (?)',
+  ["Todas"]);
+})
+
 
 export function addUsuario(email, contrasena) {
   return new Promise((resolve, reject) => {
@@ -58,7 +101,7 @@ export function getAllHoras(email) {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =? ORDER BY Id_hor DESC',
+        'SELECT Id_hor,Tipohoras,Horas,minutos,Categoria,strftime("%d-%m-%Y", Dia) AS Dia,Clase FROM HORAS INNER JOIN USUARIOS ON HORAS.Usuario = USUARIOS.Id_usu AND USUARIOS.email =? ORDER BY Id_hor DESC',
         [email],
         (_, results) => {
           const todos = [];
@@ -78,9 +121,132 @@ export function getAllHoras(email) {
   })
 }
 
+export function getCategorias(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Categorias WHERE nombre != ?',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+    })
+    })
+  })
+}
+export function getCategoriasFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Categorias ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+    })
+    })
+  })
+}
 
 
+export function getTipoHoras(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM TipoHoras WHERE nombre != ?',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+            todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+      })
+    })
+  })
+}
 
+export function getTipoHorasFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM TipoHoras ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i < results.rows.length; i++){
+            todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+      },
+      (_,error)=>{
+        console.log(`Error getting todos: ${error}`);
+        reject(error);
+      })
+    })
+  })
+}
+
+
+export function getClases(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Clases WHERE nombre != ?',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i <results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+    },
+    (_,error)=>{
+      console.log(`Error getting todos ${error}`);
+      reject(error)
+    })
+  })
+})
+}
+
+export function getClasesFiltro(){
+  return new Promise((resolve,reject)=>{
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM Clases ORDER BY nombre = ? DESC',
+      ["Todas"],
+      (_,results)=>{
+        const todos = [];
+        for (let i = 0; i <results.rows.length; i++){
+          todos.push(results.rows.item(i))
+        }
+        console.log(todos);
+        resolve(todos);
+    },
+    (_,error)=>{
+      console.log(`Error getting todos ${error}`);
+      reject(error)
+    })
+  })
+})
+}
 
 export function selectHoras(
   tipoHoras,
@@ -93,7 +259,7 @@ export function selectHoras(
   return new Promise((resolve, reject) => {
     let consulta = '';
     let parametros = [];
-    consulta = 'SELECT * FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
+    consulta = 'SELECT *,strftime("%d-%m-%Y", Dia) AS Dia FROM HORAS INNER JOIN Usuarios ON Usuarios.Id_usu = HORAS.Usuario  ';
     if (tipoHoras != '') {
       consulta += 'AND HORAS.Tipohoras = ? ';
       parametros.push(tipoHoras);
@@ -141,7 +307,8 @@ export function selectHoras(
   });
 }
 
-export function getIdUsuario(usuario, callback, errorCallback) {
+
+export function getIdUsuario(usuario, callback) {
   db.transaction(tx => {
     tx.executeSql(
       'SELECT Id_usu FROM USUARIOS WHERE email=?',
@@ -151,7 +318,7 @@ export function getIdUsuario(usuario, callback, errorCallback) {
           const id = results.rows.item(0).Id_usu;
           callback(id);
         } else {
-          errorCallback();
+          console.log('No se encontraron resultados');
         }
       },
       error => {
@@ -160,7 +327,6 @@ export function getIdUsuario(usuario, callback, errorCallback) {
     );
   });
 }
-
 
 export function getUsuemail(db, usuario, callback) {
   db.transaction((tx) => {
@@ -353,6 +519,7 @@ export function updateContraseña(contrasena, email) {
     });
   });
 }
+
 
 
 export default {

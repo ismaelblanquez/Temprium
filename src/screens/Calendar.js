@@ -5,7 +5,6 @@ import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
-
 LocaleConfig.locales['es'] = {
   monthNames: [
     'Enero',
@@ -18,7 +17,7 @@ LocaleConfig.locales['es'] = {
     'Agosto',
     'Septiembre',
     'Octubre',
-    'Noviembre',
+    'Novimbre',
     'Diciembre'
   ],
   dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -74,8 +73,7 @@ function CalendarScreen({ navigation }) {
         let registros = [];
 
         if (fechaSeleccionada) {
-          const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
-          selectHoras('', email || 'dummy@nosession.com', '', fechaInvertida, '', '')
+          selectHoras('', email || 'dummy@nosession.com', '', fechaSeleccionada, '', '')
             .then((resultados) => {
               registros = resultados;
               const eventos = construirEventos(registros);
@@ -105,7 +103,8 @@ function CalendarScreen({ navigation }) {
       acc[fecha].dots.push(evento);
     });
     return acc;
-  }, {});
+  }, {[fechaSeleccionada]: {selected: true, selectedColor: '#0096C7'}});
+
 
   const handleDayPress = (day) => {
     setFechaSeleccionada(day.dateString);
@@ -114,19 +113,22 @@ function CalendarScreen({ navigation }) {
   const fechaInvertida = fechaSeleccionada.split("-").reverse().join("-");
   const eventosFechaSeleccionada = eventos[fechaInvertida] || [];
 
+  // Resaltar los días sábado y domingo
   const today = new Date();
   const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-  const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+  const startDate = new Date(currentYear, 0, 1); // Comenzar desde el 1 de enero del año actual
+  const endDate = new Date(currentYear, 11, 31); // Terminar en el 31 de diciembre del año actual
 
-  for (let day = 1; day <= totalDaysInMonth; day++) {
-    const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    const date = new Date(dateString);
-    const dayOfWeek = date.getDay();
+  const currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    const dateString = currentDate.toISOString().split('T')[0];
+    const dayOfWeek = currentDate.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
       markedDates[dateString] = { selected: true, selectedTextColor: 'red', selectedColor: 'white' };
     }
+
+    currentDate.setDate(currentDate.getDate() + 1);
   }
 
   return (
@@ -143,7 +145,8 @@ function CalendarScreen({ navigation }) {
         <View style={styles.scrollViewContainer}>
           <ScrollView>
             <View style={styles.eventosContainer}>
-              <Text style={styles.eventosTitle}>Registro de horas para {fechaInvertida}</Text>
+              <Text style={styles.eventosTitle}> Registro de horas para{' '}
+                   <Text style={{ color: '#0096C7' }}>{fechaInvertida}</Text></Text>
               {eventosFechaSeleccionada?.map((evento, index) => (
                 <View key={index} style={styles.eventoContainer}>
                   <Text style={[styles.eventoText, { color: evento?.TipoHoras === "No Lectivas" ? "#8E44AD" : "#12CDD4" }]}>

@@ -22,10 +22,9 @@
       "useNextNotificationsApi": true,
       "permissions":["NOTIFICATIONS"],
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/logo2.png",
-        "backgroundColor": "#0096c7"
-      },
-      "package": "com.iblanquez.Temprium"
+        "foregroundImage": "./src/assets/images/logo.png",
+        "backgroundColor": "#ffffff"
+      }
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

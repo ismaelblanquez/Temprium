@@ -65,8 +65,8 @@ import {
 
   };
 
-  return (
-    <View style={styles.container}>
+    return (
+      <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.tituloContainer}>
           <Text style={styles.titulo}>SEGURIDAD</Text>
@@ -113,7 +113,7 @@ import {
       </TouchableOpacity>
       <BottomBar navigation={navigation} selectedTab="Config" />
     </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({

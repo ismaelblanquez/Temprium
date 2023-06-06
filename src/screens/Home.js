@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, Alert } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { getAllHoras, deleteHoras, selectHoras } from '../DataBase/Conexion';
+import { getAllHoras, deleteHoras, selectHoras, getCategoriasFiltro,getClasesFiltro,getTipoHorasFiltro } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -13,11 +13,13 @@ const Home = ({ navigation, route }) => {
     const [horasTotales, setHorasTotales] = useState(0);
     const [email, setEmail] = useState('');
 
+
     const getEmail = async () => {
 
         if (route.params) {
             const storedEmail = await AsyncStorage.getItem('email');
-            const email = storedEmail || 'dummy@nosession.com';
+             const email = storedEmail || 'dummy@nosession.com';
+            setEmail(email || 'dummy@nosession.com');
             const { tipoHoras, fecha, categoria, clase, fechafin } = route.params;
             console.log('Tipo de Horas:', tipoHoras);
             console.log('Fecha:', fecha);

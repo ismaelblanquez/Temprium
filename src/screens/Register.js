@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { db, addUsuario } from '../DataBase/Conexion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'setimmediate';
+
 
 
 
