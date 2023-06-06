@@ -5,6 +5,7 @@ import BottomBar from '../components/BottomBar';
 import { selectHoras } from '../DataBase/Conexion';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
+// Configuración regional para el calendario
 LocaleConfig.locales['es'] = {
   monthNames: [
     'Enero',
@@ -32,6 +33,7 @@ function CalendarScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
 
+  // Construye el objeto de eventos a partir de los registros
   const construirEventos = (registros) => {
     const eventos = {};
 
@@ -73,6 +75,7 @@ function CalendarScreen({ navigation }) {
         let registros = [];
 
         if (fechaSeleccionada) {
+          // Obtener registros de la base de datos
           selectHoras('', email || 'dummy@nosession.com', '', fechaSeleccionada, '', '')
             .then((resultados) => {
               registros = resultados;
@@ -94,6 +97,7 @@ function CalendarScreen({ navigation }) {
     obtenerRegistros();
   }, [fechaSeleccionada]);
 
+  // Marcar las fechas con eventos en el calendario
   const markedDates = Object.values(eventos).reduce((acc, eventosDia) => {
     eventosDia.forEach((evento) => {
       const fecha = evento.fecha;
@@ -105,7 +109,7 @@ function CalendarScreen({ navigation }) {
     return acc;
   }, {[fechaSeleccionada]: {selected: true, selectedColor: '#0096C7'}});
 
-
+  // Manejar la selección de un día en el calendario
   const handleDayPress = (day) => {
     setFechaSeleccionada(day.dateString);
   };
@@ -188,10 +192,6 @@ const styles = StyleSheet.create({
   componente: {
     marginTop: 30,
   },
-  newEventContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
   scrollViewContainer: {
     flexGrow: 1,
     marginBottom: 400,
@@ -215,71 +215,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 30,
   },
-  newEventInput: {
-    backgroundColor: '#F2F2F2',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconNoLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
-  },
-  iconLectiva: {
-    fontSize: 18,
-    color: '#FFFFFF',
-  },
-  addButton: {
-    backgroundColor: '#0096C7',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
   noEventsText: {
     paddingHorizontal: 20,
     marginTop: 20,
     fontStyle: 'italic',
   },
-  eventContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D1D1D1',
-  },
-  eventTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  eventDescription: {
-    marginTop: 5,
-  },
-  deleteButton: {
-    backgroundColor: '#FF4444',
-    borderRadius: 10,
-    padding: 5,
-    marginTop: 10,
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-  },
-  deleteButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
   eventoText: {
     fontSize: 16,
-    // fontWeight: 'bold',
     marginBottom: 5,
   },
   eventoContainer: {
