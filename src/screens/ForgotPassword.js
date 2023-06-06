@@ -76,7 +76,7 @@ const ForgotPassword = ({ navigation }) => {
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
-        <Text style={styles.loginButtonText}>REGISTRARSE</Text>
+        <Text style={styles.loginButtonText}>GUARDAR</Text>
       </TouchableOpacity>
     </View>
   );
