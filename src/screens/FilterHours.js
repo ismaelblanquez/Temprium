@@ -4,7 +4,6 @@ import BottomBar from '../components/BottomBar';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { getCategoriasFiltro, getClasesFiltro, getTipoHorasFiltro } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Picker } from '@react-native-picker/picker';
 
 LocaleConfig.locales['es'] = {
@@ -23,7 +22,7 @@ LocaleConfig.locales['es'] = {
     'Diciembre',
   ],
   dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
   today: 'Hoy',
 };
 
@@ -40,18 +39,17 @@ const FilterHoursScreen = ({ navigation }) => {
   const [selectedCategoria, setSelectedCategoria] = useState([]);
   const [selectedClase, setSelectedClase] = useState([]);
 
-  const getEmail = async () => {
-    const email = await AsyncStorage.getItem('email');
-    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
-  };
-
   useEffect(() => {
     getEmail();
     obtenerDatos();
   }, []);
 
-  const guardarHoras = () => {
+  const getEmail = async () => {
+    const email = await AsyncStorage.getItem('email');
+    setEmail(email || 'dummy@nosession.com'); // Establecer un valor predeterminado si email es nulo o indefinido
+  };
 
+  const guardarHoras = () => {
     navigation.replace('Home', {
       tipoHoras: tipoHoras,
       fecha: fecha,
@@ -98,6 +96,7 @@ const FilterHoursScreen = ({ navigation }) => {
 
       currentDate.setDate(currentDate.getDate() + 1);
     }
+
     return markedDates;
   };
 
@@ -110,9 +109,9 @@ const FilterHoursScreen = ({ navigation }) => {
       const TipoHorasDB = await getTipoHorasFiltro();
       setSelectedTipoHora(TipoHorasDB);
     } catch (error) {
-      console.log(`Error obtencion de datos de la base de datos: ${error}`)
+      console.log(`Error obtencion de datos de la base de datos: ${error}`);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -122,13 +121,16 @@ const FilterHoursScreen = ({ navigation }) => {
             <Text style={styles.titulo}>FILTRAR HORAS</Text>
           </View>
         </View>
+
         <View style={styles.componente}>
           <Text style={styles.label}>TIPO DE HORAS</Text>
           <Picker
             style={styles.picker}
             selectedValue={tipoHoras}
             onValueChange={(value) => setTipoHoras(value)}>
-            {selectedTipoHora.map((tipoHora) => (<Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre === "Todas" ? '' : tipoHora.nombre} label={tipoHora.nombre} />))}
+            {selectedTipoHora.map((tipoHora) => (
+              <Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre === 'Todas' ? '' : tipoHora.nombre} label={tipoHora.nombre} />
+            ))}
           </Picker>
         </View>
 
@@ -158,7 +160,9 @@ const FilterHoursScreen = ({ navigation }) => {
             style={styles.picker}
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}>
-            {selectedCategoria.map((cat) => (<Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre === "Todas" ? '' : cat.nombre} />))}
+            {selectedCategoria.map((cat) => (
+              <Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre === 'Todas' ? '' : cat.nombre} />
+            ))}
           </Picker>
         </View>
 
@@ -168,15 +172,19 @@ const FilterHoursScreen = ({ navigation }) => {
             style={styles.picker}
             selectedValue={clase}
             onValueChange={(value) => setClase(value)}>
-            {selectedClase.map((cla) => (<Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre === "Todas" ? '' : cla.nombre} />))}
+            {selectedClase.map((cla) => (
+              <Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre === 'Todas' ? '' : cla.nombre} />
+            ))}
           </Picker>
         </View>
       </ScrollView>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={guardarHoras}>
           <Text style={styles.buttonText}>GUARDAR</Text>
         </TouchableOpacity>
       </View>
+
       <BottomBar navigation={navigation} selectedTab="FilterHours" />
     </View>
   );
@@ -193,11 +201,11 @@ const styles = StyleSheet.create({
     width: '80%',
     marginLeft: '9%',
     marginBottom: '10%',
-    marginTop: '15%'
+    marginTop: '15%',
   },
   tituloContainer: {
     alignItems: 'center',
-    padding: '4%'
+    padding: '4%',
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -238,20 +246,10 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 8,
     marginBottom: '15%',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   buttonContainer: {
     alignItems: 'center',
-    // marginBottom: 5, // Espacio entre el botón y el contenido
-    // marginTop: 50,
-  },
-  scrollViewContainer: {
-    flexGrow: 1,
-    // paddingBottom: 100, // Espacio para el botón de guardar
-    // marginBottom: 500,
-  },
-  spacer: {
-    // height: '100%', // Llena todo el espacio disponible
   },
   buttonText: {
     color: '#FFFFFF',
