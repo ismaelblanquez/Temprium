@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import BottomBar from '../components/BottomBar';
 import { addHoras, getIdUsuario, getCategorias, getClases, getTipoHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Picker } from '@react-native-picker/picker';
 
 const RegisterHoursScreen = ({ navigation }) => {
@@ -20,7 +19,6 @@ const RegisterHoursScreen = ({ navigation }) => {
   const [selectedTipoHora, setSelectedTipoHora] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState([]);
   const [selectedClase, setSelectedClase] = useState([]);
-
   const [email, setEmail] = useState('');
 
   const getEmail = async () => {
@@ -28,7 +26,7 @@ const RegisterHoursScreen = ({ navigation }) => {
       const email = await AsyncStorage.getItem('email');
       setEmail(email || 'dummy@nosession.com');
     } catch (error) {
-      console.log(`Error getting email from AsyncStorage: ${error}`);
+      console.log(`Error obteniendo el email de AsyncStorage: ${error}`);
     }
   };
 
@@ -39,19 +37,14 @@ const RegisterHoursScreen = ({ navigation }) => {
   }, []);
 
   const guardarHoras = async () => {
-
     await AsyncStorage.setItem('tipoHoras', tipoHoras);
 
-
     getIdUsuario(email, (id) => {
-
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
-          // const idHoras = results.insertId;
-
           navigation.replace('Home');
         })
-        .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
+        .catch((error) => console.log(`Error al registrar las horas: ${error.message}`));
     });
   };
 
@@ -61,37 +54,31 @@ const RegisterHoursScreen = ({ navigation }) => {
       setSelectedCategoria(categoriasDB);
       const clasesDB = await getClases();
       setSelectedClase(clasesDB);
-      const TipoHorasDB = await getTipoHoras();
-      setSelectedTipoHora(TipoHorasDB);
+      const tipoHorasDB = await getTipoHoras();
+      setSelectedTipoHora(tipoHorasDB);
     } catch (error) {
-      console.log(`Error obtencion de datos de la base de datos: ${error}`)
+      console.log(`Error al obtener datos de la base de datos: ${error}`)
     }
   }
-
 
   const MantenerDatos = async () => {
     try {
       const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
-
       if (tipoHorasStored !== null) {
         setTipoHoras(tipoHorasStored);
       }
       const categoriaStored = await AsyncStorage.getItem('categoria');
-
       if (categoriaStored !== null) {
         setCategoria(categoriaStored);
       }
       const claseStored = await AsyncStorage.getItem('clase');
-
       if (claseStored !== null) {
         setClase(claseStored);
       }
     } catch (error) {
-      console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
+      console.log(`Error al obtener el tipoHoras de AsyncStorage: ${error}`);
     }
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -108,10 +95,11 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={tipoHoras}
             onValueChange={(value) => setTipoHoras(value)}
           >
-            {selectedTipoHora.map((tipoHora) => (<Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre} label={tipoHora.nombre} />))}
+            {selectedTipoHora.map((tipoHora) => (
+              <Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre} label={tipoHora.nombre} />
+            ))}
           </Picker>
         </View>
-
         <View style={[styles.componente, {}]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
           <View style={[styles.pickerContainer, {}]}>
@@ -141,11 +129,9 @@ const RegisterHoursScreen = ({ navigation }) => {
                 />
               ))}
             </Picker>
-
             <Text style={[styles.hourMin, { fontSize: 20 }]}></Text>
           </View>
         </View>
-
         <View style={styles.componente}>
           <Text style={styles.label}>CATEGORÍAS</Text>
           <Picker
@@ -153,10 +139,11 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}
           >
-            {selectedCategoria.map((cat) => (<Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre} />))}
+            {selectedCategoria.map((cat) => (
+              <Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre} />
+            ))}
           </Picker>
         </View>
-
         <View style={styles.componente}>
           <Text style={styles.label}>CLASE</Text>
           <Picker
@@ -164,7 +151,9 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={clase}
             onValueChange={(value) => setClase(value)}
           >
-            {selectedClase.map((cla) => (<Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre} />))}
+            {selectedClase.map((cla) => (
+              <Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre} />
+            ))}
           </Picker>
         </View>
         <View style={styles.spacer} />
@@ -184,16 +173,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
-    // marginBottom:50,
   },
   scrollViewContainer: {
-    // flexGrow: 1,
-    // paddingBottom: 100, // Espacio para el botón de guardar
-    // marginBottom: 500,
+    flexGrow: 1,
   },
-  spacer: {
-    // height: '100%', // Llena todo el espacio disponible
-  },
+  spacer: {},
   headerContainer: {
     backgroundColor: '#E1F5FE',
     width: '80%',
@@ -237,35 +221,24 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginBottom: 16,
-    // marginTop:10,
     width: '70%',
     justifyContent: 'center',
   },
   hourMin: {
     fontSize: 16,
-    // alignSelf: 'center',
     color: '#0096C7',
   },
-  scrollViewContainer: {
-    flexGrow: 1,
-  },
-
   button: {
     backgroundColor: '#0096C7',
     alignItems: 'center',
     padding: '5%',
     width: '80%',
     borderRadius: 8,
-    // position: 'absolute',
     marginBottom: '15%',
-
     alignSelf: 'center',
   },
   buttonContainer: {
     alignItems: 'center',
-    // marginBottom: 5, // Espacio entre el botón y el contenido
-    // marginTop:50,
   },
   buttonText: {
     color: '#FFFFFF',
