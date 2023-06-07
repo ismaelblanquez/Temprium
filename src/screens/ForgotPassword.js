@@ -14,11 +14,8 @@ const ForgotPassword = ({ navigation }) => {
 
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para iniciar sesión
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Repetir password:', repPassword);
     getIdUsuario(email, (id) => {
-      if(id){
+      if (id) {
         if (email !== '' && password !== '' && password === repPassword) {
           updateUsu(email, password)
             .then(() => {
@@ -26,9 +23,10 @@ const ForgotPassword = ({ navigation }) => {
               navigation.replace('Login');
             })
             .catch((error) =>
+
               console.log(`Error al registrar usuario: ${error.message}`)
             );
-        }else {
+        } else {
           if (password !== repPassword) {
             Alert.alert('Las contraseñas no coinciden');
           } else {
@@ -39,10 +37,11 @@ const ForgotPassword = ({ navigation }) => {
     }, () => {
       Alert.alert('Usuario no existe');
     });
-    
+
 
     // navigation.navigate("Home");
   };
+
 
 
   return (
@@ -56,7 +55,7 @@ const ForgotPassword = ({ navigation }) => {
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
-          placeholderTextColor = '#BDBDBD'
+          placeholderTextColor='#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -64,7 +63,7 @@ const ForgotPassword = ({ navigation }) => {
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
-          placeholderTextColor = '#BDBDBD'
+          placeholderTextColor='#BDBDBD'
         />
         <TextInput
           style={styles.input}
@@ -72,7 +71,7 @@ const ForgotPassword = ({ navigation }) => {
           secureTextEntry
           value={repPassword}
           onChangeText={(text) => setRepPassword(text)}
-          placeholderTextColor = '#BDBDBD'
+          placeholderTextColor='#BDBDBD'
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   input: {
-   
+
     borderWidth: 2,
     borderRadius: 8,
     borderColor: '#1A1A1A',
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     height: 50,
-    textAlign:'center',
+    textAlign: 'center',
     justifyContent: 'center',
     marginTop: 40,
   },

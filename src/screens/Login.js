@@ -12,10 +12,6 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      console.log('Email:', email);
-      console.log('Password:', password);
-
-
       const usuarioExiste = await verificarUsuario(email, password);
       if (usuarioExiste) {
         await AsyncStorage.setItem('email', email);
@@ -30,7 +26,7 @@ const Login = ({ navigation }) => {
     }
   };
 
-  const handleGuest = async() => {
+  const handleGuest = async () => {
     await AsyncStorage.setItem('isLoggedIn', 'true')
     navigation.replace('Home');
   };
@@ -42,11 +38,11 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     checkLoginStatus();
-   
+
   }, []);
   const checkLoginStatus = async () => {
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-    
+
     if (isLoggedIn === 'true') {
       navigation.navigate('Home');
     }
@@ -173,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     textAlign: 'center',
-    
+
   },
   registerText: {
     marginTop: 30,
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   registerLink: {
-    
+
     color: '#0096C7',
     fontWeight: 'bold',
     alignContent: 'center',

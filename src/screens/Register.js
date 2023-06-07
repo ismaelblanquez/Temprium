@@ -16,9 +16,6 @@ const Register = ({ navigation }) => {
 
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para iniciar sesión
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Repetir password:', repPassword);
     if ((email != '' && password != '') && (password == repPassword)) {
       addUsuario(email, password)
         .then(() => console.log('Usuario registrado'), navigation.replace('Login'))

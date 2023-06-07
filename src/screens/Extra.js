@@ -20,7 +20,7 @@ const Extra = ({ navigation }) => {
         getEmail();
       }, []);
 
-      console.log(email);
+     
       
 
     const data = [

@@ -86,7 +86,7 @@ export function addHoras(Usuario, Tipohoras, Horas, minutos, Categoria, Dia, Cla
         'INSERT INTO HORAS (Usuario,Tipohoras,Horas,minutos,Categoria,Dia,Clase) VALUES (?,?,?,?,?,?,?)',
         [parseInt(Usuario), Tipohoras, parseInt(Horas), parseInt(minutos), Categoria, Dia, Clase],
         (_, results) => {
-          console.log('Horas añadidas correctamente:', results);
+    
           resolve(results);
         },
         (_, error) => {
@@ -131,7 +131,7 @@ export function getCategorias(){
         for (let i = 0; i < results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
       },
       (_,error)=>{
@@ -151,7 +151,7 @@ export function getCategoriasFiltro(){
         for (let i = 0; i < results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
       },
       (_,error)=>{
@@ -173,7 +173,7 @@ export function getTipoHoras(){
         for (let i = 0; i < results.rows.length; i++){
             todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
       },
       (_,error)=>{
@@ -194,7 +194,7 @@ export function getTipoHorasFiltro(){
         for (let i = 0; i < results.rows.length; i++){
             todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
       },
       (_,error)=>{
@@ -216,7 +216,7 @@ export function getClases(){
         for (let i = 0; i <results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
     },
     (_,error)=>{
@@ -237,7 +237,7 @@ export function getClasesFiltro(){
         for (let i = 0; i <results.rows.length; i++){
           todos.push(results.rows.item(i))
         }
-        console.log(todos);
+
         resolve(todos);
     },
     (_,error)=>{
@@ -285,8 +285,7 @@ export function selectHoras(
       parametros.push(usuario);
     }
     consulta += 'ORDER BY Id_hor DESC';
-    console.log(consulta)
-    console.log(parametros)
+
       db.transaction(tx => {
         tx.executeSql(
           consulta,

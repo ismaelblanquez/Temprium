@@ -39,67 +39,57 @@ const RegisterHoursScreen = ({ navigation }) => {
   }, []);
 
   const guardarHoras = async () => {
-    console.log('Tipo de Horas:', tipoHoras);
-    console.log('Horas Trabajadas:', horas);
-    console.log('Minutos Trabajados:', minutos);
-    console.log('Categoría:', categoria);
-    console.log('Clase:', clase);
-    console.log('Día:', diaActual);
-    console.log('Email', email);
 
-    await AsyncStorage.setItem('tipoHoras',tipoHoras);
-  
+    await AsyncStorage.setItem('tipoHoras', tipoHoras);
+
 
     getIdUsuario(email, (id) => {
-      console.log('IIIIIIDDDDD', id);
+
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
           // const idHoras = results.insertId;
-          console.log(results.rows);
-          console.log(
-            `Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`
-          );
+
           navigation.replace('Home');
         })
         .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
     });
   };
 
-  const obtenerDatos = async () =>{
-    try{
+  const obtenerDatos = async () => {
+    try {
       const categoriasDB = await getCategorias();
       setSelectedCategoria(categoriasDB);
       const clasesDB = await getClases();
       setSelectedClase(clasesDB);
       const TipoHorasDB = await getTipoHoras();
       setSelectedTipoHora(TipoHorasDB);
-    }catch(error){
-       console.log(`Error obtencion de datos de la base de datos: ${error}`)
+    } catch (error) {
+      console.log(`Error obtencion de datos de la base de datos: ${error}`)
     }
   }
 
-  
-const MantenerDatos= async () => {
-  try {
-    const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
-    console.log('Tipo hora',tipoHorasStored);
-    if (tipoHorasStored !== null) {
-      setTipoHoras(tipoHorasStored);
+
+  const MantenerDatos = async () => {
+    try {
+      const tipoHorasStored = await AsyncStorage.getItem('tipoHoras');
+
+      if (tipoHorasStored !== null) {
+        setTipoHoras(tipoHorasStored);
+      }
+      const categoriaStored = await AsyncStorage.getItem('categoria');
+
+      if (categoriaStored !== null) {
+        setCategoria(categoriaStored);
+      }
+      const claseStored = await AsyncStorage.getItem('clase');
+
+      if (claseStored !== null) {
+        setClase(claseStored);
+      }
+    } catch (error) {
+      console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
     }
-    const categoriaStored = await AsyncStorage.getItem('categoria');
-    console.log('categoria ',categoriaStored);
-    if (categoriaStored !== null) {
-      setCategoria(categoriaStored);
-    }
-    const claseStored = await AsyncStorage.getItem('clase');
-    console.log('clase ',claseStored);
-    if (claseStored !== null) {
-      setClase(claseStored);
-    }
-  } catch (error) {
-    console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
-  }
-};
+  };
 
 
 
@@ -118,13 +108,13 @@ const MantenerDatos= async () => {
             selectedValue={tipoHoras}
             onValueChange={(value) => setTipoHoras(value)}
           >
-            {selectedTipoHora.map((tipoHora)=>(<Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre} label={tipoHora.nombre}/>))}
+            {selectedTipoHora.map((tipoHora) => (<Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre} label={tipoHora.nombre} />))}
           </Picker>
         </View>
 
-        <View style={[styles.componente, { }]}>
+        <View style={[styles.componente, {}]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
-          <View style={[styles.pickerContainer, {  }]}>
+          <View style={[styles.pickerContainer, {}]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={horas}
@@ -137,7 +127,7 @@ const MantenerDatos= async () => {
             <Text style={[styles.hourMin, { fontSize: 20 }]}> </Text>
           </View>
           <Text style={styles.label}>MINUTOS TRABAJADOS</Text>
-          <View style={[styles.pickerContainer, { }]}>
+          <View style={[styles.pickerContainer, {}]}>
             <Picker
               style={[styles.picker, { width: '80%' }]}
               selectedValue={minutos}
@@ -163,7 +153,7 @@ const MantenerDatos= async () => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}
           >
-            {selectedCategoria.map((cat)=>(<Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre} />))}
+            {selectedCategoria.map((cat) => (<Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre} />))}
           </Picker>
         </View>
 
@@ -174,11 +164,11 @@ const MantenerDatos= async () => {
             selectedValue={clase}
             onValueChange={(value) => setClase(value)}
           >
-          {selectedClase.map((cla)=>(<Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre} />))}
+            {selectedClase.map((cla) => (<Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre} />))}
           </Picker>
         </View>
-        <View style={styles.spacer} /> 
-        </ScrollView>
+        <View style={styles.spacer} />
+      </ScrollView>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={guardarHoras}>
           <Text style={styles.buttonText}>GUARDAR</Text>
@@ -260,7 +250,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
   },
- 
+
   button: {
     backgroundColor: '#0096C7',
     alignItems: 'center',
@@ -269,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     // position: 'absolute',
     marginBottom: '15%',
-    
+
     alignSelf: 'center',
   },
   buttonContainer: {
