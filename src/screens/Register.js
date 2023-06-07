@@ -1,36 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
-import { db, addUsuario } from '../DataBase/Conexion';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { addUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import 'setimmediate';
-
-
-
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repPassword, setRepPassword] = useState('');
 
-
-
   const handleRegister = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión
-    if ((email != '' && password != '') && (password == repPassword)) {
-      addUsuario(email, password)
-        .then(() => console.log('Usuario registrado'), navigation.replace('Login'))
-        .catch(error => console.log(`Error al registrar usuario: ${error.message}`));
-    } else {
-      if (password != repPassword) {
-        Alert.alert("Las contraseñas no coinciden");
-      } else {
-        Alert.alert("Error, uno de los campos contiene datos vacíos");
-      }
+    if (email === '' || password === '' || repPassword === '') {
+      Alert.alert('Error', 'Uno de los campos contiene datos vacíos');
+      return;
     }
-    // navigation.navigate("Home");
+
+    if (password !== repPassword) {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
+
+    addUsuario(email, password)
+      .then(() => {
+        console.log('Usuario registrado');
+        navigation.replace('Login');
+      })
+      .catch(error => Alert.alert(`Error al registrar usuario`));
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -42,24 +37,24 @@ const Register = ({ navigation }) => {
           placeholder="Usuario"
           keyboardType="email-address"
           value={email}
-          onChangeText={(text) => setEmail(text)}
-          placeholderTextColor = '#BDBDBD'
+          onChangeText={text => setEmail(text)}
+          placeholderTextColor="#BDBDBD"
         />
         <TextInput
           style={styles.input}
           placeholder="Contraseña"
           secureTextEntry
           value={password}
-          onChangeText={(text) => setPassword(text)}
-          placeholderTextColor = '#BDBDBD'
+          onChangeText={text => setPassword(text)}
+          placeholderTextColor="#BDBDBD"
         />
         <TextInput
           style={styles.input}
           placeholder="Repetir contraseña"
           secureTextEntry
           value={repPassword}
-          onChangeText={(text) => setRepPassword(text)}
-          placeholderTextColor = '#BDBDBD'
+          onChangeText={text => setRepPassword(text)}
+          placeholderTextColor="#BDBDBD"
         />
       </View>
       <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
@@ -73,32 +68,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', //#F7FAFC
+    backgroundColor: '#FFFFFF',
   },
   cabecera: {
     height: '18%',
     width: '100%',
   },
-  title: { //registro
+  title: {
     marginTop: 40,
     marginBottom: 40,
     fontSize: 35,
     color: '#1A1A1A',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   inputContainer: {
     marginBottom: 30,
     width: '80%',
   },
   input: {
-   
     borderWidth: 2,
     borderRadius: 8,
     borderColor: '#1A1A1A',
     paddingHorizontal: 10,
     marginBottom: 20,
     height: 50,
-    color: '#1A1A1A'
+    color: '#1A1A1A',
   },
   loginButton: {
     backgroundColor: '#0096C7',
@@ -106,7 +100,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     height: 50,
-    textAlign:'center',
+    textAlign: 'center',
     justifyContent: 'center',
     marginTop: 40,
   },
@@ -115,4 +109,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 export default Register;
