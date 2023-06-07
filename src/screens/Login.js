@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { existeUsuario, verificarUsuario, buscarUsuario } from '../DataBase/Conexion';
+import { verificarUsuario } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState('false');
-
-
 
   const handleLogin = async () => {
     try {
       const usuarioExiste = await verificarUsuario(email, password);
       if (usuarioExiste) {
-        await AsyncStorage.setItem('email', email);
-        await AsyncStorage.setItem('password', password);
-        await AsyncStorage.setItem('isLoggedIn', 'true')
+        await AsyncStorage.multiSet([
+          ['email', email],
+          ['password', password],
+          ['isLoggedIn', 'true']
+        ]);
         navigation.replace('Home');
       } else {
-        Alert.alert('El usuario no existe')
+        Alert.alert('El usuario no existe');
       }
     } catch (error) {
       console.log(`Error al buscar usuario: ${error.message}`);
@@ -27,30 +26,26 @@ const Login = ({ navigation }) => {
   };
 
   const handleGuest = async () => {
-    await AsyncStorage.setItem('isLoggedIn', 'true')
+    await AsyncStorage.setItem('isLoggedIn', 'true');
     navigation.replace('Home');
   };
 
   const handleForgotPassword = () => {
-    // Alert.alert('Esta función no está implementada en esta fase del desarrollo')
     navigation.navigate('ForgotPassword');
   };
 
   useEffect(() => {
     checkLoginStatus();
-
   }, []);
+
   const checkLoginStatus = async () => {
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-
     if (isLoggedIn === 'true') {
       navigation.navigate('Home');
     }
   };
 
-
   const handleRegister = () => {
-
     navigation.navigate('Register');
   };
 
@@ -58,14 +53,13 @@ const Login = ({ navigation }) => {
     <View style={styles.container}>
       <Image style={styles.cabecera} source={require('../assets/images/Cabecera.png')} />
       <Text style={styles.title}>INICIO DE SESIÓN</Text>
-
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Usuario"
           keyboardType="email-address"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={setEmail}
           placeholderTextColor="#BDBDBD"
         />
         <TextInput
@@ -73,7 +67,7 @@ const Login = ({ navigation }) => {
           placeholder="Contraseña"
           secureTextEntry
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={setPassword}
           placeholderTextColor="#BDBDBD"
         />
         <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
@@ -116,7 +110,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 20,
     width: '80%',
-    // height: '10%',
   },
   input: {
     height: 50,
@@ -129,7 +122,6 @@ const styles = StyleSheet.create({
   },
   forgotPasswordButton: {
     alignSelf: 'center',
-    // marginTop: '10%',
   },
   forgotPasswordText: {
     color: '#1A1A1A',
@@ -169,22 +161,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     textAlign: 'center',
-
   },
   registerText: {
     marginTop: 30,
     alignItems: 'center',
-    // justifyContent:'center',
     color: '#1A1A1A',
     fontSize: 12,
   },
   registerLink: {
-
     color: '#0096C7',
     fontWeight: 'bold',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
     fontSize: 12,
   },
 });
