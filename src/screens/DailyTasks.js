@@ -16,8 +16,7 @@ function DailyTasks({ navigation }) {
   const [events, setEvents] = useState([]);
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventDescription, setNewEventDescription] = useState('');
-  const [reminderHours, setReminderHours] = useState('');
-  const [reminderMinutes, setReminderMinutes] = useState('');
+  const [reminderTime, setReminderTime] = useState({ hours: '', minutes: '' });
 
   useEffect(() => {
     // Cargar eventos guardados al iniciar la app
@@ -39,15 +38,14 @@ function DailyTasks({ navigation }) {
       setEvents([...events, newEvent]);
       setNewEventTitle('');
       setNewEventDescription('');
-      setReminderHours('');
-      setReminderMinutes('');
+      setReminderTime({ hours: '', minutes: '' });
 
       const currentDate = new Date();
       const reminderDate = new Date(currentDate);
 
       // Set the reminder time based on user input
-      reminderDate.setHours(parseInt(reminderHours, 10));
-      reminderDate.setMinutes(parseInt(reminderMinutes, 10));
+      reminderDate.setHours(parseInt(reminderTime.hours, 10));
+      reminderDate.setMinutes(parseInt(reminderTime.minutes, 10));
       reminderDate.setSeconds(0);
 
       if (reminderDate < currentDate) {
@@ -76,19 +74,32 @@ function DailyTasks({ navigation }) {
     setEvents(newEvents);
   };
 
-  const todayEvents = events.filter((event) => {
-    const eventDate = new Date();
-    const eventTitle = event.title.toLowerCase();
-    const eventDescription = event.description.toLowerCase();
+  const filterTodayEvents = () => {
     const today = new Date().toISOString().substr(0, 10);
+    return events.filter((event) => {
+      const eventDate = new Date();
+      const eventTitle = event.title.toLowerCase();
+      const eventDescription = event.description.toLowerCase();
 
-    return (
-      eventDate.toISOString().substr(0, 10) === today ||
-      eventTitle.includes(today) ||
-      eventDescription.includes(today)
-    );
-  });
+      return (
+        eventDate.toISOString().substr(0, 10) === today ||
+        eventTitle.includes(today) ||
+        eventDescription.includes(today)
+      );
+    });
+  };
 
+  const EventItem = ({ event, index }) => (
+    <View style={styles.eventContainer} key={index}>
+      <Text style={styles.eventTitle}>{event.title}</Text>
+      <Text style={styles.eventDescription}>{event.description}</Text>
+      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
+        <Text style={styles.deleteButtonText}>Eliminar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const todayEvents = filterTodayEvents();
   const screenHeight = Dimensions.get('window').height;
 
   return (
@@ -113,15 +124,15 @@ function DailyTasks({ navigation }) {
               style={styles.newEventInput}
               placeholder="Hora Recordatorio (0-23)"
               keyboardType="numeric"
-              value={reminderHours}
-              onChangeText={setReminderHours}
+              value={reminderTime.hours}
+              onChangeText={(text) => setReminderTime({ ...reminderTime, hours: text })}
             />
             <TextInput
               style={styles.newEventInput}
               placeholder="Minutos Recordatorio (0-59)"
               keyboardType="numeric"
-              value={reminderMinutes}
-              onChangeText={setReminderMinutes}
+              value={reminderTime.minutes}
+              onChangeText={(text) => setReminderTime({ ...reminderTime, minutes: text })}
             />
             <TouchableOpacity style={styles.addButton} onPress={addEvent}>
               <Text style={styles.addButtonText}>Agregar evento</Text>
@@ -130,15 +141,7 @@ function DailyTasks({ navigation }) {
 
           <Text style={styles.sectionTitle}>Eventos de hoy:</Text>
           {todayEvents.length > 0 ? (
-            todayEvents.map((event, index) => (
-              <View style={styles.eventContainer} key={index}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteEvent(index)}>
-                  <Text style={styles.deleteButtonText}>Eliminar</Text>
-                </TouchableOpacity>
-              </View>
-            ))
+            todayEvents.map((event, index) => <EventItem event={event} index={index} key={index} />)
           ) : (
             <Text style={styles.noEventsText}>No hay eventos para hoy.</Text>
           )}
@@ -148,7 +151,6 @@ function DailyTasks({ navigation }) {
         </View>
       </View>
     </View>
-
   );
 }
 

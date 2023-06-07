@@ -11,7 +11,7 @@
         const handleGuardarCambios = () => {
             // Lógica para guardar los cambios de tema en la aplicación
             // Aquí puedes realizar llamadas a API, actualizar el estado de la aplicación, etc.
-            console.log('Tema actualizado:', temaOscuro);
+
         };
 
         return (

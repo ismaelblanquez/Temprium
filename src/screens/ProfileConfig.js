@@ -36,7 +36,7 @@ function ProfileConfig({ navigation }) {
             </View>
             <View style={styles.contenido}>
                 <View style={styles.row}>
-                    <Text style={styles.label}>Correo electrónico:</Text>
+                    <Text style={styles.label}>Usuario:</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.texto}>{email}</Text>

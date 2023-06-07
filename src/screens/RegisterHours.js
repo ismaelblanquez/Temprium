@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import BottomBar from '../components/BottomBar';
-import { addHoras, getIdUsuario } from '../DataBase/Conexion';
+import { addHoras, getIdUsuario, getCategorias, getClases, getTipoHoras } from '../DataBase/Conexion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Picker } from '@react-native-picker/picker';
 
 const RegisterHoursScreen = ({ navigation }) => {
-  const [tipoHoras, setTipoHoras] = useState('Lectivas');
+  const [tipoHoras, setTipoHoras] = useState('');
   const [horas, setHoras] = useState('1');
   const [minutos, setMinutos] = useState('0');
-  const [categoria, setCategoria] = useState('Ninguna');
-  const [clase, setClase] = useState('1SI');
+  const [categoria, setCategoria] = useState('');
+  const [clase, setClase] = useState('');
   const fechaActual = new Date();
   const dia = fechaActual.getDate().toString().padStart(2, '0');
   const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
   const anio = fechaActual.getFullYear();
-  const diaActual = `${dia}-${mes}-${anio}`;
-
+  const diaActual = `${anio}-${mes}-${dia}`;
+  const [selectedTipoHora, setSelectedTipoHora] = useState([]);
+  const [selectedCategoria, setSelectedCategoria] = useState([]);
+  const [selectedClase, setSelectedClase] = useState([]);
   const [email, setEmail] = useState('');
 
   const getEmail = async () => {
@@ -25,44 +26,40 @@ const RegisterHoursScreen = ({ navigation }) => {
       const email = await AsyncStorage.getItem('email');
       setEmail(email || 'dummy@nosession.com');
     } catch (error) {
-      console.log(`Error getting email from AsyncStorage: ${error}`);
+      console.log(`Error obteniendo el email de AsyncStorage: ${error}`);
     }
   };
 
   useEffect(() => {
     getEmail();
+    obtenerDatos();
     MantenerDatos();
   }, []);
 
   const guardarHoras = async () => {
-    console.log('Tipo de Horas:', tipoHoras);
-    console.log('Horas Trabajadas:', horas);
-    console.log('Minutos Trabajados:', minutos);
-    console.log('Categoría:', categoria);
-    console.log('Clase:', clase);
-    console.log('Día:', diaActual);
-    console.log('Email', email);
+    await AsyncStorage.setItem('tipoHoras', tipoHoras);
 
     getIdUsuario(email, (id) => {
-      console.log('IIIIIIDDDDD', id);
       addHoras(id, tipoHoras, horas, minutos, categoria, diaActual, clase)
         .then((results) => {
-          // const idHoras = results.insertId;
-          console.log(results.rows);
-          console.log(
-            `Valores de los parámetros: Usuario=${id}, Tipohoras=${tipoHoras}, Horas=${horas}, minutos=${minutos}, Categoria=${categoria}, Dia=${diaActual}, Clase=${clase}`
-          );
           navigation.replace('Home');
         })
-        .catch((error) => console.log(`Error al registrar usuario: ${error.message}`));
+        .catch((error) => console.log(`Error al registrar las horas: ${error.message}`));
     });
-
-    await AsyncStorage.setItem('tipoHoras', tipoHoras);
-    await AsyncStorage.setItem('categoria', categoria);
-    await AsyncStorage.setItem('clase', clase);
-
-
   };
+
+  const obtenerDatos = async () => {
+    try {
+      const categoriasDB = await getCategorias();
+      setSelectedCategoria(categoriasDB);
+      const clasesDB = await getClases();
+      setSelectedClase(clasesDB);
+      const tipoHorasDB = await getTipoHoras();
+      setSelectedTipoHora(tipoHorasDB);
+    } catch (error) {
+      console.log(`Error al obtener datos de la base de datos: ${error}`)
+    }
+  }
 
   const MantenerDatos = async () => {
     try {
@@ -79,7 +76,7 @@ const RegisterHoursScreen = ({ navigation }) => {
         setClase(claseStored);
       }
     } catch (error) {
-      console.log(`Error al obtener tipoHoras de AsyncStorage: ${error}`);
+      console.log(`Error al obtener el tipoHoras de AsyncStorage: ${error}`);
     }
   };
 
@@ -98,11 +95,11 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={tipoHoras}
             onValueChange={(value) => setTipoHoras(value)}
           >
-            <Picker.Item label="Lectivas" value="Lectivas" />
-            <Picker.Item label="No Lectivas" value="No Lectivas" />
+            {selectedTipoHora.map((tipoHora) => (
+              <Picker.Item key={tipoHora.Id_tHoras} value={tipoHora.nombre} label={tipoHora.nombre} />
+            ))}
           </Picker>
         </View>
-
         <View style={[styles.componente, {}]}>
           <Text style={styles.label}>HORAS TRABAJADAS</Text>
           <View style={[styles.pickerContainer, {}]}>
@@ -132,11 +129,9 @@ const RegisterHoursScreen = ({ navigation }) => {
                 />
               ))}
             </Picker>
-
             <Text style={[styles.hourMin, { fontSize: 20 }]}></Text>
           </View>
         </View>
-
         <View style={styles.componente}>
           <Text style={styles.label}>CATEGORÍAS</Text>
           <Picker
@@ -144,28 +139,11 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={categoria}
             onValueChange={(value) => setCategoria(value)}
           >
-            <Picker.Item label="Otros" value="Otros" />
-            <Picker.Item label="Impartir clases" value="Impartir clases" />{/*lectiva*/}
-            <Picker.Item label="Preparar clases" value="Preparar clases" />{/*lectiva y no lectiva*/}
-            <Picker.Item label="Corregir" value="Corregir" />{/*lectiva y no lectiva*/}
-            <Picker.Item label="Retos" value="Retos" />{/*lectiva*/}
-            <Picker.Item
-              label="Reuniones de Departamento"
-              value="Reuniones de Departamento"
-            />{/*no lectiva?*/}
-            <Picker.Item
-              label="Reuniones de Equipos Educativos"
-              value="Reuniones de Equipos Educativos"
-            />{/*no lectiva*/}
-            <Picker.Item label="Reuniones de Padres" value="Reuniones de Padres" />{/*lectiva?*/}
-            <Picker.Item label="Atención a Padres" value="Atención a Padres" />{/*lectiva?*/}
-            <Picker.Item
-              label="Atención personal a alumnos"
-              value="Atención personal a alumnos"
-            />{/*lectiva y no lectiva*/}
+            {selectedCategoria.map((cat) => (
+              <Picker.Item key={cat.Id_Categorias} label={cat.nombre} value={cat.nombre} />
+            ))}
           </Picker>
         </View>
-
         <View style={styles.componente}>
           <Text style={styles.label}>CLASE</Text>
           <Picker
@@ -173,24 +151,9 @@ const RegisterHoursScreen = ({ navigation }) => {
             selectedValue={clase}
             onValueChange={(value) => setClase(value)}
           >
-            <Picker.Item label="1SA" value="1SA" />
-            <Picker.Item label="2SA" value="2SA" />
-            <Picker.Item label="1SV" value="1SV" />
-            <Picker.Item label="2SV" value="2SV" />
-            <Picker.Item label="1SC" value="1SC" />
-            <Picker.Item label="2SC" value="2SC" />
-            <Picker.Item label="1SI" value="1SI" />
-            <Picker.Item label="2SI" value="2SI" />
-            <Picker.Item label="1SW" value="1SW" />
-            <Picker.Item label="2SW" value="2SW" />
-            <Picker.Item label="1SE" value="1SE" />
-            <Picker.Item label="2SE" value="2SE" />
-            <Picker.Item label="1SR" value="1SR" />
-            <Picker.Item label="2SR" value="2SR" />
-            <Picker.Item label="1SM" value="1SM" />
-            <Picker.Item label="2SM" value="2SM" />
-            <Picker.Item label="1ST" value="1ST" />
-            <Picker.Item label="2ST" value="2ST" />
+            {selectedClase.map((cla) => (
+              <Picker.Item key={cla.Id_Clases} label={cla.nombre} value={cla.nombre} />
+            ))}
           </Picker>
         </View>
         <View style={styles.spacer} />
@@ -210,16 +173,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
-    // marginBottom:50,
   },
   scrollViewContainer: {
-    // flexGrow: 1,
-    // paddingBottom: 100, // Espacio para el botón de guardar
-    // marginBottom: 500,
+    flexGrow: 1,
   },
-  spacer: {
-    // height: '100%', // Llena todo el espacio disponible
-  },
+  spacer: {},
   headerContainer: {
     backgroundColor: '#E1F5FE',
     width: '80%',
@@ -263,35 +221,24 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginBottom: 16,
-    // marginTop:10,
     width: '70%',
     justifyContent: 'center',
   },
   hourMin: {
     fontSize: 16,
-    // alignSelf: 'center',
     color: '#0096C7',
   },
-  scrollViewContainer: {
-    flexGrow: 1,
-  },
-
   button: {
     backgroundColor: '#0096C7',
     alignItems: 'center',
     padding: '5%',
     width: '80%',
     borderRadius: 8,
-    // position: 'absolute',
     marginBottom: '15%',
-
     alignSelf: 'center',
   },
   buttonContainer: {
     alignItems: 'center',
-    // marginBottom: 5, // Espacio entre el botón y el contenido
-    // marginTop:50,
   },
   buttonText: {
     color: '#FFFFFF',
