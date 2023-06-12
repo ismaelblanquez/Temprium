@@ -25,12 +25,10 @@ const Home = ({ navigation, route }) => {
                 .then((results) => {
                     const todos = [];
 
-
                     results.forEach((item) => {
                         todos.push(item);
                     });
                     setData(todos);
-
                     const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
                     const horasTotales = Math.floor(minutosTotales / 60);
                     const minutosRestantes = minutosTotales % 60;
@@ -49,18 +47,15 @@ const Home = ({ navigation, route }) => {
                 .then((results) => {
                     const todos = [];
 
-
                     results.forEach((item) => {
                         todos.push(item);
                     });
                     setData(todos);
-
                     const minutosTotales = todos.map((item) => item.Horas * 60 + item.minutos).reduce((acc, cur) => acc + cur, 0);
                     const horasTotales = Math.floor(minutosTotales / 60);
                     const minutosRestantes = minutosTotales % 60;
                     const tiempoTotal = `${horasTotales}h ${minutosRestantes}m`;
                     setHorasTotales(tiempoTotal);
-
                     setLoading(false);
                 })
                 .catch((error) => {
