@@ -7,6 +7,10 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+  
   const handleLogin = async () => {
     try {
       const usuarioExiste = await verificarUsuario(email, password);
@@ -34,9 +38,7 @@ const Login = ({ navigation }) => {
     navigation.navigate('ForgotPassword');
   };
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+  
 
   const checkLoginStatus = async () => {
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');

@@ -10,7 +10,6 @@ import Register from './src/screens/Register';
 import BottomBar from './src/components/BottomBar';
 import FilterHours from './src/screens/FilterHours';
 import Config from './src/screens/Config';
-//import Notifications from './src/screens/Notifications';
 import Language from './src/screens/Language';
 import Privacy from './src/screens/Privacy';
 import Security from './src/screens/Security';
@@ -25,17 +24,8 @@ import 'setimmediate';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
-
-
-
-
-{/* <Home></Home>; */ }
-
 // Crear el StackNavigator y definir las rutas
 const Stack = createStackNavigator();
-
-
-
 
 
 const App = () => {
@@ -50,7 +40,6 @@ const App = () => {
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
           <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
           <Stack.Screen name="DailyTasks" component={DailyTasks} options={{ headerShown: false }} />
-          {/*<Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/>*/}
           <Stack.Screen name="Language" component={Language} options={{ headerShown: false }} />
           <Stack.Screen name="Security" component={Security} options={{ headerShown: false }} />
           <Stack.Screen name="Theme" component={Theme} options={{ headerShown: false }} />
